@@ -1,6 +1,31 @@
 
 This is copilotProd, a construction-company AI assistant that customers and engineers can ask questions in text, audio, or images.
 
+## Frontend
+
+The React/Vite frontend is in the repository root.
+
+1. Install [Node.js](https://nodejs.org/).
+2. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+3. Set `VITE_API_BASE_URL` in a `.env` file. For example:
+
+   ```env
+   VITE_API_BASE_URL=http://localhost:8080/api
+   ```
+
+4. Start the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open the local URL printed in the terminal.
+
 ## Backend
 
 The FastAPI backend is in [`backend/`](./backend). It supports the modular `/api/v1`
