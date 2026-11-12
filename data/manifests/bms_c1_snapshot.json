@@ -1,0 +1,81 @@
+{
+  "source_id": "libre-solar-bms-c1-manual",
+  "title": "Libre Solar BMS C1 User Manual",
+  "publisher": "Libre Solar",
+  "author": "Martin Jäger",
+  "model": "BMS C1",
+  "repository": "https://github.com/LibreSolar/bms-c1",
+  "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+  "accessed_on": "2026-11-12",
+  "license": "CC-BY-SA-4.0",
+  "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+  "license_evidence_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+  "license_evidence_url": "https://github.com/LibreSolar/bms-c1/blob/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md#license",
+  "review_status": "pending",
+  "reviewer": null,
+  "review_reasons": [
+    "Confirm suitability for the industrial equipment catalogue",
+    "Human technical review of source sections",
+    "Agree product/category IDs and source permissions with Backend/Security"
+  ],
+  "images": "References retained; image files not downloaded or counted.",
+  "page_references": "Markdown line numbers only. No PDF page mapping has been established.",
+  "files": [
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+      "source_path": "manual/1-introduction.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md",
+      "git_blob_sha1": "60f554f9e01771a672b2497ef2a279a0b80c6ce7",
+      "size_bytes": 2484,
+      "sha256": "e908de65614b189315f3dc916fb0e78f8ff4368812b3e6b6b3ea163f4d1636fc"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/2-safety.md",
+      "source_path": "manual/2-safety.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/2-safety.md",
+      "git_blob_sha1": "7b847c00a996a1ffd1888fc4b7f01946b18a59f7",
+      "size_bytes": 1008,
+      "sha256": "60b4d5a517f68e6f11c8f5310496c3d8cf5754da00cee0998dd3d6e221f848c8"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_path": "manual/3-features.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "git_blob_sha1": "70759494a3802a8e880db71406d4854d88689eaa",
+      "size_bytes": 7719,
+      "sha256": "718363dcb102e0c7d6fc134c81a1a256e0b5da10ded9cacbbb98c9185c66baef"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_path": "manual/4-installation.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "git_blob_sha1": "5456a46b3ece32e2ae70b002e6e450b189cf1e8e",
+      "size_bytes": 3593,
+      "sha256": "d64e8c48d9d6753360ff271edb0841f8f56d0787f1f6956d0d1ba560daabcb03"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_path": "manual/5-operation.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "git_blob_sha1": "fbf9d84ba34b641691d3a152b5f6e6355f398e22",
+      "size_bytes": 5051,
+      "sha256": "e2b3ea601e5d68c05f5958340d2deb53d4e506b165d455d0915376c0ec1b4c26"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/6-datasheet.md",
+      "source_path": "manual/6-datasheet.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/6-datasheet.md",
+      "git_blob_sha1": "602d62212789c7a610711b8c26dfb6a1926b1407",
+      "size_bytes": 1453,
+      "sha256": "f4fff9b784fc548b65b32c778e80ac772452ae515557d57b584d13147705848b"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/metadata.yml",
+      "source_path": "manual/metadata.yml",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/metadata.yml",
+      "git_blob_sha1": "04c5eab39efe8323447a139574e501d08feb267a",
+      "size_bytes": 495,
+      "sha256": "a3f9e4f7a9c26237d6c9414410a95bca29ff61e277b05db211f1a6b618524ffe"
+    }
+  ]
+}

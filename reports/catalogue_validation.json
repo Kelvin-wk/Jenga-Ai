@@ -1,0 +1,42 @@
+{
+  "valid": false,
+  "product_count": 15,
+  "category_count": 3,
+  "per_category": {
+    "industrial_pumps": 5,
+    "power_generators": 5,
+    "solar_inverters": 5
+  },
+  "verified_product_count": 0,
+  "verified_category_count": 0,
+  "coverage_ready": false,
+  "errors": [
+    "JC-GEN-003: at least one source_id is required",
+    "JC-GEN-005: at least one source_id is required"
+  ],
+  "warnings": [
+    "JC-PMP-001: no specifications yet",
+    "JC-PMP-002: no specifications yet",
+    "JC-PMP-003: no specifications yet",
+    "JC-PMP-004: no specifications yet",
+    "JC-PMP-005: no specifications yet",
+    "JC-GEN-001: no specifications yet",
+    "JC-GEN-002: no specifications yet",
+    "JC-GEN-003: no specifications yet",
+    "JC-GEN-004: no specifications yet",
+    "JC-GEN-005: no specifications yet",
+    "JC-INV-001: no specifications yet",
+    "JC-INV-002: no specifications yet",
+    "JC-INV-003: no specifications yet",
+    "JC-INV-004: no specifications yet",
+    "JC-INV-005: no specifications yet"
+  ],
+  "minimums": {
+    "products": 15,
+    "categories": 3
+  },
+  "limitations": [
+    "Counts depend on recorded reviews; this check does not establish technical truth or source rights.",
+    "Source manifest checks and Backend/Security contract review are separate requirements."
+  ]
+}

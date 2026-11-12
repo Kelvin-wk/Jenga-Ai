@@ -1,0 +1,647 @@
+{
+  "purpose": "source_review",
+  "source_id": "libre-solar-bms-c1-manual",
+  "title": "Libre Solar BMS C1 User Manual",
+  "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+  "review_status": "pending",
+  "attribution": {
+    "author": "Martin Jäger",
+    "publisher": "Libre Solar",
+    "license": "CC-BY-SA-4.0",
+    "license_url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "changes": "Source text split at headings; text preserved without rewriting."
+  },
+  "files": [
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+      "source_path": "manual/1-introduction.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md",
+      "git_blob_sha1": "60f554f9e01771a672b2497ef2a279a0b80c6ce7",
+      "size_bytes": 2484,
+      "sha256": "e908de65614b189315f3dc916fb0e78f8ff4368812b3e6b6b3ea163f4d1636fc"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/2-safety.md",
+      "source_path": "manual/2-safety.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/2-safety.md",
+      "git_blob_sha1": "7b847c00a996a1ffd1888fc4b7f01946b18a59f7",
+      "size_bytes": 1008,
+      "sha256": "60b4d5a517f68e6f11c8f5310496c3d8cf5754da00cee0998dd3d6e221f848c8"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_path": "manual/3-features.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "git_blob_sha1": "70759494a3802a8e880db71406d4854d88689eaa",
+      "size_bytes": 7719,
+      "sha256": "718363dcb102e0c7d6fc134c81a1a256e0b5da10ded9cacbbb98c9185c66baef"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_path": "manual/4-installation.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "git_blob_sha1": "5456a46b3ece32e2ae70b002e6e450b189cf1e8e",
+      "size_bytes": 3593,
+      "sha256": "d64e8c48d9d6753360ff271edb0841f8f56d0787f1f6956d0d1ba560daabcb03"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_path": "manual/5-operation.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "git_blob_sha1": "fbf9d84ba34b641691d3a152b5f6e6355f398e22",
+      "size_bytes": 5051,
+      "sha256": "e2b3ea601e5d68c05f5958340d2deb53d4e506b165d455d0915376c0ec1b4c26"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/6-datasheet.md",
+      "source_path": "manual/6-datasheet.md",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/6-datasheet.md",
+      "git_blob_sha1": "602d62212789c7a610711b8c26dfb6a1926b1407",
+      "size_bytes": 1453,
+      "sha256": "f4fff9b784fc548b65b32c778e80ac772452ae515557d57b584d13147705848b"
+    },
+    {
+      "path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/metadata.yml",
+      "source_path": "manual/metadata.yml",
+      "url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/metadata.yml",
+      "git_blob_sha1": "04c5eab39efe8323447a139574e501d08feb267a",
+      "size_bytes": 495,
+      "sha256": "a3f9e4f7a9c26237d6c9414410a95bca29ff61e277b05db211f1a6b618524ffe"
+    }
+  ],
+  "sections": [
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md",
+      "page": null,
+      "heading_path": [
+        "Introduction"
+      ],
+      "start_line": 1,
+      "end_line": 10,
+      "text": "# Introduction\n\nThe Libre Solar BMS C1 is a flexible Open Source Battery Management System (BMS) suitable for various applications.\n\nThis manual describes the usage and most important functions of the BMS. Please visit [learn.libre.solar](https://learn.libre.solar) for general information about battery management systems, charge controllers and other devices for DC energy systems.\n\nRead this manual carefully and make sure you understand everything before starting with installation of the BMS.\n\nSame as the hardware and firmware of the BMS, also this manual is Open Source. If you find any errors or have suggestions for improvement, please contribute to [the repository on GitHub](https://github.com/LibreSolar/bms-c1/).\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md",
+      "page": null,
+      "heading_path": [
+        "Introduction",
+        "Project background"
+      ],
+      "start_line": 11,
+      "end_line": 30,
+      "text": "## Project background\n\nThe main target of the project behind this BMS is to provide a solid technical basis for custom developments of organizations working in the energy access sector.\n\nThe project is funded by the [EnAccess Foundation](https://enaccess.org/).\n\n![](./images/enaccess-logo-centered.png)\n\nThe development is driven by the Libre Solar and EnAccess Communities. Visit the following websites for most recent updates:\n\n- EnAccess Community: [community.enaccess.org](https://community.enaccess.org/)\n\n- Libre Solar Community: [talk.libre.solar](https://talk.libre.solar/)\n\nHardware and firmware source files are published on GitHub:\n\n- Hardware Repository: [github.com/LibreSolar/bms-c1](https://github.com/LibreSolar/bms-c1)\n\n- Firmware Repository: [github.com/LibreSolar/bms-firmware](https://github.com/LibreSolar/bms-firmware)\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md",
+      "page": null,
+      "heading_path": [
+        "Introduction",
+        "Disclaimer"
+      ],
+      "start_line": 31,
+      "end_line": 38,
+      "text": "## Disclaimer\n\nThis user manual has been written and checked with care and to the best of our knowledge.\n\nLibre Solar assumes no liability for the accuracy, completeness or quality of the information provided. Liability claims against the team for material, physical or immaterial damages caused by the use or non-use of the information provided or by the use of incorrect and/or incomplete information are excluded.\n\nAll information and instructions are non-binding. Libre Solar reserves the right to change, supplement or delete parts of the pages or the entire document without prior notice.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/1-introduction.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/1-introduction.md",
+      "page": null,
+      "heading_path": [
+        "Introduction",
+        "License"
+      ],
+      "start_line": 39,
+      "end_line": 45,
+      "text": "## License\n\nThis user manual document is licensed under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) License.\n\n![](./images/cc-by-sa-centered.png)\n\nThe full license text is available at [https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/).\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/2-safety.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/2-safety.md",
+      "page": null,
+      "heading_path": [
+        "Safety Instructions"
+      ],
+      "start_line": 1,
+      "end_line": 21,
+      "text": "# Safety Instructions\n\n- The BMS shall only be used for the intended application.\n\n- The maximum voltage and current of the connected batteries or loads must not exceed the limits of the BMS.\n\n- Ensure that the BMS is configured correctly for the used battery type.\n\n- Install the device considering general best practices for electrical and mechanical installations in accordance to laws in your country.\n\n- An additional fuse must be installed as close to the battery positive terminal as possible.\n\n- As sparks can occur during connection of the battery wires, don't install the BMS close to any flammable materials.\n\n- The wire cross-section has to be large enough to handle at least the maximum specified current of the BMS.\n\n- Use insulated tools only.\n\n- Fix the wires outside the BMS to provide a strain relief and reduce forces on the terminals.\n\n- Mount the device on a solid, non-inflammable material only. Depending on the ambient conditions and the average current, a heat sink may be required.\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features"
+      ],
+      "start_line": 1,
+      "end_line": 2,
+      "text": "# Features\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "System overview"
+      ],
+      "start_line": 3,
+      "end_line": 23,
+      "text": "## System overview\n\nThe BMS is the heart of every Li-ion battery. It is needed to equalize series connected cells and protect the battery from current, voltages and temperatures outside the allowed operating range.\n\nBelow figure shows a complete battery system with the integrated BMS.\n\n![Overview of the BMS integrated into a Li-ion battery pack.](./images/bms-overview.svg)\n\nThis BMS has the following high-level features:\n\n- Flexible and fully Open Source design\n- Suitable for 12V, 24V or 48V systems (up to 16 LFP cells in series)\n- Continuous currents of up to 100A\n\nWith above specifications it is suitable for the following applications:\n\n- Poductive use appliances like milling machines\n- Energy storage for AC mini-grid applications with up to 4 kVA inverters\n- Second-life batteries built e.g. from recycled EV batteries\n- Generic off-grid energy storage e.g. in caravans\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware"
+      ],
+      "start_line": 24,
+      "end_line": 27,
+      "text": "## Hardware\n\n![BMS Overview](./images/bms-c1_overview.svg)\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "Board design"
+      ],
+      "start_line": 28,
+      "end_line": 44,
+      "text": "### Board design\n\nAll electronics components (power and control) are integrated into a single PCB in order to reduce cost and size.\n\nThe board contains the following main subsystems:\n\n- Power part (top left)\n  - High current terminals\n  - MOSFETs (4 in parallel, 2 in series for bi-directional switching)\n  - Current measurement shunt\n\n- Control part (bottom right)\n  - Microcontroller: ESP32-C3\n  - BMS ASIC: Texas Instruments BQ76952\n  - Internal power supply\n  - Communication interfaces (CAN, UART, I2C, USB, Bluetooth)\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "MCU: ESP32-C3"
+      ],
+      "start_line": 45,
+      "end_line": 48,
+      "text": "### MCU: ESP32-C3\n\nThe [Espressif ESP32-C3](https://www.espressif.com/en/products/socs/esp32-c3) is a single-core microcontroller featuring Wi-Fi, Bluetooth 5 (LE) and CAN (called TWAI by Espressif). It is based on the open-source RISC-V architecture.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "BMS IC: BQ76952"
+      ],
+      "start_line": 49,
+      "end_line": 77,
+      "text": "### BMS IC: BQ76952\n\nThe [Texas Instruments BQ76952](https://www.ti.com/product/BQ76952) was selected as the BMS IC as it offers a good compromise between accuracy, features and cost.\n\nFeatures according to Datasheet:\n\n- Battery monitoring capability for 3-series to 16-series cells\n- Integrated charge pump for high-side NFET protection with optional autonomous recovery\n- Extensive protection suite including voltage, temperature, current, and internal diagnostics\n- Two independent ADCs\n- Support for simultaneous current and voltage sampling\n- High-accuracy coulomb counter with input offset error < 1 uV (typical)\n- High accuracy cell voltage measurement < 10 mV (typical)\n- Wide-range current applications (±200-mV measurement range across sense resistor)\n- Integrated secondary chemical fuse drive protection\n- Autonomous or host-controlled cell balancing\n- Multiple power modes (typical battery pack operating range conditions)\n- NORMAL mode: 286 uA\n- Multiple SLEEP mode options: 24 uA to 41 uA\n- Multiple DEEPSLEEP mode options: 9 uA to 10 uA\n- SHUTDOWN mode: 1 uA\n- High-voltage tolerance of 85 V on cell connect and select additional pins\n- Tolerant of random cell attach sequence on production line\n- Support for temperature sensing using internal sensor and up to nine external thermistors\n- Integrated one-time-programmable (OTP) memory programmable by customers on production line\n- Communication options include 400-kHz I2C, SPI, and HDQ one-wire interface\n- Dual-programmable LDOs for external system usage\n- 48-pin TQFP package (PFB)\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "Balancing"
+      ],
+      "start_line": 78,
+      "end_line": 81,
+      "text": "### Balancing\n\nThe BMS features passive balancing with up to 100 mA.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "Protective switches"
+      ],
+      "start_line": 82,
+      "end_line": 91,
+      "text": "### Protective switches\n\nThe positive battery terminal can be disconnected by the BMS for safety reasons or upon demand of the user via a communicatoin interface.\n\nThe disconnect switches are N-channel MOSFETs in a back-to-back configuration to be able to interrupt current in both directions (see also BQ76952 datasheet). In order to allow the high currents, 4 MOSFETs are connected in parallel.\n\nThe bottom side of the PCB can be attached to a heat sink to dissipate the heat at high continuous currents.\n\nThe cell connector has a pin to trigger a fuse at the pack positive terminal as a secondary protection if the MOSFETs fail short.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "Current measurement"
+      ],
+      "start_line": 92,
+      "end_line": 97,
+      "text": "### Current measurement\n\nThe current is measured using a shunt, located in the negative voltage path of the battery pack. The shunt voltage is amplified by the BQ76952 ASIC and read by the MCU.\n\nTime-critical safety features like overcurrent and short circuit protection are implemented directly in the ASIC and can be calibrated via firmware.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "Cell and thermistor connectors"
+      ],
+      "start_line": 98,
+      "end_line": 103,
+      "text": "### Cell and thermistor connectors\n\nThe cells and thermistors are connected to the BMS using [Molex Micro-Fit](https://www.molex.com/molex/products/family/microfit_30) or [Würth WR-MPC3](https://www.we-online.com/katalog/en/em/connectors/wire-to-board/wr_mpc3) series connectors.\n\nBoth series are pin-compatible and there are even more compatible connectors in the market for this popular series. The connectors can handle up to 5A, which is sufficient even for active balancing.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Hardware",
+        "Power connectors"
+      ],
+      "start_line": 104,
+      "end_line": 109,
+      "text": "### Power connectors\n\nThe BMS is designed for up to 100A continuous current, depending on ambient temperatures, heat sink and actually fitted MOSFETs.\n\nWürth high-power solder terminals with M5 threads are used for wire-to-board connections.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Communication interfaces"
+      ],
+      "start_line": 110,
+      "end_line": 119,
+      "text": "## Communication interfaces\n\nOne major advantage of an Open Source design is its extensibility and adaptation to specific requirements.\n\nIn order to provide the hardware interfaces required to add custom extensions, two options are offered. Communication between multiple BMSs or other devices like charge controllers can be achieved via CAN bus, while the addional interfaces like I2C and UART can be used for extension of the board with internal features like displays.\n\nThe MCU features built-in WiFi and Bluetooth communication.\n\nThe serial and Bluetooth communication interfaces use the [ThingSet protocol](https://thingset.io/) by default, which allows to read measurement values from the BMS as well as store custom configuration.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/3-features.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/3-features.md",
+      "page": null,
+      "heading_path": [
+        "Features",
+        "Firmware"
+      ],
+      "start_line": 120,
+      "end_line": 166,
+      "text": "## Firmware\n\nThe firmware is based on [Zephyr RTOS](https://www.zephyrproject.org/) and thus allows for easy integration of additional communication features. The latest Zephyr long-term support release is in the process of being certified for functional safety according to IEC 61508.\n\nAmongst all features inherited from underlying Zephyr, the BMS firmware has the additional BMS-specific features:\n\n- Monitoring and configuration using the [ThingSet](https://thingset.io/) protocol (mapping to MQTT, CoAP and HTTP possible)\n  - Serial interface\n  - CAN bus\n  - I2C\n  - Bluetooth\n  - WiFi\n- SOC estimation based on coulomb counting\n- Configuration options\n  - Pack layout\n    - Cell chemistry (LiFePO4, NMC, NCA)\n    - Nominal capacity\n    - Number of cells\n    - Thermistor type\n    - Shunt resistor\n    - Custom open circuit voltage (OCV) look-up table\n  - Protection\n    - Discharge short circuit limit (A)\n    - Discharge short circuit delay (us)\n    - Discharge over-current limit (A)\n    - Discharge over-current delay (ms)\n    - Charge over-current limit (A)\n    - Charge over-current delay (ms)\n    - Cell target charge voltage (V)\n    - Cell discharge voltage limit (V)\n    - Cell over-voltage limit (V)\n    - Cell over-voltage error reset threshold (V)\n    - Cell over-voltage delay (ms)\n    - Cell under-voltage limit (V)\n    - Cell under-voltage error reset threshold (V)\n    - Cell under-voltage delay (ms)\n    - Discharge over-temperature (DOT) limit (°C)\n    - Discharge under-temperature (DUT) limit (°C)\n    - Charge over-temperature (COT) limit (°C)\n    - Charge under-temperature (CUT) limit (°C)\n    - Temperature limit hysteresis (°C)\n  - Balancing\n    - Enable automatic balancing.\n    - Balancing cell voltage target difference (V)\n    - Minimum cell voltage to start balancing (V)\n    - Current threshold to be considered idle (A)\n    - Minimum idle duration before balancing (s)\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation"
+      ],
+      "start_line": 1,
+      "end_line": 4,
+      "text": "# Installation\n\n**Attention**: The maximum operating voltage of the BMS is 60V. The 16s configuration is only feasible for LFP cells. For NMC cells, a maximum number of 14 cells may be used.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Mechanical Design"
+      ],
+      "start_line": 5,
+      "end_line": 12,
+      "text": "## Mechanical Design\n\nThe board dimensions are 70x135 mm² so that it can be easily integrated into existing housings with typical 18650 or 2170 cells.\n\n![BMS mounted on a heat sink](./images/bms-c1_heatsink.svg)\n\nDepending on the current requirements and ambient temperatures, a heat sink may be required. For good thermal contact, a thermal interface material (e.g. Henkel/Bergquist GAP PAD A2000) is required, as shown in above picture.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Connections"
+      ],
+      "start_line": 13,
+      "end_line": 22,
+      "text": "## Connections\n\nBelow picture shows the connections of the cells, the 10k thermistors (NTC1 and NTC2) and the high power cables.\n\n![BMS connections for 16s](./images/bms-c1_connections.svg)\n\nThe BMS is powered through the BAT+ terminal. If only the cell connector is mounted, the power is provided through the additional BAT+ wire in the cell connector, which has to be connected to the last cell's positive terminal.\n\nThe BMS cannot be powered through the USB port only.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Connections",
+        "Power connections"
+      ],
+      "start_line": 23,
+      "end_line": 32,
+      "text": "### Power connections\n\nThe high power terminals have an M5 thread and allow to fit wires of up to 35 mm² cross-section.\n\nThe nuts and washers should be made from stainless steel to avoid corrosion with copper cable lugs.\n\nThe wires must be properly fixed in the housing to reduce stress on the soldered terminals on the PCB.\n\nThe fixing torque for the nuts is 2.2 Nm. Use of a torque wrench is highly recommended.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Connections",
+        "Signal connections"
+      ],
+      "start_line": 33,
+      "end_line": 40,
+      "text": "### Signal connections\n\nThe MPC3 / Microfit connector must be equipped with properly crimped wires connected to the cells and the thermistors. Würth sells [pre-crimped wires](https://www.we-online.com/de/components/products/em/connectors/wire-to-board/wr_mpc3/wr_mpc3_pre_crimped_wire) so that no crimping tool is needed (the low-force type is recommended). These wires can be cut in half and connected to the application specific wiring harness.\n\nThe first signal connection and the very last one (respectively shown in grey and orange in the connection diagram) are used for powering up the BMS.\n\nBoth NTCs have to be connected and indicate a valid temperature range for the BMS to allow charging/discharging.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Connections",
+        "Less than 16 cells"
+      ],
+      "start_line": 41,
+      "end_line": 51,
+      "text": "### Less than 16 cells\n\n- Route the last wire of the harness (shown in orange) to the wire before the last Microfit pin.\n- Short the unused cell connections:\n  - on the PCB using the exposed pads as per the schematic below in cyan\n  - or in the wiring harness directly.\n\n![BMS connections for 12s](./images/bms-c1_connections_12s.svg)\n\nSee also the [BQ76952 documentation](https://www.ti.com/product/BQ76952) for further details.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Connections",
+        "Test wiring harness"
+      ],
+      "start_line": 52,
+      "end_line": 57,
+      "text": "### Test wiring harness\n\nIn order to test out the BMS, a test harness as shown in below picture can be used instead of an actual battery pack. The harness must be powered with a lab power supply set to 12V for the example with a 4s configuration. The resistor divider simulates individual cell voltages (here around 3V).\n\n![BMS test harness for 4s configuration](./images/bms-c1_connections_test_harness.svg)\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Connections",
+        "Connection order"
+      ],
+      "start_line": 58,
+      "end_line": 64,
+      "text": "### Connection order\n\n1. Connect the fully wired cell connector. (Note the two separate connections to the first cell's negative terminal)\n2. Connect the BAT- terminal.\n3. Connect the BAT+ terminal (with a fuse in line, as shown).\n4. Connect load or charger.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/4-installation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/4-installation.md",
+      "page": null,
+      "heading_path": [
+        "Installation",
+        "Communication ports"
+      ],
+      "start_line": 65,
+      "end_line": 69,
+      "text": "## Communication ports\n\nThe CAN, UART and I2C communication ports use JST PH connectors. The pinout is marked on the PCB.\n\nThe I2C is shared with the BQ76952. It must be ensured that this communication is not disturbed by another component on the I2C bus.\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation"
+      ],
+      "start_line": 1,
+      "end_line": 2,
+      "text": "# Operation\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Firmware building and flashing"
+      ],
+      "start_line": 3,
+      "end_line": 11,
+      "text": "## Firmware building and flashing\n\nIf no firmware is flashed on the board, make sure the board is powered through the cell connector. The power wires BAT+ and BAT- are optional.\n\nThe firmware is flashed through the USB port. Follow the instructions in the firmware documentation:\n\n- [Workspace Setup](https://libre.solar/bms-firmware/src/dev/workspace_setup.html)\n- [Building and Flashing](https://libre.solar/bms-firmware/src/dev/building_flashing.html)\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Start-up"
+      ],
+      "start_line": 12,
+      "end_line": 19,
+      "text": "## Start-up\n\nIn order to wake up the BMS chip, short-press the ON/OFF button S1 (top-right corner).\n\nIf the button is long-pressed for at least 3 seconds, the BMS will go into low-power shutdown mode.\n\nA custom push-button as part of the battery housing can be connected to the connector J5 next to the button.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "LED indications"
+      ],
+      "start_line": 20,
+      "end_line": 41,
+      "text": "## LED indications\n\nThe BMS is equipped with two status LEDs with below indications:\n\nRed LED:\n\n| Status           | Meaning                                            |\n| ---------------- | -------------------------------------------------- |\n| off              | Discharging finished and battery is empty          |\n| on               | Discharging allowed (current below idle threshold) |\n| blinking slowly  | Discharging active (current above idle threshold)  |\n| flashing quickly | Discharging error (UV/OT/UT/OC/SC)                 |\n\nGreen LED:\n\n| Status           | Meaning                                         |\n| ---------------- | ----------------------------------------------- |\n| off              | Charging finished and battery is full           |\n| on               | Charging allowed (current below idle threshold) |\n| blinking slowly  | Charging active (current above idle threshold)  |\n| flashing quickly | Charging error (OV/OT/UT/OC)                    |\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Communication Setup"
+      ],
+      "start_line": 42,
+      "end_line": 47,
+      "text": "## Communication Setup\n\nDevice information, configuration values and measurements can be explored using the [ThingSet protocol](https://thingset.io/). This protocol is used for the serial interface as well as the Bluetooth communication.\n\nFor details regarding the protocol consider the specification linked above. The basic setup is explained below.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Communication Setup",
+        "USB Serial"
+      ],
+      "start_line": 48,
+      "end_line": 72,
+      "text": "### USB Serial\n\nThe USB virtual COM port exposes log data and the Zephyr shell. Among other commands, the shell can also be used for communication using the ThingSet protocool.\n\nA terminal program like `picocom` is recommended:\n\n```\npicocom /dev/ttyACM0\n```\n\nThe shell command for the ThingSet protocol is `thingset`. Either prefix it for every command or `select thingset` to switch into ThingSet mode.\n\n```\nselect thingset\n?Meas\n:85 {\"rPackVoltage_V\":13.71,\"rStackVoltage_V\":13.91,\"rPackCurrent_A\":0.05,\"rBatTemp_degC\":29.4,\"rICTemp_degC\":34.2,\"rMOSFETTemp_degC\":31.8,\"rSOC_pct\":100.0,\"rErrorFlags\":0,\"rBmsState\":3,\"rCellVoltages_V\":[3.495,3.497,3.486,3.495,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000,0.000],\"rCellAvgVoltage_V\":3.493,\"rCellMinVoltage_V\":3.486,\"rCellMaxVoltage_V\":3.497,\"rBalancingStatus\":0}\n```\n\nWhen using the shell, the quotation marks in JSON data have to be escaped. See below for an example:\n\n```\n=Conf {\\\"sCellOvervoltage_V\\\": 3.8}\n:84\n```\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Communication Setup",
+        "UART Serial"
+      ],
+      "start_line": 73,
+      "end_line": 80,
+      "text": "### UART Serial\n\nThe serial interface uses a baud-rate of 115200 bps. Depending on the operating system, you can use different tools to communicate with the serial interface manually.\n\nFor Linux [CuteCom](https://sourceforge.net/projects/cutecom/) is recommended, as it stores a history of previous commands.\n\nThe [Serial2Websocket Python script](https://github.com/ThingSet/thingset-serial2websocket) can be used as a basis for own scripts to use the monitoring data.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Communication Setup",
+        "BLE"
+      ],
+      "start_line": 81,
+      "end_line": 86,
+      "text": "### BLE\n\nThe generic [ThingSet app](https://github.com/ThingSet/thingset-app) can be used to connect to the BMS via Bluetooth LE.\n\nFor own developments see the BLE transport layer specification on the ThingSet website and consider the implementation of the device side in the [ThingSet Zephyr SDK](https://github.com/ThingSet/thingset-zephyr-sdk).\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Configuration"
+      ],
+      "start_line": 87,
+      "end_line": 90,
+      "text": "## Configuration\n\nThe ThingSet protocol itself allows to discover available data items for configuration, so this manual will only use some examples for demonstration purposes.\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Configuration",
+        "Read measurements and battery status"
+      ],
+      "start_line": 91,
+      "end_line": 98,
+      "text": "### Read measurements and battery status\n\nUse the following command to get the current state of the battery, including all current, temperature and voltage measurements:\n\n```\n?Meas\n```\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Configuration",
+        "Configure battery type"
+      ],
+      "start_line": 99,
+      "end_line": 114,
+      "text": "### Configure battery type\n\nThe configuration for a particular cell type and battery size can be preset with suitable default values using the two executable data items `xPresetNMC` for NMC cells and `xPresetLFP` for LFP cells. The functions expect a parameter defining the nominal capacity of the battery in Ah.\n\nFor an LFP battery with 45 Ah, send the following command to the BMS:\n\n```\n!Conf/xPresetLFP [45]\n```\n\nThe expected response if the parameters were successfully set:\n\n```\n:84 0\n```\n\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/5-operation.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/5-operation.md",
+      "page": null,
+      "heading_path": [
+        "Operation",
+        "Configuration",
+        "Adjust thresholds"
+      ],
+      "start_line": 115,
+      "end_line": 127,
+      "text": "### Adjust thresholds\n\nThe current configuration can be determined with the following command:\n\n```\n?Conf\n```\n\nIndividual parameters can be adjusted with a command as shown below (using the overvoltage threshold as an example):\n\n```\n=Conf {\"sCellOvervoltage_V\": 3.8}\n```\n"
+    },
+    {
+      "source_id": "libre-solar-bms-c1-manual",
+      "source_version": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095",
+      "source_path": "data/raw/libre_solar/bms_c1/7c2dcc1c4f26/manual/6-datasheet.md",
+      "source_url": "https://raw.githubusercontent.com/LibreSolar/bms-c1/7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095/manual/6-datasheet.md",
+      "page": null,
+      "heading_path": [
+        "Datasheet"
+      ],
+      "start_line": 1,
+      "end_line": 58,
+      "text": "# Datasheet\n\n--------------------------------------------------------------------------------------------\nFeature                             Value                   Comment\n----------------------------------  ----------------------- ------------------------------------\n**Battery**\n\nNominal voltage range               12 V to 48 V\n\nMaximum voltage                     70 V\n\nMaximum current                     70 A - 100 A            Depending on ambient conditions and\n                                                        heat sink\n\nSelf consumption                    < 20 mA                 Exact value t.b.d.\n\nShutdown current                    < 1 mA                  Exact value t.b.d.\n\nCell types                          LFP, NMC and others     Customizable through firmware\n\n**Interfaces**\n\nCAN 2.0\n\nRS-485 (connector shared with CAN)\n\nUSB CDC-ACM\n\nUART serial\n\nI2C\n\nBluetooth\n\n**Protection**\n\nOver-/undervoltage\n\nOvercurrent / Short circuit\n\nOver-/undertemperature\n\n**Environmental conditions**\n\nOperating ambient temperature       -10 °C to +50 °C\n\nStorage temperature                 -20 °C to +60 °C\n\nHumidity                            <95%, non-condensing\n\n**Mechanical design**\n\nScrew terminals                     M5, torque: 2.2 Nm\n\nWeight                              t.b.d.\n\nDimensions                          70 mm x 135 mm\n----------------------------------  ----------------------- ------------------------------------\n"
+    }
+  ]
+}

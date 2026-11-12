@@ -1,0 +1,16 @@
+{
+  "status": "pending_catalogue_approval",
+  "manufacturer": "Libre Solar",
+  "model": "BMS C1",
+  "common_name": "battery management board",
+  "category": "battery_energy_storage",
+  "subcategory": "battery_management_system",
+  "product_type": "battery_management_board",
+  "aliases": ["BMS C1 board"],
+  "related_systems": ["battery pack", "solar inverter"],
+  "source_ids": ["libre-solar-bms-c1-introduction", "libre-solar-bms-c1-features"],
+  "evidence": [
+    {"source_id": "libre-solar-bms-c1-introduction", "revision": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095", "start_line": 1, "end_line": 3, "page": null},
+    {"source_id": "libre-solar-bms-c1-features", "revision": "7c2dcc1c4f266ce2a977c386ddaa4319f1ed1095", "start_line": 3, "end_line": 9, "page": null}
+  ]
+}
