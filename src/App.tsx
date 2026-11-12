@@ -30,7 +30,12 @@ const ROLE_KEY = "ai-interface-role";
 const SESSION_LENGTH = 7 * 24 * 60 * 60 * 1000;
 
 type Role = "engineer" | "customer";
-type Citation = { title?: string; url?: string; snippet?: string };
+type Citation = {
+  source_id?: string;
+  title?: string;
+  url?: string;
+  snippet?: string;
+};
 type Message = {
   id: string;
   role: "user" | "assistant";
@@ -40,83 +45,22 @@ type Message = {
 };
 type Conversation = { id: string; title: string; updatedAt?: string };
 type Session = { token: string; expiresAt: number };
-const products = [
-  {
-    name: "JCB 3CX Backhoe Loader",
-    category: "Earthmoving",
-    price: "$92,000",
-    description: "Versatile machine for digging, loading, and site work.",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Caterpillar 320 Excavator",
-    category: "Earthmoving",
-    price: "$185,000",
-    description: "Heavy-duty excavator for earthmoving and foundations.",
-    image: "https://images.unsplash.com/photo-1580901368919-7738efb0f87e?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Atlas Copco Air Compressor",
-    category: "Site Equipment",
-    price: "$18,500",
-    description: "Reliable compressed air for tools and construction sites.",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Makita Cordless Drill",
-    category: "Power Tools",
-    price: "$249",
-    description: "Compact drilling and fastening tool for daily site work.",
-    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Bosch Rotary Hammer",
-    category: "Power Tools",
-    price: "$399",
-    description: "High-impact hammer for concrete drilling and demolition.",
-    image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "DeWalt Circular Saw",
-    category: "Power Tools",
-    price: "$279",
-    description: "Reliable saw for accurate timber and board cutting.",
-    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Honda Portable Generator",
-    category: "Power",
-    price: "$1,299",
-    description: "Portable backup power for tools, lighting, and site offices.",
-    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Wacker Neuson Plate Compactor",
-    category: "Groundworks",
-    price: "$4,800",
-    description: "Compact machine for preparing firm, even ground surfaces.",
-    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Liebherr Tower Crane",
-    category: "Lifting",
-    price: "$1.2M",
-    description: "High-reach lifting solution for major building projects.",
-    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=240&q=80",
-  },
-  {
-    name: "Hilti Laser Level",
-    category: "Surveying",
-    price: "$699",
-    description: "Fast, accurate alignment and leveling for installation work.",
-    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=240&q=80",
-  },
-];
-const featuredProducts = [
-  { ...products[0], match: "98%", reason: "Best for mixed site work" },
-  { ...products[1], match: "94%", reason: "Strong foundation performance" },
-  { ...products[6], match: "91%", reason: "Reliable off-grid site power" },
-];
+type Product = {
+  id: number;
+  category: string;
+  name: string;
+  model_number: string;
+  specifications: string;
+  price_ksh: number;
+};
+
+function formatPrice(priceKsh: number): string {
+  return new Intl.NumberFormat("en-KE", {
+    style: "currency",
+    currency: "KES",
+    maximumFractionDigits: 0,
+  }).format(priceKsh);
+}
 
 async function api<T>(
   path: string,
@@ -162,6 +106,9 @@ export default function App() {
   const [selectedRole, setSelectedRole] = useState<Role>("engineer");
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [productPage, setProductPage] = useState(0);
+  const [products, setProducts] = useState<Product[]>([]);
+  const [catalogLoaded, setCatalogLoaded] = useState(false);
+  const [catalogError, setCatalogError] = useState("");
   const [username, setUsername] = useState("engineer@jenga.com");
   const [password, setPassword] = useState("engineer123");
   const [loginError, setLoginError] = useState("");
@@ -185,22 +132,46 @@ export default function App() {
     setRole(null);
     setMessages([]);
     setConversationId("");
+    setProducts([]);
+    setCatalogLoaded(false);
+    setCatalogError("");
   }, []);
 
   useEffect(() => {
     if (!session) return;
     const remaining = session.expiresAt - Date.now();
-    if (remaining <= 0) logout();
-    else {
-      const timer = window.setTimeout(logout, remaining);
-      return () => window.clearTimeout(timer);
-    }
+    const timer = window.setTimeout(logout, Math.max(remaining, 0));
+    return () => window.clearTimeout(timer);
   }, [session, logout]);
 
   useEffect(() => {
     if (!session || !role) return;
     api<Conversation[]>("/conversations", session.token).catch((e) => setError(e.message));
   }, [session, role]);
+
+  useEffect(() => {
+    if (!session) return;
+    let active = true;
+    api<Product[]>("/catalogue/products", session.token)
+      .then((catalogue) => {
+        if (active) {
+          setProducts(catalogue);
+          setCatalogError("");
+          setCatalogLoaded(true);
+        }
+      })
+      .catch((e: unknown) => {
+        if (active) {
+          setCatalogError(
+            e instanceof Error ? e.message : "Product catalogue is unavailable.",
+          );
+          setCatalogLoaded(true);
+        }
+      })
+    return () => {
+      active = false;
+    };
+  }, [session]);
 
   async function signIn(event: React.FormEvent) {
     event.preventDefault();
@@ -218,6 +189,9 @@ export default function App() {
       };
       localStorage.setItem(SESSION_KEY, JSON.stringify(nextSession));
       localStorage.setItem(ROLE_KEY, selectedRole);
+      setProducts([]);
+      setCatalogLoaded(false);
+      setCatalogError("");
       setSession(nextSession);
       setRole(selectedRole);
     } catch (e) {
@@ -285,36 +259,37 @@ export default function App() {
   async function sendMessage(event?: React.FormEvent) {
     event?.preventDefault();
     if (!session || !role || busy || (!prompt.trim() && files.length === 0)) return;
+    if (files.length > 0) {
+      setError("Image, audio, and document analysis is not connected yet. Remove attachments and send a text question.");
+      return;
+    }
 
     const text = prompt.trim();
-    const attachedNames = files.map((file) => file.name);
     const userMessage: Message = {
       id: crypto.randomUUID(),
       role: "user",
-      content: text || "Please review the attached file(s).",
-      files: attachedNames,
+      content: text,
     };
 
     setMessages((current) => [...current, userMessage]);
     setPrompt("");
-    setFiles([]);
     setError("");
     setBusy(true);
 
     try {
-      const body = new FormData();
-      body.append("message", text);
-      body.append("role", role);
-      if (conversationId) body.append("conversationId", conversationId);
-      files.forEach((file) => body.append("files[]", file));
-
       const result = await api<{
         answer: string;
-        conversationId?: string;
+        conversation_id?: string;
         citations?: Citation[];
-      }>("/ask", session.token, { method: "POST", body });
+      }>("/chat/query", session.token, {
+        method: "POST",
+        body: JSON.stringify({
+          query: text,
+          conversation_id: conversationId || undefined,
+        }),
+      });
 
-      if (result.conversationId) setConversationId(result.conversationId);
+      if (result.conversation_id) setConversationId(result.conversation_id);
       setMessages((current) => [
         ...current,
         {
@@ -474,7 +449,40 @@ export default function App() {
                   <div className="dashboard-card"><h2><ShieldCheck size={16} /> Copilot guidance</h2><ul className="feature-list"><li>Equipment recommendations</li><li>Technical specifications</li><li>Document and image analysis</li></ul></div>
                 </div>
               )}
-              {activeNav === "Browse Products" && <><div className="catalog-grid">{products.slice(productPage * 4, productPage * 4 + 4).map((product) => <article className="catalog-card" key={product.name}><img className="product-image" src={product.image} alt="" /><div><small className="product-category">{product.category}</small><h2>{product.name}</h2><strong className="catalog-price">{product.price}</strong><p>{product.description}</p><button>View details <ChevronRight size={14} /></button></div></article>)}</div><div className="catalog-pagination"><button disabled={productPage === 0} onClick={() => setProductPage((page) => page - 1)}>Previous</button><span>Page {productPage + 1} of {Math.ceil(products.length / 4)}</span><button disabled={(productPage + 1) * 4 >= products.length} onClick={() => setProductPage((page) => page + 1)}>Next</button></div></>}
+              {activeNav === "Browse Products" && (
+                <>
+                  {!catalogLoaded && <p className="panel-muted">Loading product catalogue…</p>}
+                  {catalogError && <p className="login-error" role="alert">{catalogError}</p>}
+                  {catalogLoaded && !catalogError && products.length === 0 && (
+                    <p className="panel-muted">No products are currently available.</p>
+                  )}
+                  {catalogLoaded && !catalogError && products.length > 0 && (
+                    <>
+                      <div className="catalog-grid">
+                        {products.slice(productPage * 4, productPage * 4 + 4).map((product) => (
+                          <article className="catalog-card" key={product.id}>
+                            <Package className="product-image" aria-hidden="true" />
+                            <div>
+                              <small className="product-category">{product.category}</small>
+                              <h2>{product.name}</h2>
+                              <p className="panel-muted">Model: {product.model_number}</p>
+                              <strong className="catalog-price">{formatPrice(product.price_ksh)}</strong>
+                              <p>{product.specifications}</p>
+                            </div>
+                          </article>
+                        ))}
+                      </div>
+                      {products.length > 4 && (
+                        <div className="catalog-pagination">
+                          <button disabled={productPage === 0} onClick={() => setProductPage((page) => page - 1)}>Previous</button>
+                          <span>Page {productPage + 1} of {Math.ceil(products.length / 4)}</span>
+                          <button disabled={(productPage + 1) * 4 >= products.length} onClick={() => setProductPage((page) => page + 1)}>Next</button>
+                        </div>
+                      )}
+                    </>
+                  )}
+                </>
+              )}
               {activeNav === "Documents" && <div className="document-list">{["Equipment Safety Handbook.pdf", "JCB 3CX Technical Datasheet.pdf", "Site Operations Guide.pdf"].map((item) => <article key={item}><FileText size={22} /><div><b>{item}</b><small>Verified project documentation · PDF</small></div><button><ChevronRight size={15} /></button></article>)}</div>}
               {activeNav === "Compare Solutions" && <div className="comparison-card dashboard-card"><div className="comparison-toolbar"><span>Selected solutions</span><button className="primary-small">Add product</button></div><div className="comparison-table"><b>Category</b><b>JCB 3CX</b><b>CAT 320</b><span>Equipment type</span><span>Backhoe loader</span><span>Excavator</span><span>Best for</span><span>General construction</span><span>Earthmoving</span></div></div>}
               {activeNav === "Upload Media" && <div className="upload-panel dashboard-card"><Upload size={30} /><h2>Upload project media</h2><p>Drag files here or choose files from your device. Supported formats include PDF, images, audio, and documents.</p><button className="primary-small" onClick={() => fileInput.current?.click()}>Choose files</button></div>}
@@ -573,7 +581,24 @@ export default function App() {
           </form>
               </div>
             </section>
-            <section className="dashboard-card recommendations-card"><div className="recommendation-heading"><div><p className="recommendation-kicker">AI CURATED FOR YOUR WORKSPACE</p><h2>Product Recommendations</h2></div><a href="#products">View All <ChevronRight size={13} /></a></div><p className="recommendation-intro">Based on common construction workflows and equipment needs.</p><div className="recommendation-list">{featuredProducts.map((product) => <div className="recommendation" key={product.name}><img className="product-icon" src={product.image} alt="" /><span><b>{product.name}</b><small>{product.reason} · {product.price}</small></span><strong className="match-score">{product.match}</strong><ChevronRight size={15} /></div>)}</div></section>
+            <section className="dashboard-card recommendations-card">
+              <div className="recommendation-heading">
+                <div><p className="recommendation-kicker">CURRENT BACKEND CATALOGUE</p><h2>Available Products</h2></div>
+                <button type="button" onClick={() => setActiveNav("Browse Products")}>View All <ChevronRight size={13} /></button>
+              </div>
+              <p className="recommendation-intro">Products and prices are loaded from the application catalogue.</p>
+              <div className="recommendation-list">
+                {products.slice(0, 3).map((product) => (
+                  <div className="recommendation" key={product.id}>
+                    <Package className="product-icon" aria-hidden="true" />
+                    <span><b>{product.name}</b><small>{product.model_number} · {formatPrice(product.price_ksh)}</small></span>
+                  </div>
+                ))}
+                {catalogLoaded && products.length === 0 && (
+                  <p className="panel-muted">{catalogError || "No catalogue products are available."}</p>
+                )}
+              </div>
+            </section>
           </div>
           <div className="metrics-row">{[["▣", "15+", "Equipment Products"], ["✓", "100%", "Trusted Sources"], ["▥", "60+", "Benchmark Items"], ["▥", "Real-Time", "AI Insights"]].map(([icon, value, label]) => <div className="metric-card" key={label}><span>{icon}</span><b>{value}</b><small>{label}</small></div>)}</div>
           {messages.length > 0 && <div className="message-history">{messages.map((message) => <article key={message.id}><b>{message.role === "user" ? "You" : "Copilot"}</b><p>{message.content}</p></article>)}</div>}

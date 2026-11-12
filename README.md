@@ -82,6 +82,20 @@ remain incomplete. See the [AI handoff](docs/AI_HANDOFF.md).
 [DEPLOYMENT.md](DEPLOYMENT.md) describes the combined Docker deployment for
 PrimeCloud and local containers. Its hosted-model configuration describes the
 current implementation, not approval to send private or restricted data.
+### Deploying the full application to PrimeCloud
+
+Deploy this repository as a **Docker application**, not as a Python-runtime
+application. The root [`Dockerfile`](./Dockerfile) builds the frontend and
+backend together and includes the Nginx configuration and startup script.
+Selecting Python-runtime deployment runs the [`Procfile`](./Procfile) directly
+and bypasses the repository's Nginx configuration, so the bundled Nginx
+permission fix will not apply.
+
+Use the repository root as the build context and `Dockerfile` as the Dockerfile.
+Configure PrimeCloud to expose port `8080`, mount persistent storage at
+`/app/data`, and use `/ready` as the health-check path. See
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) for the full setup and required production
+environment variables.
 
 Read [AGENTS.md](AGENTS.md) before contributing. The
 [implementation plan](JENGA_CONSULTANTS_MASTER_PLAN.md) records requirements and
