@@ -47,34 +47,20 @@ Health checks:
 - `GET http://localhost:8000/api/v1/health`
 - `GET http://localhost:8000/api/v1/ready`
 
-### Deploying the backend to PrimeCloud
+### Deploying the full application to PrimeCloud
 
-Create a Python web application in PrimeCloud connected to the `main` branch of
-`kwisdomk/kpp`. The repository includes root-level `requirements.txt`,
-`.python-version`, and `Procfile` deployment markers for PrimeCloud's Python
-build detection.
+Deploy this repository as a **Docker application**, not as a Python-runtime
+application. The root [`Dockerfile`](./Dockerfile) builds the frontend and
+backend together and includes the Nginx configuration and startup script.
+Selecting Python-runtime deployment runs the [`Procfile`](./Procfile) directly
+and bypasses the repository's Nginx configuration, so the bundled Nginx
+permission fix will not apply.
 
-Configure:
-
-- **Working directory:** repository root
-- **Build command:** `pip install -r requirements.txt`
-- **Start command:** `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- **Health-check path:** `/api/v1/health`
-- **Python version:** 3.11 or newer
-
-Set these environment variables in the PrimeCloud dashboard:
-
-```text
-JENGA_SECRET_KEY=<long-random-secret>
-CORS_ORIGINS=https://your-frontend-domain.example
-DATABASE_URL=sqlite:////path/to/persistent/jenga_consultants.db
-```
-
-Use the persistent-storage path provided by PrimeCloud for `DATABASE_URL`.
-SQLite must not be stored on an ephemeral deployment filesystem; if the selected
-PrimeCloud plan does not provide persistent storage, use a managed database and
-set `DATABASE_URL` to its SQLAlchemy connection URL before deploying. Verify
-`/api/v1/health` after the service starts.
+Use the repository root as the build context and `Dockerfile` as the Dockerfile.
+Configure PrimeCloud to expose port `8080`, mount persistent storage at
+`/app/data`, and use `/ready` as the health-check path. See
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) for the full setup and required production
+environment variables.
 
 The seeded demo accounts are for development/demo use only. Set a new
 `JENGA_SECRET_KEY` for the deployment and do not use the demo passwords for a

@@ -31,12 +31,19 @@ The named `app-data` volume preserves the SQLite database across restarts. Use
 
 ## PrimeCloud deployment
 
-Create one PrimeCloud application from the GitHub repository with:
+Create one **Docker** application from the GitHub repository with:
 
 - Build context: repository root
 - Dockerfile: `Dockerfile`
 - Container port: `8080`
 - Persistent disk mount: `/app/data`
+
+Do not configure this full-stack deployment as a Python-runtime application.
+The root `Procfile` starts Uvicorn directly and does not start the bundled
+Nginx or load `deploy/nginx.conf`; in that mode, changing this repository's
+Nginx files cannot change the platform-managed Nginx logs or permissions. If
+PrimeCloud currently has this service configured with a Python builder, switch
+the application to Docker and rebuild from the repository root Dockerfile.
 
 Set these PrimeCloud environment variables/secrets. Use the connection string
 provided by the PrimeCloud MySQL service:
