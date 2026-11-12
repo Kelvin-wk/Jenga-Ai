@@ -1,0 +1,73 @@
+{
+  "observed_at": "2026-11-12T13:30:55.317Z",
+  "host_identity": "Not independently verified as Athena",
+  "cpu": "13th Gen Intel(R) Core(TM) i5-13420H",
+  "total_ram_bytes": 8201113600,
+  "free_ram_bytes": 357158912,
+  "node": "v26.8.1",
+  "gpu_query": "name, memory.total [MiB], memory.used [MiB], memory.free [MiB], driver_version\r\nNVIDIA GeForce RTX 3050 6GB Laptop GPU, 6144 MiB, 45 MiB, 5957 MiB, 621.14",
+  "model_loaded_by_this_session": false,
+  "lm_server_follow_up": {
+    "observed_at": "2026-11-13T00:22:33+03:00",
+    "base_url": "http://127.0.0.1:1234/v1",
+    "reachable": true,
+    "models": [
+      {
+        "id": "qwen3.5-4b-claude-4.6-opus-reasoning-distilled",
+        "type": "vlm",
+        "publisher": "Jackrong",
+        "quantization": "Q4_K_S",
+        "state": "loaded",
+        "max_context_length": 262144,
+        "loaded_context_length": 111104,
+        "capabilities": ["tool_use"]
+      },
+      {
+        "id": "google/gemma-4-12b-qat",
+        "type": "vlm",
+        "publisher": "google",
+        "quantization": "Q4_0",
+        "state": "not-loaded",
+        "max_context_length": 262144,
+        "capabilities": ["tool_use"]
+      },
+      {
+        "id": "text-embedding-nomic-embed-text-v1.5",
+        "type": "embeddings",
+        "publisher": "nomic-ai",
+        "quantization": "Q4_K_M",
+        "state": "loaded",
+        "max_context_length": 2048
+      }
+    ],
+    "chat_probe": {
+      "model": "qwen3.5-4b-claude-4.6-opus-reasoning-distilled",
+      "result": "OK",
+      "elapsed_ms": 9873,
+      "completion_tokens": 144,
+      "reasoning_content_observed": true
+    },
+    "embedding_probe": {
+      "model": "text-embedding-nomic-embed-text-v1.5",
+      "dimensions": 768,
+      "elapsed_ms": 18837
+    },
+    "gpu_memory_used_mib": 5209,
+    "gpu_memory_free_mib": 793,
+    "system_free_ram_bytes": 393814016,
+    "limitations": [
+      "Connectivity and basic inference only; not a latency benchmark",
+      "The loaded Qwen is a community reasoning-distilled variant, not the base Qwen3.5-4B checkpoint",
+      "Host identity is still not independently confirmed as Athena",
+      "Model revision, file checksum and licence are not yet recorded",
+      "Low max_tokens produced empty content because reasoning consumed the completion budget"
+    ]
+  },
+  "limitations": [
+    "CIM queries denied",
+    "Localhost LM Studio HTTP query blocked by socket policy",
+    "lms ls --json failed to connect/find a valid running installation",
+    "Observed GPU is RTX 3050 6 GB; the exposed host is not independently confirmed as Athena",
+    "OS free memory is an instantaneous snapshot, not peak model usage"
+  ]
+}

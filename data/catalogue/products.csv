@@ -1,0 +1,16 @@
+product_id,category,manufacturer,model,spec_source_url,manual_url,license,verified
+JC-PMP-001,industrial_pumps,Dayliff,DDP 60,https://www.dayliff.com/media/com_hikashop/upload/safe/ddp60.pdf,,rights_pending_review,false
+JC-PMP-002,industrial_pumps,Dayliff,DSD 3/18,https://www.dayliff.com/media/com_hikashop/upload/safe/dsd-datasheet.pdf,,rights_pending_review,false
+JC-PMP-003,industrial_pumps,Dayliff,DB 4/30,https://www.dayliff.com/media/com_hikashop/upload/safe/db_685346571.pdf,,rights_pending_review,false
+JC-PMP-004,industrial_pumps,Dayliff,DDJ 750,https://www.dayliff.com/products/product/download/file_id-7339,,rights_pending_review,false
+JC-PMP-005,industrial_pumps,Pedrollo,CP 158,https://www.pedrollo.com/wp-content/uploads/schede-tecniche/EN/CP_EN-datasheet_50Hz.pdf,,rights_pending_review,false
+JC-GEN-001,power_generators,Honda,EU22i,https://cf.hondappsv.com/files/OM/OM000567HME/00X36-Z44-G010_EU22iT_HME_en.pdf,https://cf.hondappsv.com/files/OM/OM000567HME/00X36-Z44-G010_EU22iT_HME_en.pdf,rights_pending_review,false
+JC-GEN-002,power_generators,Honda,EG6500CX,https://cf.hondappsv.com/files/OM/OM001285MEX/4MZ306031_web.pdf,https://cf.hondappsv.com/files/OM/OM001285MEX/4MZ306031_web.pdf,rights_pending_review,false
+JC-GEN-003,power_generators,Kipor,KDE6700TA,,,rights_pending_review,false
+JC-GEN-004,power_generators,FG Wilson,P22-1,https://fgwilson.ie/wp-content/uploads/2022/11/P22-1.pdf,,rights_pending_review,false
+JC-GEN-005,power_generators,Cummins,C55D5,,,rights_pending_review,false
+JC-INV-001,solar_inverters,Victron Energy,MultiPlus-II 48/3000/35-32,https://www.victronenergy.com/upload/documents/Datasheet-MultiPlus-II-inverter-charger-EN-.pdf,,rights_pending_review,false
+JC-INV-002,solar_inverters,Victron Energy,MultiPlus-II 48/5000/70-50,https://www.victronenergy.com/upload/documents/Datasheet-MultiPlus-II-inverter-charger-EN-.pdf,,rights_pending_review,false
+JC-INV-003,solar_inverters,Growatt,SPF 5000 ES,https://us.growatt.com/upload/file/SPF_3000-5000_ES_Datasheet_EN_202405.pdf,,rights_pending_review,false
+JC-INV-004,solar_inverters,Deye,SUN-5K-SG03LP1-EU,https://www.deyeinverter.com/deyeinverter/2024/10/21/datasheet_sun-3.6-6k-sg03lp1_241021_en.pdf,,rights_pending_review,false
+JC-INV-005,solar_inverters,Huawei,SUN2000-10KTL-M1,https://solar.huawei.com/-/media/Solar/attachment/pdf/eu/datasheet/SUN2000-3-10KTL-M1.pdf,,rights_pending_review,false

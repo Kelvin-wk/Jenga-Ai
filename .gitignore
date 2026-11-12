@@ -1,8 +1,16 @@
-﻿__pycache__/
+__pycache__/
 *.py[cod]
 .pytest_cache/
 *.db
 .venv/
+.env
+.env.*
+!.env.example
+
+# Model weights and large binaries
+*.gguf
+*.bin
+data/index/
 
 # Frontend
 logs

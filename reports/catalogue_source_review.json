@@ -1,0 +1,499 @@
+{
+  "status": "candidate_evidence_recorded_pending_review",
+  "checked_on": "2026-11-12",
+  "classification_status": "AI research candidates; 13 official URLs and SHA-256 values verified, 2 pending; rights and technical review pending",
+  "licensing_distinctions": {
+    "processing": "local extraction and indexing; not established for commercial documents, pending review",
+    "quotation": "short factual excerpts with page citations; not established for commercial documents, pending review",
+    "redistribution": "full PDF redistribution; not established for commercial documents, pending review"
+  },
+  "source_policies": [
+    {
+      "id": "commercial_manufacturer_documentation",
+      "finding": "Manufacturer technical specifications and manuals are publicly downloadable, but no open licence or reuse grant was established from the reviewed pages.",
+      "decision": "Keep processing, quotation and redistribution separate and pending. Record reference URLs, hashes and candidate factual summaries; keep full PDFs outside public Git; do not treat short citation as approved before quotation review.",
+      "material_saved": false
+    },
+    {
+      "id": "libre_solar_open_source",
+      "url": "https://github.com/LibreSolar/bms-c1",
+      "license": "CC-BY-SA-4.0",
+      "finding": "Explicit CC BY-SA 4.0 license notice in official repository. Full text, line numbers and SHA-256 hashes verified.",
+      "decision": "Retained as pending ingestion sample for parser/chunker verification. Does not count toward the 3-category / 15-product catalogue minimums.",
+      "material_saved": true
+    }
+  ],
+  "slot_reviews": [
+    {
+      "product_id": "JC-PMP-001",
+      "category": "industrial_pumps",
+      "manufacturer": "Dayliff",
+      "model": "DDP 60",
+      "common_name": "water pump",
+      "parent_category": "fluid_handling",
+      "spec_url": "https://www.dayliff.com/media/com_hikashop/upload/safe/ddp60.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "0.37 kW, 240V 50Hz, max head 35m, flow up to 3 m3/h, IP44, mass 5.3 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Backend schema alignment for normalized specifications"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://www.dayliff.com/media/com_hikashop/upload/safe/ddp60.pdf",
+        "sha256": "d9fb6b374f7d27ca1016a22bee3cdee83b6ef5dae43c0fca5a0d701a49b00d7f",
+        "http_last_modified": "2020-03-12",
+        "page_count": 1,
+        "locator": "p. 1",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 1 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-PMP-002",
+      "category": "industrial_pumps",
+      "manufacturer": "Dayliff",
+      "model": "DSD 3/18",
+      "common_name": "water pump",
+      "parent_category": "fluid_handling",
+      "spec_url": "https://www.dayliff.com/media/com_hikashop/upload/safe/dsd-datasheet.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "1.1 kW, 240V 50Hz, max head 129m, nominal flow 3 m3/h, IP68, outlet 1.25 in, mass 11 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Mass 11 kg is printed in the datasheet table; confirm column alignment during technical review"
+      ],
+      "product_page_url": "https://www.davisandshirtliff.com/products-and-solutions/product/dsd-3",
+      "document": {
+        "url": "https://www.dayliff.com/media/com_hikashop/upload/safe/dsd-datasheet.pdf",
+        "sha256": "6ff00a372a7c1e79b974b4bf9fbf4f22f477bbd172c23bb6901e5266ac793849",
+        "http_last_modified": "2020-03-12",
+        "page_count": 2,
+        "locator": "p. 2",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 2 table lists DSD 3/18 at 1.1 kW and 11 kg"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-PMP-003",
+      "category": "industrial_pumps",
+      "manufacturer": "Dayliff",
+      "model": "DB 4/30",
+      "common_name": "water pump",
+      "parent_category": "fluid_handling",
+      "spec_url": "https://www.dayliff.com/media/com_hikashop/upload/safe/db_685346571.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "0.77-0.82 kW, 240V 50Hz, max head 30m, max flow 4 m3/h, 10 bar, IP54, mass 11.5 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Human technical review of installation precautions"
+      ],
+      "product_page_url": "https://www.davisandshirtliff.com/products-and-solutions/product/db-4",
+      "document": {
+        "url": "https://www.dayliff.com/media/com_hikashop/upload/safe/db_685346571.pdf",
+        "sha256": "27fdf5fc0894948cacf12879ce6606c4f399577cc8f5fa730916a73fc2dadd2b",
+        "http_last_modified": "2020-03-12",
+        "page_count": 12,
+        "locator": "p. 4 (pump specifications)",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 4 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-PMP-004",
+      "category": "industrial_pumps",
+      "manufacturer": "Dayliff",
+      "model": "DDJ 750",
+      "common_name": "water pump",
+      "parent_category": "fluid_handling",
+      "spec_url": "https://www.dayliff.com/products/product/download/file_id-7339",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "0.75 kW, 240V 50Hz, suction lift 9m, flow up to 3.5 m3/h, IP44, mass 17 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Downloaded ddj.pdf lacks a PDF EOF marker; obtain a complete document before ingestion"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://www.dayliff.com/products/product/download/file_id-7339",
+        "sha256": "1a8ba81a54a53a9ed2399b85a0e6da4f9bfe84cf23c6173df4497a2be0f5508c",
+        "http_last_modified": "2026-11-12",
+        "page_count": null,
+        "locator": null,
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; file is named ddj.pdf but has no PDF EOF marker"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-PMP-005",
+      "category": "industrial_pumps",
+      "manufacturer": "Pedrollo",
+      "model": "CP 158",
+      "common_name": "water pump",
+      "parent_category": "fluid_handling",
+      "spec_url": "https://www.pedrollo.com/wp-content/uploads/schede-tecniche/EN/CP_EN-datasheet_50Hz.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "0.75 kW, 230V 50Hz, head 25-36m, flow 0.6-5.4 m3/h, IPX4, 6 bar max",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Datasheet pp. 2-3 gives 12.4 kg (single-phase) and 12.3 kg (three-phase); pin the variant before storing mass_kg"
+      ],
+      "product_page_url": "https://www.pedrollo.com/en/product/surface/single-and-double-impeller-centrifugal/single-impeller-centrifugal-pumps/cp/",
+      "document": {
+        "url": "https://www.pedrollo.com/wp-content/uploads/schede-tecniche/EN/CP_EN-datasheet_50Hz.pdf",
+        "sha256": "255dc51728056c6bfd5bdb5f9cb4649f7a2cb16d2d20aa4c17ec2747103aa55d",
+        "http_last_modified": "2026-09-03",
+        "page_count": 4,
+        "locator": "pp. 2-3",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; pages 2-3 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-GEN-001",
+      "category": "power_generators",
+      "manufacturer": "Honda",
+      "model": "EU22i",
+      "common_name": "generator",
+      "parent_category": "electrical_power_generation",
+      "spec_url": "https://cf.hondappsv.com/files/OM/OM000567HME/00X36-Z44-G010_EU22iT_HME_en.pdf",
+      "manual_url": "https://cf.hondappsv.com/files/OM/OM000567HME/00X36-Z44-G010_EU22iT_HME_en.pdf",
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "1.8 kW rated, 2.2 kW max, 230V 50Hz, tank 3.6L, 53-62 dB(A), mass 21.1 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Noise is 53 dB(A) at 1/4 load and 62 dB(A) at full load; clarify the schema metric"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://cf.hondappsv.com/files/OM/OM000567HME/00X36-Z44-G010_EU22iT_HME_en.pdf",
+        "sha256": "5efe831105b26e5c0c1b32872aa37c5e643aba74beb66e69d200084258c36841",
+        "http_last_modified": "2018-03-20",
+        "page_count": 60,
+        "locator": "pp. 55-56",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; specification pages inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-GEN-002",
+      "category": "power_generators",
+      "manufacturer": "Honda",
+      "model": "EG6500CX",
+      "common_name": "generator",
+      "parent_category": "electrical_power_generation",
+      "spec_url": "https://cf.hondappsv.com/files/OM/OM001285MEX/4MZ306031_web.pdf",
+      "manual_url": "https://cf.hondappsv.com/files/OM/OM001285MEX/4MZ306031_web.pdf",
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "5.0 kVA rated, 5.5 kVA max, 220V 50Hz, tank 24L, 70-74 dB(A), mass 87 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Verify the 50 Hz single-phase (220 V) configuration in the manual"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://cf.hondappsv.com/files/OM/OM001285MEX/4MZ306031_web.pdf",
+        "sha256": "aa96528f826cc112948a2df3f5bf0053af69ca457022494184d371f4aad02cc0",
+        "http_last_modified": "2021-07-28",
+        "page_count": 142,
+        "locator": "pp. 42-43",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 23 and specification pages inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-GEN-003",
+      "category": "power_generators",
+      "manufacturer": "Kipor",
+      "model": "KDE6700TA",
+      "common_name": "generator",
+      "parent_category": "electrical_power_generation",
+      "spec_url": null,
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "4.5 kVA rated, 5.0 kVA max, 230V 50Hz, tank 15L, 72 dB(A), mass 170 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Official Kipor document URL and SHA-256 not verified",
+        "Volumetric fuel consumption needs a fuel-density conversion; left null"
+      ],
+      "product_page_url": null,
+      "document": null,
+      "evidence_status": "official_url_and_sha256_pending"
+    },
+    {
+      "product_id": "JC-GEN-004",
+      "category": "power_generators",
+      "manufacturer": "FG Wilson",
+      "model": "P22-1",
+      "common_name": "generator",
+      "parent_category": "electrical_power_generation",
+      "spec_url": "https://fgwilson.ie/wp-content/uploads/2022/11/P22-1.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "20.0 kVA prime, 22.0 kVA standby, 400V 50Hz 3-ph, Perkins 404A-22G1, 5.4 L/h prime",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Open-set and enclosed canopy mass/noise differ; pin the configuration"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://fgwilson.ie/wp-content/uploads/2022/11/P22-1.pdf",
+        "sha256": "ccdcbc92743ea03be4435faa52bf61d41e8faef899f0037e3b714a2b115adadd",
+        "http_last_modified": "2022-11-30",
+        "page_count": 4,
+        "locator": "pp. 1-3",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; pages 1-3 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-GEN-005",
+      "category": "power_generators",
+      "manufacturer": "Cummins",
+      "model": "C55D5",
+      "common_name": "generator",
+      "parent_category": "electrical_power_generation",
+      "spec_url": null,
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "50.0 kVA prime, 55.0 kVA standby, 400V 50Hz 3-ph, Cummins 4BTAA3.3, 11.4 L/h, mass 922 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Official Cummins document URL and SHA-256 not verified",
+        "Open (922 kg) and enclosed (1236 kg) variants differ; pin the configuration"
+      ],
+      "product_page_url": null,
+      "document": null,
+      "evidence_status": "official_url_and_sha256_pending"
+    },
+    {
+      "product_id": "JC-INV-001",
+      "category": "solar_inverters",
+      "manufacturer": "Victron Energy",
+      "model": "MultiPlus-II 48/3000/35-32",
+      "common_name": "solar inverter",
+      "parent_category": "solar_power_conversion",
+      "spec_url": "https://www.victronenergy.com/upload/documents/Datasheet-MultiPlus-II-inverter-charger-EN-.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "2.4 kW continuous, 3000 VA, 38-66V DC, 230V AC, 95% eff, charger 35A, IP22, mass 19 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Victron terms are not established as a redistribution grant"
+      ],
+      "product_page_url": "https://www.victronenergy.com/inverters-chargers/multiplus-ii",
+      "document": {
+        "url": "https://www.victronenergy.com/upload/documents/Datasheet-MultiPlus-II-inverter-charger-EN-.pdf",
+        "sha256": "04ccf7512949073346821267a760dcfa30927b73e349b9f2b9f7d566bec943df",
+        "http_last_modified": "2026-06-23",
+        "page_count": 2,
+        "locator": "p. 2",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 2 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-INV-002",
+      "category": "solar_inverters",
+      "manufacturer": "Victron Energy",
+      "model": "MultiPlus-II 48/5000/70-50",
+      "common_name": "solar inverter",
+      "parent_category": "solar_power_conversion",
+      "spec_url": "https://www.victronenergy.com/upload/documents/Datasheet-MultiPlus-II-inverter-charger-EN-.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "4.0 kW continuous, 5000 VA, 38-66V DC, 230V AC, 96% eff, charger 70A, IP22, mass 30 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Human review of parallel and three-phase wiring documentation"
+      ],
+      "product_page_url": "https://www.victronenergy.com/inverters-chargers/multiplus-ii",
+      "document": {
+        "url": "https://www.victronenergy.com/upload/documents/Datasheet-MultiPlus-II-inverter-charger-EN-.pdf",
+        "sha256": "04ccf7512949073346821267a760dcfa30927b73e349b9f2b9f7d566bec943df",
+        "http_last_modified": "2026-06-23",
+        "page_count": 2,
+        "locator": "p. 2",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 2 covers both 3000 and 5000 VA models"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-INV-003",
+      "category": "solar_inverters",
+      "manufacturer": "Growatt",
+      "model": "SPF 5000 ES",
+      "common_name": "solar inverter",
+      "parent_category": "solar_power_conversion",
+      "spec_url": "https://us.growatt.com/upload/file/SPF_3000-5000_ES_Datasheet_EN_202405.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "5.0 kW rated, 120-430V MPPT, 450V max PV, 48V battery, 93% eff, IP20, mass 12 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Human review of BMS CAN communication instructions"
+      ],
+      "product_page_url": "https://en.growatt.com/products/spf-3000-5000-es-es-lite",
+      "document": {
+        "url": "https://us.growatt.com/upload/file/SPF_3000-5000_ES_Datasheet_EN_202405.pdf",
+        "sha256": "b31cfa8409ebb539b64ded16353282da1548f70c55d2f4da0723386a5c9f7c8b",
+        "http_last_modified": "2024-05-27",
+        "page_count": 2,
+        "locator": "p. 2",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 2 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-INV-004",
+      "category": "solar_inverters",
+      "manufacturer": "Deye",
+      "model": "SUN-5K-SG03LP1-EU",
+      "common_name": "solar inverter",
+      "parent_category": "solar_power_conversion",
+      "spec_url": "https://www.deyeinverter.com/deyeinverter/2024/10/21/datasheet_sun-3.6-6k-sg03lp1_241021_en.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "5.0 kW AC, 150-425V MPPT, 2 MPPTs, 40-60V battery, 97.6% eff, IP65, mass 20.5 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "Datasheet page locator not confirmed; verify before storing page citations"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://www.deyeinverter.com/deyeinverter/2024/10/21/datasheet_sun-3.6-6k-sg03lp1_241021_en.pdf",
+        "sha256": "2a127ea8c77492b985a494b88155c57132ab853d663e83ff82b636721e5107e2",
+        "http_last_modified": "2024-10-21",
+        "page_count": 2,
+        "locator": null,
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page locator not confirmed"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    },
+    {
+      "product_id": "JC-INV-005",
+      "category": "solar_inverters",
+      "manufacturer": "Huawei",
+      "model": "SUN2000-10KTL-M1",
+      "common_name": "solar inverter",
+      "parent_category": "solar_power_conversion",
+      "spec_url": "https://solar.huawei.com/-/media/Solar/attachment/pdf/eu/datasheet/SUN2000-3-10KTL-M1.pdf",
+      "manual_url": null,
+      "status": "candidate_evidence_recorded_pending_review",
+      "spec_summary": "10.0 kW AC, 140-980V DC, 470-850V full-power MPPT, 2 MPPTs, 98.6% eff, IP65, mass 17 kg",
+      "permissions": {
+        "processing": "pending_review",
+        "quotation": "pending_review",
+        "redistribution": "pending_review"
+      },
+      "blockers": [
+        "Human review of processing, quotation and redistribution rights",
+        "High-voltage ESS compatibility (Luna2000) must be stated in recommendations"
+      ],
+      "product_page_url": null,
+      "document": {
+        "url": "https://solar.huawei.com/-/media/Solar/attachment/pdf/eu/datasheet/SUN2000-3-10KTL-M1.pdf",
+        "sha256": "89aab23b7546e990ed09a0600d2c46390aefa7bb2c8026b6d371ff521129adda",
+        "http_last_modified": "2026-10-31",
+        "page_count": 2,
+        "locator": "p. 2",
+        "retrieved_on": "2026-11-12",
+        "verification": "HTTP 200; SHA-256 checked; page 2 inspected"
+      },
+      "evidence_status": "official_url_and_sha256_verified"
+    }
+  ],
+  "next_actions": [
+    "Proceed with A-02 ingestion preparation (page parsing, text normalization, chunking framework).",
+    "Keep manufacturer facts separate from synthetic company records.",
+    "Agree product IDs, schema representation (JSON vs relational spec_values), and authorization contracts with Backend/Security."
+  ]
+}

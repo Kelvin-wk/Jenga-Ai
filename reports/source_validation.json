@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "manifest_valid": true,
+  "coverage_ready": false,
+  "rows": 19,
+  "verified_assets": 0,
+  "coverage": {
+    "documented_products": 0,
+    "documented_categories": 0
+  },
+  "minimums": {
+    "documented_products": 15,
+    "documented_categories": 3
+  },
+  "errors": [],
+  "warnings": [
+    "row 2: libre-solar-bms-c1-introduction excluded from coverage (pending)",
+    "row 3: libre-solar-bms-c1-safety excluded from coverage (pending)",
+    "row 4: libre-solar-bms-c1-features excluded from coverage (pending)",
+    "row 5: libre-solar-bms-c1-installation excluded from coverage (pending)",
+    "row 6: libre-solar-bms-c1-operation excluded from coverage (pending)",
+    "row 7: libre-solar-bms-c1-datasheet excluded from coverage (pending)",
+    "row 8: dayliff-ddp60-datasheet excluded from coverage (pending)",
+    "row 9: dayliff-dsd-3-18-datasheet excluded from coverage (pending)",
+    "row 10: dayliff-db-4-30-datasheet excluded from coverage (pending)",
+    "row 11: dayliff-ddj-750-datasheet excluded from coverage (pending)",
+    "row 12: pedrollo-cp-158-datasheet excluded from coverage (pending)",
+    "row 13: honda-eu22i-manual excluded from coverage (pending)",
+    "row 14: honda-eg6500cx-manual excluded from coverage (pending)",
+    "row 15: fg-wilson-p22-1-datasheet excluded from coverage (pending)",
+    "row 16: victron-multiplus-ii-3000-datasheet excluded from coverage (pending)",
+    "row 17: victron-multiplus-ii-5000-datasheet excluded from coverage (pending)",
+    "row 18: growatt-spf-5000-es-datasheet excluded from coverage (pending)",
+    "row 19: deye-sun-5k-sg03lp1-datasheet excluded from coverage (pending)",
+    "row 20: huawei-sun2000-10ktl-m1-datasheet excluded from coverage (pending)"
+  ],
+  "limitations": [
+    "Structural checks do not establish legal rights or technical correctness.",
+    "Image/audio labeling and benchmark minimums are not evaluated by this A-01 checker."
+  ]
+}
