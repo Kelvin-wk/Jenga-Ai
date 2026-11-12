@@ -9,7 +9,8 @@ products; 0 verified sources**.
 official URLs, SHA-256 values, page locators, rights status and blockers.
 `reports/catalogue_sourcing_research.md` is the human-readable evidence record.
 
-Thirteen slots have a verified official document (HTTP 200 plus SHA-256);
+Thirteen slots have an official document URL that returned HTTP 200 and a
+recorded SHA-256. This checks the fetched response, not source approval;
 Kipor KDE6700TA and Cummins C55D5 still need an official document URL and hash.
 Six BMS C1 manual chapters remain pending ingestion sample records; see
 `reports/source_review.md`. There is no approved production
@@ -64,13 +65,13 @@ and redistribution covers publishing full documents. Public download access does
 not establish any of them.
 
 Keep commercial PDFs outside Git. `data/manifests/sources.csv` records the
-verified URL, SHA-256, page count and HTTP Last-Modified date; the documents
+checked URL, SHA-256, page count and HTTP Last-Modified date; the documents
 themselves were fetched to a temporary private directory for hashing and were
 not committed. Preserve attribution, license and modification notices for files
 that may be shared.
 
 The BMS C1 text sample includes its original CC BY-SA 4.0 notice and a separate
-attribution file. Manufacturer specifications come from reviewed documents;
+attribution file. Manufacturer specifications require source and technical review;
 company records, prices, inventory and suppliers will be explicitly synthetic.
 Temporary test fixtures use `MOCK-*` IDs and never enter the catalogue or
 retrieval corpus.

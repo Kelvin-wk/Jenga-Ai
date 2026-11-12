@@ -1,38 +1,24 @@
+# Jenga Consultants Product Copilot
 
-This is copilotProd, a construction-company AI assistant that customers and engineers can ask questions in text, audio, or images.
+A prototype assistant for the engineers and customers of Jenga Consultants, a
+fictional industrial-equipment seller. Company accounts and catalogue prices are
+demo data. Equipment specifications need traceable source documents.
 
-## Frontend
+The repository contains a React frontend, a FastAPI backend, and AI source
+validation tools. Text chat and catalogue tools are implemented. Image and audio
+inputs are present in the interface, but OCR, transcription, source retrieval and
+a complete multimodal answer flow have not been verified.
 
-The React/Vite frontend is in the repository root.
+The assistant provides decision support. It does not replace a manufacturer
+manual or a qualified engineer.
 
-1. Install [Node.js](https://nodejs.org/).
-2. Install dependencies:
+## Run locally
 
-   ```bash
-   npm install
-   ```
+The frontend is in `src/` at the repository root. The backend is in `backend/`.
+Use Python 3.11 or newer and a Node.js version supported by the installed Vite
+release.
 
-3. Set `VITE_API_BASE_URL` in a `.env` file. For example:
-
-   ```env
-   VITE_API_BASE_URL=http://localhost:8080/api
-   ```
-
-4. Start the development server:
-
-   ```bash
-   npm run dev
-   ```
-
-5. Open the local URL printed in the terminal.
-
-## Backend
-
-The FastAPI backend is in [`backend/`](./backend). It supports the modular `/api/v1`
-routes described in the project plan, including authentication, sessions, catalogue
-tools, conversations, media validation, chat, and human-review requests.
-
-### Local development
+From the repository root, create the Python environment and start the backend:
 
 ```powershell
 python -m venv .venv
@@ -42,40 +28,62 @@ $env:PYTHONPATH = "backend"
 python -m uvicorn app.main:app --reload --port 8000
 ```
 
-Health checks:
+In a second terminal, install the frontend dependencies and set the API address:
 
-- `GET http://localhost:8000/api/v1/health`
-- `GET http://localhost:8000/api/v1/ready`
-
-### Deploying the backend to PrimeCloud
-
-Create a Python web application in PrimeCloud connected to the `main` branch of
-`kwisdomk/kpp`. The repository includes root-level `requirements.txt`,
-`.python-version`, and `Procfile` deployment markers for PrimeCloud's Python
-build detection.
-
-Configure:
-
-- **Working directory:** repository root
-- **Build command:** `pip install -r requirements.txt`
-- **Start command:** `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- **Health-check path:** `/api/v1/health`
-- **Python version:** 3.11 or newer
-
-Set these environment variables in the PrimeCloud dashboard:
-
-```text
-JENGA_SECRET_KEY=<long-random-secret>
-CORS_ORIGINS=https://your-frontend-domain.example
-DATABASE_URL=sqlite:////path/to/persistent/jenga_consultants.db
+```powershell
+npm ci
+$env:VITE_API_BASE_URL = "http://localhost:8000/api/v1"
+npm run dev
 ```
 
-Use the persistent-storage path provided by PrimeCloud for `DATABASE_URL`.
-SQLite must not be stored on an ephemeral deployment filesystem; if the selected
-PrimeCloud plan does not provide persistent storage, use a managed database and
-set `DATABASE_URL` to its SQLAlchemy connection URL before deploying. Verify
-`/api/v1/health` after the service starts.
+Open the URL printed by Vite. The API address above matches the backend command;
+the frontend's current fallback address uses port 8080.
 
-The seeded demo accounts are for development/demo use only. Set a new
-`JENGA_SECRET_KEY` for the deployment and do not use the demo passwords for a
-public production service.
+Health endpoints:
+
+- `GET http://localhost:8000/api/v1/health` checks that the API is running.
+- `GET http://localhost:8000/api/v1/ready` checks database connectivity.
+
+The backend seeds demo accounts and products. Use them only for development and
+demonstrations. Deployment requires a separate `JENGA_SECRET_KEY`; demo passwords
+are not suitable for a public production service.
+
+## Checks
+
+AI source-validation tests use the Python standard library:
+
+```powershell
+python -B -m unittest discover -s ai/tests -v
+```
+
+Frontend checks:
+
+```powershell
+npm run lint
+npm run build
+```
+
+These checks do not establish model quality or complete application readiness.
+
+## Data and model status
+
+The AI catalogue has 15 candidates across three categories. All remain
+unapproved; the source manifest has 19 pending rows and zero approved assets.
+Document URLs and hashes are recorded for 13 candidate slots. Rights and
+technical review remain pending. See [DATA.md](DATA.md).
+
+LM Studio has served basic chat and embedding probes locally. The backend still
+uses the hosted provider when configured; the local-model adapter and authorized
+retrieval flow are pending. Model revision, checksum and licence records also
+remain incomplete. See the [AI handoff](docs/AI_HANDOFF.md).
+
+## Deployment and team work
+
+[DEPLOYMENT.md](DEPLOYMENT.md) describes the combined Docker deployment for
+PrimeCloud and local containers. Its hosted-model configuration describes the
+current implementation, not approval to send private or restricted data.
+
+Read [AGENTS.md](AGENTS.md) before contributing. The
+[implementation plan](JENGA_CONSULTANTS_MASTER_PLAN.md) records requirements and
+task IDs; section 19 records progress. Proposed paths and features in the plan
+may differ from the current source tree.
