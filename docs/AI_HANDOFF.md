@@ -4,18 +4,22 @@ OWNER: AGENT-A / KWAIX
 
 TASK: A-01 (Catalogue Sourcing) & A-02 (Ingestion Preparation) [Section 9.7 Task IDs]
 
-BRANCH: `feature/ai-catalogue-sources` (draft PR #1: https://github.com/kwisdomk/kpp/pull/1)
+MERGED: [PR #1](https://github.com/kwisdomk/kpp/pull/1) into `main` at
+`1db776e` on 13 November 2026, 00:54 EAT.
+
+Merge records the code and evidence in the shared branch. Rights, technical
+review, model approval and the B/A contracts remain pending.
 
 STATUS: A-01 evidence recorded; rights and human technical review pending; A-02 preparation in progress
 
 ---
 
-## 1. Inter-Agent Handoff Summary
+## 1. Source and ingestion handoff
 
 ```text
 TASK: A-01 | A-02
 OWNER: AGENT-A (KWAIX)
-BRANCH + COMMIT: feature/ai-catalogue-sources at ae662bb; draft PR #1 (not merged)
+MERGE COMMIT: main@1db776e (PR #1; source branch feature/ai-catalogue-sources)
 CHANGED FILES:
   - .gitignore (added .env, .env.*, model-weight and data-index exclusions)
   - data/catalogue/products.csv (15 candidates; exact document URLs where verified; verified: false)
@@ -37,7 +41,7 @@ TEST COMMAND(S) AND REAL RESULT:
   - python -B -m ai.ingestion.manifest --require-coverage --report reports/source_validation.json: Exit 1 (expected; 19 pending rows, 0 verified assets)
   - python -B -m ai.ingestion.normalize_specs --catalogue data/catalogue/products.csv --require-coverage --report reports/catalogue_validation.json: Exit 1 (expected; 15 rows, 0 verified, 2 missing source links)
 NEW DATA / MODEL / LICENSE REFERENCES:
-  - 15 candidate models recorded; 13 have a verified official URL plus SHA-256; page locators recorded where inspected
+  - 15 candidate models recorded; 13 have a checked official document URL plus SHA-256; page locators recorded where inspected
   - Kipor KDE6700TA and Cummins C55D5 still need official document URL and hash
   - Libre Solar BMS C1 manual (CC BY-SA 4.0, commit 7c2dcc1c4f26) retained as pending sample
   - Commercial processing, quotation and redistribution permissions: pending_review for all 15
@@ -103,11 +107,11 @@ catalogue facts. Document URLs, SHA-256 values and blockers are in
 
 ## 4. Cross-Role Integration Check - 13 November 2026
 
-### 4.1 GitHub activity
+### 4.1 GitHub activity before merge
 
 `origin/main` moved from `c6ed220` to `41a45c6` (9 commits) after this branch
-was cut. PR #1 is the only open PR, **mergeable `clean`**, and not merged. No
-GitHub Actions workflow runs are configured. At `2026-11-12T21:41Z` the PR was
+was cut. At this check, PR #1 was open and **mergeable `clean`**. No
+GitHub Actions workflow runs were configured. At `2026-11-12T21:41Z` the PR was
 marked ready for review (`draft: false`) and a review was requested; the
 Copilot reviewer could not run ("insufficient remaining quota"), so there is
 **no human approval or review yet**. Ready-for-review is not approval.
@@ -123,9 +127,9 @@ Git metadata lists `kibuikevin@zetech.ac.ke` on the main commits and
 role ownership. The team still needs to record its three delivery roles and
 lead explicitly.
 
-### 4.2 Local model server
+### 4.2 Local model server (observed 13 November 2026)
 
-It is not too early to test. The local LM Studio endpoint was reachable at
+The local LM Studio endpoint was reachable at
 `http://127.0.0.1:1234/v1`:
 
 | Model | Type | Quantization | State | Context |
@@ -156,7 +160,7 @@ roles.
 | Role | Observed work | Assessment | Next action |
 |---|---|---|---|
 | **F - Frontend** | Role-aware dashboard, login screen and role switcher (`acfcc72`); seeded demo credentials and role stored in `localStorage`; comparison and recommendations still partly hardcoded. | Backend still treats the token/database role as authoritative, so the client role is not a server grant. But `localStorage` role, a role fallback without login, and credentials in source conflict with the documented frontend rules. | Read the role from `/auth/me`; remove the fallback role selector; keep demo credentials in seed/env configuration, not UI source; replace hardcoded comparison rows with API data. |
-| **B - Backend/Security** | JWT/session authentication, database role cross-check, owner-bound conversations, MySQL/Docker deployment, optional OpenAI chat. | Auth primitives are a good base. However catalogue endpoints have no `get_current_user` dependency or role predicate, `lookup_products` returns every row, and the OpenAI path sends catalogue text to an external provider. The integer `ProductDB.id` and JSON `specifications` choices are still unagreed with A. | Use an authorised local OpenAI-compatible endpoint (`LLM_BASE_URL`, `LLM_MODEL`), add pre-retrieval visibility predicates and auth dependencies to catalogue/search paths, and settle the ID/specification contract before A integration. |
+| **B - Backend/Security** | JWT/session authentication, database role cross-check, owner-bound conversations, MySQL/Docker deployment, optional OpenAI chat. | Catalogue endpoints have no `get_current_user` dependency or role predicate, `lookup_products` returns every row, and the OpenAI path sends catalogue text to an external provider. The integer `ProductDB.id` and JSON `specifications` choices are still unagreed with A. | Use an authorised local OpenAI-compatible endpoint (`LLM_BASE_URL`, `LLM_MODEL`), add pre-retrieval visibility predicates and auth dependencies to catalogue/search paths, and settle the ID/specification contract before A integration. |
 | **A - AI/Data/Evaluation** | 15 catalogue candidates, 19 pending source rows, 13 verified document URLs/hashes, 43 passing tests, DSD mass correction, local model server check. | Evidence is traceable and unapproved values remain pending. Actual local models differ from the plan (`nomic` 768-dim embedding instead of BGE-small; reasoning-distilled Qwen variant). No production specification file or retrieval adapter is approved. | Record model revision/checksum/licence, test the local adapter with authorised candidate filtering, map catalogue slots to B's integer IDs, and keep benchmark/metric claims unset until measured. |
 
 ### 4.4 Recommended order
@@ -168,5 +172,6 @@ roles.
    panels to real APIs.
 3. **A** records model provenance and adapts the catalogue mapping after B
    confirms the ID and specification contracts.
-4. Merge PR #1 after review if it remains docs/data-only. It is behind `main`
-   but mergeable; do not rewrite its history just to reduce the commit gap.
+4. PR #1 is merged at `1db776e`. Continue from current `main` on a new task
+   branch. Its scope includes AI ingestion code, tests, data and documentation;
+   merging it does not approve pending sources or shared contracts.

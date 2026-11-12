@@ -1,5 +1,5 @@
 # Jenga Consultants — Product Copilot
-## Master Low-Level Implementation Plan and Team Execution Contract
+## Implementation plan and team working rules
 
 **Version:** 1.0 (planning baseline)
 
@@ -1020,18 +1020,18 @@ At minimum, run `pytest backend/tests ai/tests tests/integration -q` with dummy 
 
 ## 19. Execution ledger — live state, to update collaboratively
 
-**Current A-01/A-02 review (12 November 2026):** local branch
-`feature/ai-catalogue-sources@c6ed220` matches the checked remote main; the
-branch is pushed and draft PR #1 is open at
-https://github.com/kwisdomk/kpp/pull/1. Backend and frontend are present, `.env`
-is ignored. Existing checkout/ignore changes were preserved. Python 3.14.7 `python -B -m unittest discover -s ai/tests -v` passed
-**43 tests in 3.641 s**. The manifest has **19 pending rows and 0 verified
-assets**; the catalogue has **15 candidate products and 0 approved products**.
-Thirteen slots have a verified official document URL and SHA-256; Kipor and
-Cummins document URLs remain pending. All commercial processing, quotation and
-redistribution permissions are `pending_review`. See
-`reports/catalogue_review.md` for the current state; earlier entries below are
-execution history.
+**Current repository checkpoint (13 November 2026):** PR #1 merged into
+`main@1db776e` at 00:54 EAT. It contains AI ingestion and validation code,
+tests, candidate data and documentation. Frontend source is in root `src/`;
+the `frontend/` tree in §4 is a proposed layout.
+
+The latest recorded AI suite result in PR #1 is **43 tests passed in 2.752 s**;
+it has not been rerun for this documentation cleanup. The manifest has **19
+pending rows and 0 verified assets**; the catalogue has **15 candidates and
+0 approved products**. Thirteen slots have checked document URLs and recorded
+hashes. Rights, technical review, model provenance and the B/A ID, specification
+and authorization contracts remain pending. See `docs/AI_HANDOFF.md`.
+Earlier entries below are dated execution history.
 
 **A-01 taxonomy update (12 November 2026):** Proposed battery energy storage /
 battery management system / battery management board taxonomy and pending BMS C1
@@ -1047,7 +1047,7 @@ are pending. Next: B reviews schema and authorization; A verifies PDF provenance
 
 | Gate | Owner | State | Evidence / blocker | Next action |
 |---|---|---|---|---|
-| G0 Repo scaffold + contracts | Lead/all | IN PROGRESS | A = KWAIX; local feature/ai-catalogue-sources at c6ed220; backend/frontend present; .env ignored; shared contracts pending | B/F review contracts; lead/team eligibility assignment outstanding |
+| G0 Repo scaffold + contracts | Lead/all | IN PROGRESS | A = KWAIX; PR #1 merged into main at 1db776e; backend/frontend present; .env ignored; shared contracts pending | B/F review contracts; lead/team eligibility assignment outstanding |
 | G1 Licensed data + schema | A+B | IN PROGRESS | 43 AI tests passed; 15 candidate products across 3 categories; 13 verified official document URLs/hashes plus 6 pending BMS chapters; 2 document URLs pending; 0 approved products; commercial rights and B contracts block ingestion | complete rights and technical review; verify Kipor/Cummins documents; agree B schema & IDs |
 | G2 Text vertical slice | F+B+A | NOT STARTED | needs auth+retrieval+UI | wire one cited answer |
 | G3 Full catalogue | A+B | NOT STARTED | canonical specs and synthetic fixtures TBD | generate, normalize, validate |
@@ -1230,6 +1230,21 @@ are pending. Next: B reviews schema and authorization; A verifies PDF provenance
   commands and outputs, sources, evidence, limitations and contract impact.
   §13.3 gates G2-G5 need named reviewer sign-off. Merge only after a human
   reviews the data/rights evidence and the B/A contracts.
+
+### Documentation cleanup - 13 November 2026
+
+- Scope: A-01/A-02 documentation follow-up. Standardized the public project name,
+  corrected the README API URL to match its backend command, and updated the
+  current handoff and ledger to record PR #1's merge at `1db776e`.
+- Clarified checked document URLs versus source approval and the current
+  root-level frontend layout. Replaced conversational wording in the taxonomy
+  note. Existing file paths and task IDs remain unchanged.
+- No source code, dependencies, generated reports, source assets, product IDs,
+  API fields, database schema, role logic or model settings changed.
+- Validation: reviewed the documentation diff and checked local Markdown links
+  against the repository tree. Runtime tests were not rerun for wording edits.
+- Next: B/A agree ID, specification and authorization contracts; F reviews UI
+  claims and data wiring. Rights and technical reviews remain pending.
 
 ### Suggested coordination checklist per PR
 

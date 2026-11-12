@@ -1,6 +1,6 @@
 # AGENTS.md — Jenga Consultants Product Copilot
 
-**Read this first on every fresh coding-agent session.** This file is the persistent, repo-level operating contract for all three teammates and their different coding assistants. The full technical specification is [`JENGA_CONSULTANTS_MASTER_PLAN.md`](./JENGA_CONSULTANTS_MASTER_PLAN.md). **Do not ask the user to repeat decisions already documented there.** Read the latest execution ledger (§19) and inspect actual repository state before modifying code.
+Read this file at the start of a coding session. It records team ownership and working rules. The technical plan is [`JENGA_CONSULTANTS_MASTER_PLAN.md`](./JENGA_CONSULTANTS_MASTER_PLAN.md). Check its execution ledger (§19) and the current source before editing; use documented decisions rather than asking the user to repeat them.
 
 ## Project identity and fixed constraints
 
@@ -10,12 +10,12 @@
 - Compute: **ATHENA ONLY** — HP Victus 15, NVIDIA GeForce RTX 3050 Laptop GPU **6 GB VRAM** (diagnostically verified; corrects earlier RTX 4050 planning assumption), i5-13420H; prior RAM reading **8 GB, verify before model loading**. Never assume ZBook, cloud GPU, distributed inference, RAM upgrades or paid API access.
 - Stack direction: React/TypeScript/Vite frontend; FastAPI/Python backend; SQLite authoritative catalogue, FTS + small text embeddings; local LM Studio or compatible llama.cpp inference; Tesseract for baseline nameplate OCR; whisper.cpp ASR; seeded Python synthetic generation. Model/provider alternatives must be verified and be optional.
 - Data minimum: **3 product categories, 15 documented equipment products, 30 labeled images, 15 labeled audio queries, 60 grounded benchmark items** (20 engineer/20 customer/10 multimodal/10 adversarial).
-- Source strategy: genuinely licensed **real technical** documents + explicitly synthetic fictional company, user, supplier, inventory, prices, internal records and operational scenarios. **No invented real equipment technical facts**; synthetic content never mislabeled as observed truth.
+- Source strategy: licensed **real technical** documents + explicitly synthetic fictional company, user, supplier, inventory, prices, internal records and operational scenarios. **No invented real equipment technical facts**; synthetic content never mislabeled as observed truth.
 - Security: session login + RBAC, server-derived trusted role, **pre-retrieval** filters for DB, vector, source downloads, and tools. Customer cannot retrieve engineer-only content. No user-supplied/model-supplied role elevation.
 - Models never do arithmetic; numbers in answers trace to authorized tools. All tool calls logged; evidence/citations verified. Missing data -> say "I don't know". Safety-sensitive answers -> confidence category + **"check the manual and follow local regulations"** + actual human-review path.
 - Preserve complete submission obligations, model/data licenses, AI disclosure, SDG statement, public repository, reproducible one-command rebuild/eval, 2–3 minute backup video. Follow official rules, which outrank this file.
 
-## Mandatory startup for EVERY agent
+## Start of a coding session
 
 1. Read this file completely.
 2. Read the master plan sections **0–4**, your owner's section (**F: §8 and §14; B: §5, §7 and §14; A: §3, §6, §9, §10 and §14**), §13 contracts and §19 current ledger.
@@ -27,7 +27,7 @@
 ## Team agent scopes
 
 ### AGENT-F (Frontend)
-- Own `frontend/`; primary tasks `F-01..F-10` and §14 F sequence.
+- Own the frontend: `src/`, `public/`, `index.html` and root frontend configuration. The plan's `frontend/` tree is proposed, not the current layout. Primary tasks `F-01..F-10` and §14 F sequence.
 - Build role login, chat-first composer, upload/record, source panel, comparison table, warnings, trace, session end and mobile/low-bandwidth states.
 - **Do not** store privileged role in client as authority, call hosted LLM directly with browser key, fabricate source/cost values, or ship mock results as real.
 - Dependency handoff: typed API contract from B; cited agent response schema from A/B.
@@ -51,6 +51,7 @@
 - Use descriptive `snake_case` for Python names and `PascalCase` for classes. Keep established API fields and project filenames stable.
 - Name files and branches for the task: `source_manifest_validation.md`, `feature/ai-source-manifest`. Avoid vague labels such as "foundation" or "enhanced".
 - Write short, factual docs. Record each result once and link to it; retain commands, evidence and blockers.
+- Keep existing imports, API fields, database names, environment variables, storage keys and referenced file paths stable during wording cleanup. Coordinate any rename with the affected owner.
 
 ### Shared constraints
 

@@ -52,11 +52,11 @@ review remain pending; no specifications or catalogue approval are inferred.
 Agree identifier mapping, taxonomy and relation storage, source/citation
 locators, versioning and ACL enforcement before a database migration or runtime
 integration. AGENT-F should review citation display after B and A agree the
-contract. This handoff is recorded locally and has not been sent.
+contract. Review requests are recorded in `docs/AI_HANDOFF.md`; approval remains pending.
 
 ## Review follow-up
 
-The side-quest review confirmed the board classification on the official product
+The source review confirmed the board classification on the official product
 page and added a SHA-256 check before validating line references. Modified source
 bytes are now rejected. PDF pages, catalogue suitability and B/F approval remain
 pending. Current test and source findings are in `reports/catalogue_review.md`.
