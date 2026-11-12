@@ -3,11 +3,11 @@
 The production image contains both application surfaces in one container:
 
 - Nginx serves the Vite frontend.
-- FastAPI runs internally on `127.0.0.1:8000`.
+- FastAPI runs internally on `127.0.0.1:8000` through a non-privileged startup script.
 - Nginx proxies `/api/*` and `/health` to FastAPI.
 - SQLite is stored under `/app/data` on a persistent disk.
 
-This removes the need for a separate backend service hostname and keeps the
+This avoids privileged process management and removes the need for a separate backend service hostname while keeping the
 frontend and backend on one PrimeCloud domain.
 
 ## Local container validation
