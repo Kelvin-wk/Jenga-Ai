@@ -11,8 +11,8 @@ RUN npm run build
 FROM python:3.12-alpine
 
 RUN apk add --no-cache nginx \
-    && mkdir -p /run/nginx /app/data /tmp/nginx \
-    && sed -i 's#^pid .*#pid /tmp/nginx/nginx.pid;#' /etc/nginx/nginx.conf
+    && mkdir -p /app/data /tmp/nginx/client_temp /tmp/nginx/proxy_temp \
+        /tmp/nginx/fastcgi_temp /tmp/nginx/uwsgi_temp /tmp/nginx/scgi_temp
 
 WORKDIR /app/backend
 COPY backend/requirements.txt .
@@ -20,7 +20,7 @@ RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 COPY backend/app ./app
 COPY --from=build /app/dist /usr/share/nginx/html
-COPY deploy/nginx.conf /etc/nginx/conf.d/default.conf
+COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/start.sh /usr/local/bin/start.sh
 
 ENV PORT=8080 \

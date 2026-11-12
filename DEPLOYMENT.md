@@ -5,7 +5,7 @@ The production image contains both application surfaces in one container:
 - Nginx serves the Vite frontend.
 - FastAPI runs internally on `127.0.0.1:8000` through a non-privileged startup script.
 - Nginx proxies `/api/*` and `/health` to FastAPI.
-- SQLite is stored under `/app/data` on a persistent disk.
+- PrimeCloud MySQL is used through the `DATABASE_URL` environment variable.
 
 This avoids privileged process management and removes the need for a separate backend service hostname while keeping the
 frontend and backend on one PrimeCloud domain.
@@ -37,10 +37,11 @@ Create one PrimeCloud application from the GitHub repository with:
 - Container port: `8080`
 - Persistent disk mount: `/app/data`
 
-Set these PrimeCloud environment variables/secrets:
+Set these PrimeCloud environment variables/secrets. Use the connection string
+provided by the PrimeCloud MySQL service:
 
 ```text
-DATABASE_URL=sqlite:////app/data/jenga_consultants.db
+DATABASE_URL=mysql+pymysql://<user>:<password>@<mysql-host>:3306/<database>
 CORS_ORIGINS=*
 JENGA_SECRET_KEY=<long-random-production-secret>
 PORT=8080
@@ -53,8 +54,10 @@ hostname is required.
 Do not commit production secrets. Set JWT/session secrets, database settings,
 and provider credentials in PrimeCloud's secret manager.
 
-## Production storage note
+The application also accepts a `mysql://...` URL and automatically uses the
+PyMySQL SQLAlchemy driver. The local Docker Compose setup continues to use
+SQLite for development unless `DATABASE_URL` is overridden.
 
-SQLite is suitable for a single backend instance with a persistent disk. For
-multiple backend replicas or higher availability, replace `DATABASE_URL` with
-a managed PostgreSQL connection string before scaling the application.
+The database tables and seed users/products are created automatically when the
+application starts. For production, use the PrimeCloud database's private
+hostname and keep the database credentials in environment variables.
