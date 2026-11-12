@@ -447,8 +447,7 @@ export default function App() {
               <b>{username.split("@")[0]}</b>
               <small>{role === "engineer" ? "Engineer" : "Customer"}</small>
             </div>
-            <button className="topbar-logout" onClick={logout}><LogOut size={14} /> <span>Sign out</span></button>
-          </div>
+            </div>
         </header>
         <div className={`dashboard-content ${activeNav !== "Dashboard" ? "subpage-active" : ""}`}>
           {!canAccessPage(activeNav) && <section className="page-panel"><div className="page-panel-heading"><div><p className="page-kicker">ACCESS RESTRICTED</p><h1>Engineer workspace required</h1><p>This resource is available to authenticated engineers only.</p></div><span className="page-panel-icon"><ShieldCheck size={24} /></span></div></section>}

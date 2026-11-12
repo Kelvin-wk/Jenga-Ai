@@ -27,7 +27,13 @@
   align-items: center;
   color: #073477;
   font-size: 15px;
+  font-weight: 700;
   line-height: 1.05;
+}
+
+.brand-lockup b {
+  color: #0756b5;
+  font-weight: 900;
 }
 
 .auth-card {
@@ -55,9 +61,9 @@
 }
 
 .eyebrow {
-  color: #1765c2;
-  font-size: 11px;
-  font-weight: 800;
+  color: #0756b5;
+  font-size: 12px;
+  font-weight: 900;
   letter-spacing: .12em;
 }
 
@@ -66,14 +72,22 @@
   color: #0a2f67;
   font-family: "Manrope", sans-serif;
   font-size: clamp(36px, 4vw, 48px);
+  font-weight: 800;
   line-height: 1.02;
   letter-spacing: -.05em;
 }
 
+.auth-copy h1 strong {
+  color: #e87920;
+  font-weight: 900;
+  text-shadow: 0 1px 0 rgb(255 255 255 / 55%);
+}
+
 .auth-copy p:not(.eyebrow) {
   max-width: 360px;
-  color: #183b67;
+  color: #102f55;
   font-size: 15px;
+  font-weight: 600;
   line-height: 1.4;
 }
 
@@ -82,9 +96,9 @@
   gap: 25px;
   margin-top: 30px;
   text-align: center;
-  color: #0b376c;
+  color: #082f64;
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .auth-benefits span {
@@ -121,22 +135,25 @@
 
 .auth-card h2 {
   margin: 0;
-  color: #292929;
-  font-size: 22px;
+  color: #102f55;
+  font-size: 24px;
+  font-weight: 850;
+  letter-spacing: -.03em;
 }
 
 .auth-card-heading p,
 .auth-card > p {
   margin: 6px 0 0;
-  color: #77736d;
+  color: #586b80;
   font-size: 13px;
 }
 
 .auth-field {
   display: block;
   margin: 16px 0;
-  color: #383530;
+  color: #183b67;
   font-size: 13px;
+  font-weight: 700;
 }
 
 .auth-field span {
@@ -154,17 +171,21 @@
   outline: none;
   color: #292929;
   background: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: border-color .18s ease, box-shadow .18s ease;
 }
 
 .auth-field input:focus {
-  border-color: #77736d;
-  box-shadow: 0 0 0 3px rgb(90 85 77 / 10%);
+  border-color: #0867d9;
+  box-shadow: 0 0 0 3px rgb(8 103 217 / 14%);
 }
 
 .role-label {
   margin: 20px 0 8px !important;
-  color: #383530 !important;
+  color: #183b67 !important;
   font-size: 13px !important;
+  font-weight: 800;
 }
 
 .role-switcher {
@@ -181,15 +202,23 @@
   padding: 10px;
   border: 1px solid #ddd9d2;
   border-radius: 8px;
-  color: #504c46;
+  color: #28415e;
   background: #fff;
   font-size: 13px;
+  font-weight: 700;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .18s ease;
+}
+
+.role-switcher button:hover {
+  border-color: #5b9ce7;
+  transform: translateY(-1px);
 }
 
 .role-switcher button.selected {
-  border-color: #0867d9;
+  border-color: #0756b5;
   color: #fff;
-  background: #0867d9;
+  background: #0756b5;
+  box-shadow: 0 4px 12px rgb(7 86 181 / 20%);
 }
 
 .auth-submit {
@@ -203,9 +232,15 @@
   border: 0;
   border-radius: 8px;
   color: #fff;
-  background: #0867d9;
+  background: linear-gradient(110deg, #0756b5, #0879df);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 800;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+
+.auth-submit:hover:not(:disabled) {
+  box-shadow: 0 7px 16px rgb(7 86 181 / 24%);
+  transform: translateY(-1px);
 }
 
 .auth-submit:disabled {
@@ -240,8 +275,16 @@
 .dashboard-shell {
   display: flex;
   min-height: 100vh;
-  color: #292929;
+  color: #18324e;
   background: #f7faff;
+  font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+.dashboard-shell h1,
+.dashboard-shell h2,
+.dashboard-shell h3 {
+  font-family: "Manrope", "DM Sans", ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -.025em;
 }
 
 .dashboard-sidebar {
@@ -250,9 +293,9 @@
   flex-shrink: 0;
   flex-direction: column;
   padding: 20px 16px;
-  border-right: 1px solid #173b63;
-  color: #dcecff;
-  background: #0e2948;
+  border-right: 1px solid #183b61;
+  color: #dceaff;
+  background: linear-gradient(180deg, #102d4e 0%, #0c2644 100%);
 }
 
 .sidebar-brand {
@@ -260,8 +303,9 @@
   gap: 9px;
   align-items: center;
   margin: 0 8px 28px;
-  color: #e8f2ff;
+  color: #f0f6ff;
   font-size: 13px;
+  font-weight: 700;
   line-height: 1.15;
 }
 
@@ -273,12 +317,12 @@
   border-radius: 50%;
   color: #0e2948;
   background: #e7f1ff;
-  box-shadow: 0 3px 10px rgb(20 100 189 / 20%);
+  box-shadow: 0 4px 12px rgb(6 17 31 / 25%);
 }
 
 .dashboard-nav {
   display: grid;
-  gap: 3px;
+  gap: 5px;
 }
 
 .dashboard-nav button,
@@ -286,42 +330,64 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  padding: 10px;
+  min-height: 40px;
+  padding: 9px 11px;
   border: 0;
-  border-radius: 8px;
-  color: #b7cbe2;
+  border-radius: 9px;
+  color: #bfd0e4;
   background: transparent;
   text-align: left;
   font-size: 13px;
+  font-weight: 600;
+  transition: color .18s ease, background-color .18s ease, box-shadow .18s ease, transform .18s ease;
 }
 
-.dashboard-nav button:hover,
+.dashboard-nav button:hover {
+  color: #fff;
+  background: rgb(68 119 171 / 22%);
+  transform: translateX(2px);
+}
+
 .dashboard-nav button.active {
   color: #fff;
-  background: #1b4f80;
-  box-shadow: none;
+  background: linear-gradient(100deg, #1d5e98, #194a78);
+  box-shadow: inset 3px 0 #72bcff, 0 4px 12px rgb(4 18 34 / 16%);
+  font-weight: 800;
+}
+
+.dashboard-nav button.active svg {
+  color: #9bd3ff;
 }
 
 .sidebar-signout {
   margin-top: auto;
-  border-top: 1px solid #244767;
+  border-top: 1px solid #294866;
   border-radius: 0;
-  padding-top: 18px;
+  padding: 18px 10px 8px;
+  color: #d0deee;
+}
+
+.sidebar-signout:hover {
+  color: #fff;
+  background: rgb(68 119 171 / 18%);
 }
 
 .online-status {
   display: grid;
   gap: 2px;
   margin-top: 12px;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 11px;
+  border: 1px solid rgb(139 224 176 / 14%);
+  border-radius: 10px;
   color: #8be0b0;
-  background: #173d47;
+  background: linear-gradient(120deg, #173d47, #163846);
   font-size: 11px;
+  font-weight: 700;
 }
 
 .online-status small {
-  color: #9dc4bd;
+  color: #a9cec7;
+  font-size: 10px;
 }
 
 .dashboard-main {
@@ -489,18 +555,18 @@
 .document-list article {
   min-width: 0;
   padding: 16px;
-  border: 1px solid #dce8f3;
-  border-radius: 12px;
+  border: 1px solid #d8e5f2;
+  border-radius: 14px;
   background: #fff;
-  box-shadow: 0 5px 16px rgb(28 82 133 / 7%);
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  box-shadow: 0 3px 8px rgb(18 55 96 / 4%), 0 10px 24px rgb(18 55 96 / 5%);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .dashboard-card:hover,
 .catalog-card:hover {
-  border-color: #b7d5f0;
-  box-shadow: 0 8px 20px rgb(28 82 133 / 12%);
-  transform: translateY(-1px);
+  border-color: #a9cbea;
+  box-shadow: 0 8px 20px rgb(28 82 133 / 9%), 0 16px 30px rgb(18 55 96 / 7%);
+  transform: translateY(-2px);
 }
 
 .dashboard-card h2 {
@@ -508,8 +574,9 @@
   gap: 7px;
   align-items: center;
   margin: 0 0 14px;
-  color: #173f68;
-  font-size: 14px;
+  color: #153b63;
+  font-size: 15px;
+  font-weight: 800;
 }
 
 .dashboard-card h2 a {
@@ -517,8 +584,9 @@
   gap: 3px;
   align-items: center;
   margin-left: auto;
-  color: #625e57;
+  color: #1768ad;
   font-size: 11px;
+  font-weight: 700;
 }
 
 .chat-preview {
@@ -527,8 +595,9 @@
   align-items: flex-start;
   min-height: 82px;
   padding: 11px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #edf7ff, #f7fbff);
+  border: 1px solid #e3effa;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #edf7ff 0%, #f8fbff 100%);
 }
 
 .bot-avatar,
@@ -559,9 +628,9 @@
 .chat-preview p,
 .catalog-card p {
   margin: 0;
-  color: #58728d;
-  font-size: 12px;
-  line-height: 1.5;
+  color: #526b85;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .dashboard-composer {
@@ -615,7 +684,12 @@
   gap: 9px;
   align-items: center;
   padding: 10px 0;
-  border-top: 1px solid #e4eef7;
+  border-top: 1px solid #e7eff7;
+  transition: background-color .18s ease;
+}
+
+.recommendation:hover {
+  background: #f8fbff;
 }
 
 .recommendation-heading {
@@ -680,13 +754,14 @@
 }
 
 .recommendation b {
-  color: #214e78;
-  font-size: 11px;
+  color: #183d64;
+  font-size: 12px;
+  font-weight: 800;
 }
 
 .recommendation small {
   color: #7690aa;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .match-score {
@@ -710,16 +785,18 @@
   min-width: 0;
   grid-template-columns: 30px 1fr;
   align-items: center;
-  padding: 12px;
-  border: 1px solid #dce8f3;
-  border-radius: 10px;
-  background: #fff;
-  transition: border-color .18s ease, box-shadow .18s ease;
+  padding: 14px;
+  border: 1px solid #d9e7f4;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #fff, #f9fcff);
+  box-shadow: 0 3px 10px rgb(18 55 96 / 4%);
+  transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .metric-card:hover {
-  border-color: #b7d5f0;
-  box-shadow: 0 6px 16px rgb(28 82 133 / 10%);
+  border-color: #a9cbea;
+  box-shadow: 0 8px 18px rgb(28 82 133 / 10%);
+  transform: translateY(-2px);
 }
 
 .metric-card > span {
@@ -734,13 +811,15 @@
 }
 
 .metric-card b {
-  color: #214e78;
-  font-size: 16px;
+  color: #163d66;
+  font-size: 18px;
+  font-weight: 800;
 }
 
 .metric-card small {
-  color: #7690aa;
-  font-size: 9px;
+  color: #637d96;
+  font-size: 10px;
+  font-weight: 600;
 }
 
 .subpage-active > .welcome-banner,
@@ -759,23 +838,26 @@
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 16px;
-  padding: 22px;
+  padding: 24px;
   border: 1px solid #cfe2f5;
-  border-radius: 12px;
-  color: #292929;
-  background: linear-gradient(110deg, #eaf5ff, #f8fbff);
+  border-radius: 14px;
+  color: #18324e;
+  background: linear-gradient(115deg, #eaf5ff 0%, #f8fbff 72%, #f1f8ff 100%);
+  box-shadow: 0 5px 16px rgb(28 82 133 / 5%);
 }
 
 .page-panel-heading h1 {
   margin: 3px 0 5px;
   color: #123b68;
-  font-size: 25px;
+  font-size: 27px;
+  font-weight: 800;
 }
 
 .page-panel-heading p:not(.page-kicker) {
   margin: 0;
-  color: #58728d;
-  font-size: 12px;
+  color: #526b85;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .page-kicker {
@@ -838,8 +920,9 @@
 
 .catalog-card h2 {
   margin: 0 0 5px;
-  color: #403c36;
-  font-size: 14px;
+  color: #183d64;
+  font-size: 16px;
+  font-weight: 800;
 }
 
 .product-category {
@@ -855,8 +938,9 @@
 .catalog-price {
   display: block;
   margin-bottom: 5px;
-  color: #0f67bd;
-  font-size: 15px;
+  color: #075caf;
+  font-size: 17px;
+  font-weight: 800;
 }
 
 .catalog-pagination {
