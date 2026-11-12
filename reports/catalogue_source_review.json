@@ -66,7 +66,7 @@
       "spec_url": "https://www.dayliff.com/media/com_hikashop/upload/safe/dsd-datasheet.pdf",
       "manual_url": null,
       "status": "candidate_evidence_recorded_pending_review",
-      "spec_summary": "1.1 kW, 240V 50Hz, max head 129m, nominal flow 3 m3/h, IP68, outlet 1.25 in",
+      "spec_summary": "1.1 kW, 240V 50Hz, max head 129m, nominal flow 3 m3/h, IP68, outlet 1.25 in, mass 11 kg",
       "permissions": {
         "processing": "pending_review",
         "quotation": "pending_review",
@@ -74,7 +74,7 @@
       },
       "blockers": [
         "Human review of processing, quotation and redistribution rights",
-        "Mass is not stated in datasheet p. 2; verify before storing mass_kg"
+        "Mass 11 kg is printed in the datasheet table; confirm column alignment during technical review"
       ],
       "product_page_url": "https://www.davisandshirtliff.com/products-and-solutions/product/dsd-3",
       "document": {
@@ -84,7 +84,7 @@
         "page_count": 2,
         "locator": "p. 2",
         "retrieved_on": "2026-11-12",
-        "verification": "HTTP 200; SHA-256 checked; page 2 confirms DSD 3/18 at 1.1 kW"
+        "verification": "HTTP 200; SHA-256 checked; page 2 table lists DSD 3/18 at 1.1 kW and 11 kg"
       },
       "evidence_status": "official_url_and_sha256_verified"
     },

@@ -69,7 +69,7 @@ catalogue facts. Document URLs, SHA-256 values and blockers are in
 ### Industrial Pumps (`industrial_pumps`)
 
 1. **JC-PMP-001**: Dayliff DDP 60 (0.37 kW, 240 V, max head 35 m, max flow 3.0 m³/h, IP44, 5.3 kg) — [datasheet p. 1](https://www.dayliff.com/media/com_hikashop/upload/safe/ddp60.pdf)
-2. **JC-PMP-002**: Dayliff DSD 3/18 (1.1 kW, 240 V, nominal flow 3.0 m³/h, max head 129 m, IP68; mass unknown) — [datasheet p. 2](https://www.dayliff.com/media/com_hikashop/upload/safe/dsd-datasheet.pdf)
+2. **JC-PMP-002**: Dayliff DSD 3/18 (1.1 kW, 240 V, nominal flow 3.0 m³/h, max head 129 m, IP68; mass 11 kg pending technical confirmation) — [datasheet p. 2](https://www.dayliff.com/media/com_hikashop/upload/safe/dsd-datasheet.pdf)
 3. **JC-PMP-003**: Dayliff DB 4/30 (0.77–0.82 kW, 240 V, max head 30 m, max flow 4.0 m³/h, IP54, 11.5 kg) — [datasheet p. 4](https://www.dayliff.com/media/com_hikashop/upload/safe/db_685346571.pdf)
 4. **JC-PMP-004**: Dayliff DDJ 750 (0.75 kW, 240 V, suction lift 9 m, IP44, 17 kg) — [ddj.pdf](https://www.dayliff.com/products/product/download/file_id-7339); complete PDF still required
 5. **JC-PMP-005**: Pedrollo CP 158 (0.75 kW, 230 V, head 25–36 m, flow 0.6–5.4 m³/h, IPX4; mass 12.4 kg 1-ph / 12.3 kg 3-ph) — [datasheet pp. 2–3](https://www.pedrollo.com/wp-content/uploads/schede-tecniche/EN/CP_EN-datasheet_50Hz.pdf)
