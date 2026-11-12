@@ -30,6 +30,12 @@ def _database_url() -> str | URL:
         if mysql_password is None:
             mysql_password = os.getenv("MYSQLPASSWORD")
         mysql_database = os.getenv("MYSQL_DATABASE") or os.getenv("MYSQLDATABASE")
+        port_setting = os.getenv("MYSQL_PORT") or os.getenv("MYSQLPORT") or "3306"
+        port_text, separator, database_from_port = port_setting.partition("/")
+        if not port_text.isdecimal() or not 1 <= int(port_text) <= 65535:
+            raise RuntimeError(f"Invalid MySQL port: {port_text!r}")
+        if mysql_database is None and separator:
+            mysql_database = database_from_port or None
         missing = [
             name
             for name, value in (
@@ -48,7 +54,7 @@ def _database_url() -> str | URL:
             username=mysql_user,
             password=mysql_password,
             host=mysql_host,
-            port=int(os.getenv("MYSQL_PORT") or os.getenv("MYSQLPORT") or "3306"),
+            port=int(port_text),
             database=mysql_database,
         )
 

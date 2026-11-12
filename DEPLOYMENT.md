@@ -54,7 +54,9 @@ Alternatively, if PrimeCloud exposes separate MySQL variables, set
 defaults to `3306`), `MYSQL_USER` (or `MYSQLUSER`), `MYSQL_PASSWORD` (or
 `MYSQLPASSWORD`), and `MYSQL_DATABASE` (or `MYSQLDATABASE`). `DATABASE_URL`
 takes precedence over `MYSQL_URL`, which takes precedence over separate
-variables.
+variables. If PrimeCloud provides `MYSQLPORT` as `3306/<database>`, the app
+uses the numeric portion as the port and the suffix as the database name
+unless `MYSQL_DATABASE`/`MYSQLDATABASE` is explicitly set.
 
 The frontend is built with `VITE_API_BASE_URL=/api/v1`, so browser requests
 remain on the same PrimeCloud domain. No backend URL or cross-application
