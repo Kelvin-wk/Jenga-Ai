@@ -57,6 +57,11 @@ takes precedence over `MYSQL_URL`, which takes precedence over separate
 variables. If PrimeCloud provides `MYSQLPORT` as `3306/<database>`, the app
 uses the numeric portion as the port and the suffix as the database name
 unless `MYSQL_DATABASE`/`MYSQLDATABASE` is explicitly set.
+The app does not load `DB_HOST`, `DB_PORT`, `DB_NAME`, or `DB_PASSWORD`; use
+the `MYSQL_*` names above or provide `DATABASE_URL`. If a hostname in the
+effective URL cannot resolve, verify the database service is running and
+linked to this application on PrimeCloud's private network. The app does not
+replace or guess database hostnames.
 `MYSQL_HOST` must be a hostname or IP address only. If PrimeCloud gives a
 combined host such as `host:3306/database`, that form is also accepted; do not
 include credentials in the host variable.
@@ -72,7 +77,10 @@ The application also accepts a `mysql://...` URL and automatically uses the
 PyMySQL SQLAlchemy driver. The local Docker Compose setup continues to use
 SQLite for development unless `DATABASE_URL` is overridden.
 
-The backend tests the MySQL connection before creating tables. The
+The backend tests the MySQL connection before creating tables and retries
+transient SQLAlchemy connection failures up to three times during startup.
+If all attempts fail, startup still fails with safe diagnostics rather than
+reporting the database as ready. The
 `/ready` endpoint and Docker health check also verify database connectivity.
 Production mode exits at startup with a clear error if no database settings
 are supplied, instead of silently creating a local SQLite database. The

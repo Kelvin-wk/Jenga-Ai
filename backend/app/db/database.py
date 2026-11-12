@@ -5,16 +5,23 @@ from __future__ import annotations
 import os
 import hashlib
 import ipaddress
+import logging
 import re
 import secrets
+import time
 from datetime import datetime, timezone
 from typing import Generator
 
 from passlib.context import CryptContext
 from sqlalchemy import Boolean, ForeignKey, Integer, String, Text, create_engine, select, text
 from sqlalchemy.engine import URL, make_url
-from sqlalchemy.exc import ArgumentError
+from sqlalchemy.exc import ArgumentError, OperationalError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+
+logger = logging.getLogger(__name__)
+
+DB_INIT_MAX_ATTEMPTS = 3
+DB_INIT_RETRY_DELAYS_SECONDS = (0.5, 1.0)
 
 
 def _validate_mysql_host(host: str | None) -> str:
@@ -253,6 +260,31 @@ def get_db() -> Generator[Session, None, None]:
 def init_db() -> None:
     """Verify the database connection, create tables, and seed initial data."""
 
+    for attempt in range(1, DB_INIT_MAX_ATTEMPTS + 1):
+        try:
+            _initialize_database_once()
+            return
+        except OperationalError as error:
+            if attempt == DB_INIT_MAX_ATTEMPTS:
+                logger.error(
+                    "Database initialization failed after %d attempts (%s). "
+                    "Check database DNS, service networking, and connection settings.",
+                    attempt,
+                    type(error).__name__,
+                )
+                raise
+            delay = DB_INIT_RETRY_DELAYS_SECONDS[attempt - 1]
+            logger.warning(
+                "Database initialization attempt %d/%d failed (%s); retrying in %.1f seconds.",
+                attempt,
+                DB_INIT_MAX_ATTEMPTS,
+                type(error).__name__,
+                delay,
+            )
+            time.sleep(delay)
+
+
+def _initialize_database_once() -> None:
     with engine.connect() as connection:
         connection.execute(text("SELECT 1"))
     Base.metadata.create_all(bind=engine)
