@@ -25,11 +25,15 @@ Health checks:
 ### Deploying the backend to PrimeCloud
 
 Create a Python web application in PrimeCloud connected to the `main` branch of
-`kwisdomk/kpp` and configure:
+`kwisdomk/kpp`. The repository includes root-level `requirements.txt`,
+`.python-version`, and `Procfile` deployment markers for PrimeCloud's Python
+build detection.
+
+Configure:
 
 - **Working directory:** repository root
-- **Build command:** `pip install -r backend/requirements.txt`
-- **Start command:** `cd backend && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}`
+- **Build command:** `pip install -r requirements.txt`
+- **Start command:** `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 - **Health-check path:** `/api/v1/health`
 - **Python version:** 3.11 or newer
 
