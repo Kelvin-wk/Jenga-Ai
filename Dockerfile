@@ -11,7 +11,15 @@ RUN npm run build
 FROM python:3.12-alpine
 
 RUN apk add --no-cache nginx \
-    && mkdir -p /app/data
+    && addgroup -S appuser \
+    && adduser -S -D -H -G appuser appuser \
+    && mkdir -p /app/data \
+        /tmp/nginx/client_body \
+        /tmp/nginx/proxy \
+        /tmp/nginx/fastcgi \
+        /tmp/nginx/uwsgi \
+        /tmp/nginx/scgi \
+    && chown -R appuser:appuser /app/data /tmp/nginx
 
 WORKDIR /app/backend
 COPY backend/requirements.txt .
@@ -22,12 +30,16 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/start.sh /usr/local/bin/start.sh
 
+RUN nginx -t -c /etc/nginx/nginx.conf
+
 ENV PORT=8080 \
     APP_ENV=production \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 RUN chmod +x /usr/local/bin/start.sh
+
+USER appuser
 
 EXPOSE 8080
 
