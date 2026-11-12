@@ -22,24 +22,31 @@ Health checks:
 - `GET http://localhost:8000/api/v1/health`
 - `GET http://localhost:8000/api/v1/ready`
 
-### Deploying the backend to Render
+### Deploying the backend to PrimeCloud
 
-This repository includes [`render.yaml`](./render.yaml) for a Render Blueprint
-deployment. In Render:
+Create a Python web application in PrimeCloud connected to the `main` branch of
+`kwisdomk/kpp` and configure:
 
-1. Select **New > Blueprint** and connect `kwisdomk/kpp`.
-2. Select the `main` branch and apply `render.yaml`.
-3. Set `CORS_ORIGINS` to the exact frontend origin, such as
-   `https://your-frontend.onrender.com` (comma-separated for multiple origins).
-4. Deploy and verify `/api/v1/health`.
+- **Working directory:** repository root
+- **Build command:** `pip install -r backend/requirements.txt`
+- **Start command:** `cd backend && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000}`
+- **Health-check path:** `/api/v1/health`
+- **Python version:** 3.11 or newer
 
-The Blueprint generates `JENGA_SECRET_KEY` server-side and starts the service with
-Render's `$PORT`. The service uses SQLite on a mounted Render disk at
-`/var/data/jenga_consultants.db`; the disk is required because Render's instance
-filesystem is otherwise ephemeral. The current backend is intentionally using the
-SQLite architecture required by the master plan. Do not remove the disk or change
-`DATABASE_URL` to a local relative path in a deployed environment.
+Set these environment variables in the PrimeCloud dashboard:
+
+```text
+JENGA_SECRET_KEY=<long-random-secret>
+CORS_ORIGINS=https://your-frontend-domain.example
+DATABASE_URL=sqlite:////path/to/persistent/jenga_consultants.db
+```
+
+Use the persistent-storage path provided by PrimeCloud for `DATABASE_URL`.
+SQLite must not be stored on an ephemeral deployment filesystem; if the selected
+PrimeCloud plan does not provide persistent storage, use a managed database and
+set `DATABASE_URL` to its SQLAlchemy connection URL before deploying. Verify
+`/api/v1/health` after the service starts.
 
 The seeded demo accounts are for development/demo use only. Set a new
-`JENGA_SECRET_KEY` if deploying outside the Blueprint-generated environment and do
-not use the demo passwords for a public production service.
+`JENGA_SECRET_KEY` for the deployment and do not use the demo passwords for a
+public production service.
