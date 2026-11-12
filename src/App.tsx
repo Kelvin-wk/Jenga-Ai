@@ -1,18 +1,32 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   ArrowUp,
+  Bot,
+  ChevronRight,
+  FileArchive,
   FileText,
+  HardHat,
+  History,
+  LayoutDashboard,
   Image as ImageIcon,
   LogOut,
   Mic,
+  Package,
   Plus,
+  Scale,
+  Settings,
+  ShieldCheck,
   Square,
+  Upload,
+  Users,
   X,
 } from "lucide-react";
+import "./App.css";
 
 const API_BASE =
-  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api";
+  import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8080/api/v1";
 const SESSION_KEY = "ai-interface-session";
+const ROLE_KEY = "ai-interface-role";
 const SESSION_LENGTH = 7 * 24 * 60 * 60 * 1000;
 
 type Role = "engineer" | "customer";
@@ -26,6 +40,83 @@ type Message = {
 };
 type Conversation = { id: string; title: string; updatedAt?: string };
 type Session = { token: string; expiresAt: number };
+const products = [
+  {
+    name: "JCB 3CX Backhoe Loader",
+    category: "Earthmoving",
+    price: "$92,000",
+    description: "Versatile machine for digging, loading, and site work.",
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Caterpillar 320 Excavator",
+    category: "Earthmoving",
+    price: "$185,000",
+    description: "Heavy-duty excavator for earthmoving and foundations.",
+    image: "https://images.unsplash.com/photo-1580901368919-7738efb0f87e?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Atlas Copco Air Compressor",
+    category: "Site Equipment",
+    price: "$18,500",
+    description: "Reliable compressed air for tools and construction sites.",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Makita Cordless Drill",
+    category: "Power Tools",
+    price: "$249",
+    description: "Compact drilling and fastening tool for daily site work.",
+    image: "https://images.unsplash.com/photo-1504148455328-c376907d081c?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Bosch Rotary Hammer",
+    category: "Power Tools",
+    price: "$399",
+    description: "High-impact hammer for concrete drilling and demolition.",
+    image: "https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "DeWalt Circular Saw",
+    category: "Power Tools",
+    price: "$279",
+    description: "Reliable saw for accurate timber and board cutting.",
+    image: "https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Honda Portable Generator",
+    category: "Power",
+    price: "$1,299",
+    description: "Portable backup power for tools, lighting, and site offices.",
+    image: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Wacker Neuson Plate Compactor",
+    category: "Groundworks",
+    price: "$4,800",
+    description: "Compact machine for preparing firm, even ground surfaces.",
+    image: "https://images.unsplash.com/photo-1578662996442-48f60103fc96?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Liebherr Tower Crane",
+    category: "Lifting",
+    price: "$1.2M",
+    description: "High-reach lifting solution for major building projects.",
+    image: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=240&q=80",
+  },
+  {
+    name: "Hilti Laser Level",
+    category: "Surveying",
+    price: "$699",
+    description: "Fast, accurate alignment and leveling for installation work.",
+    image: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=240&q=80",
+  },
+];
+const featuredProducts = [
+  { ...products[0], match: "98%", reason: "Best for mixed site work" },
+  { ...products[1], match: "94%", reason: "Strong foundation performance" },
+  { ...products[6], match: "91%", reason: "Reliable off-grid site power" },
+];
 
 async function api<T>(
   path: string,
@@ -64,13 +155,18 @@ function readSession(): Session | null {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(readSession);
-  const [role, setRole] = useState<Role | null>(null);
-  const [username, setUsername] = useState("testuser");
-  const [password, setPassword] = useState("password");
+  const [role, setRole] = useState<Role | null>(() => {
+    const savedRole = localStorage.getItem(ROLE_KEY);
+    return savedRole === "engineer" || savedRole === "customer" ? savedRole : null;
+  });
+  const [selectedRole, setSelectedRole] = useState<Role>("engineer");
+  const [activeNav, setActiveNav] = useState("Dashboard");
+  const [productPage, setProductPage] = useState(0);
+  const [username, setUsername] = useState("engineer@jenga.com");
+  const [password, setPassword] = useState("engineer123");
   const [loginError, setLoginError] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [conversationId, setConversationId] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [prompt, setPrompt] = useState("");
@@ -84,9 +180,9 @@ export default function App() {
 
   const logout = useCallback(() => {
     localStorage.removeItem(SESSION_KEY);
+    localStorage.removeItem(ROLE_KEY);
     setSession(null);
     setRole(null);
-    setConversations([]);
     setMessages([]);
     setConversationId("");
   }, []);
@@ -103,9 +199,7 @@ export default function App() {
 
   useEffect(() => {
     if (!session || !role) return;
-    api<Conversation[]>("/conversations", session.token)
-      .then(setConversations)
-      .catch((e) => setError(e.message));
+    api<Conversation[]>("/conversations", session.token).catch((e) => setError(e.message));
   }, [session, role]);
 
   async function signIn(event: React.FormEvent) {
@@ -114,16 +208,18 @@ export default function App() {
     setBusy(true);
     try {
       // The demo credentials are prefilled; the backend remains responsible for issuing the JWT.
-      const result = await api<{ token: string }>("/login", undefined, {
+      const result = await api<{ access_token: string }>("/auth/login", undefined, {
         method: "POST",
         body: JSON.stringify({ username, password }),
       });
       const nextSession = {
-        token: result.token,
+        token: result.access_token,
         expiresAt: Date.now() + SESSION_LENGTH,
       };
       localStorage.setItem(SESSION_KEY, JSON.stringify(nextSession));
+      localStorage.setItem(ROLE_KEY, selectedRole);
       setSession(nextSession);
+      setRole(selectedRole);
     } catch (e) {
       setLoginError(e instanceof Error ? e.message : "Unable to sign in.");
     } finally {
@@ -131,25 +227,21 @@ export default function App() {
     }
   }
 
-  async function openConversation(id: string) {
-    if (!session) return;
-    setError("");
-    setConversationId(id);
-    try {
-      const result = await api<{ messages: Message[] }>(
-        `/conversations/${encodeURIComponent(id)}`,
-        session.token,
-      );
-      setMessages(result.messages ?? []);
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Could not load conversation.");
-    }
-  }
-
   function newConversation() {
     setConversationId("");
     setMessages([]);
     setError("");
+  }
+
+  function chooseRole(nextRole: Role) {
+    setSelectedRole(nextRole);
+    if (nextRole === "customer") {
+      setUsername("customer@jenga.com");
+      setPassword("customer123");
+    } else {
+      setUsername("engineer@jenga.com");
+      setPassword("engineer123");
+    }
   }
 
   function addFiles(selected: FileList | null) {
@@ -233,58 +325,81 @@ export default function App() {
         },
       ]);
 
-      const updated = await api<Conversation[]>("/conversations", session.token);
-      setConversations(updated);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Message could not be sent.");
     } finally {
       setBusy(false);
     }
+
   }
+
+  const pageDetails: Record<string, { title: string; description: string }> = {
+    "Chat Assistant": { title: "Chat Assistant", description: "Ask Jenga Copilot about equipment, specifications, and technical documentation." },
+    "Browse Products": { title: "Browse Products", description: "Explore equipment and find the right solution for your project." },
+    Documents: { title: "Documents", description: "Access manuals, datasheets, safety guides, and approved documentation." },
+    "Compare Solutions": { title: "Compare Solutions", description: "Compare equipment options side by side before making a decision." },
+    "Upload Media": { title: "Upload Media", description: "Add drawings, images, audio notes, and project files for analysis." },
+    History: { title: "History", description: "Review your recent questions, comparisons, and saved recommendations." },
+    Settings: { title: "Settings", description: "Manage your workspace preferences and assistant experience." },
+  };
+  const engineerOnlyPages = new Set(["Compare Solutions", "Upload Media"]);
+  const canAccessPage = (page: string) => role === "engineer" || !engineerOnlyPages.has(page);
 
   if (!session) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#f7f7f5] px-4 text-stone-900">
+      <main className="auth-page">
+        <section className="auth-hero">
+          <div className="brand-lockup">
+            <span className="brand-mark">⚙</span>
+            <span>Jenga Consultants<br /><b>Product Copilot</b></span>
+          </div>
+          <div className="auth-copy">
+            <p className="eyebrow">INDUSTRIAL INTELLIGENCE, SIMPLIFIED</p>
+            <h1>Your AI-Powered<br /><strong>Equipment Assistant</strong></h1>
+            <p>Find the right industrial equipment, get expert answers, and access trusted documentation.</p>
+            <div className="auth-benefits">
+              <span><b>⚡</b>Instant<br />Answers</span>
+              <span><b>✓</b>Trusted<br />Sources</span>
+              <span><b>▥</b>Smarter<br />Decisions</span>
+            </div>
+          </div>
+          <div className="hero-machine" aria-hidden="true">⚙</div>
+        </section>
         <form
           onSubmit={signIn}
-          className="w-full max-w-sm rounded-2xl border border-stone-200 bg-white p-8 shadow-sm"
+          className="auth-card"
         >
-          <div className="mb-8 text-center">
-            <div className="mx-auto mb-4 grid h-11 w-11 place-items-center rounded-full bg-stone-900 text-lg text-white">
-              A
-            </div>
-            <h1 className="text-2xl font-semibold">Welcome back</h1>
-            <p className="mt-2 text-sm text-stone-500">Sign in to continue</p>
+          <div className="auth-card-heading">
+            <span className="lock-icon"><ShieldCheck size={24} /></span>
+            <h2>Welcome Back</h2>
+            <p>Sign in to access your AI assistant</p>
           </div>
-          <label className="mb-4 block text-sm">
-            Username
+          <label className="auth-field">
+            <span><Users size={15} /> {selectedRole === "customer" ? "Customer account" : "Engineer account"}</span>
             <input
-              className="mt-1.5 w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               autoComplete="username"
             />
           </label>
-          <label className="mb-5 block text-sm">
-            Password
+          <label className="auth-field">
+            <span><ShieldCheck size={15} /> Password</span>
             <input
               type="password"
-              className="mt-1.5 w-full rounded-lg border border-stone-300 px-3 py-2.5 outline-none focus:border-stone-600"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               autoComplete="current-password"
             />
           </label>
-          {loginError && <p className="mb-4 text-sm text-red-700">{loginError}</p>}
-          <button
-            disabled={busy}
-            className="w-full rounded-lg bg-stone-900 py-2.5 font-medium text-white disabled:opacity-60"
-          >
-            {busy ? "Signing in…" : "Sign in"}
-          </button>
-          <p className="mt-4 text-center text-xs text-stone-500">
-            Demo credentials: testuser / password
-          </p>
+          <p className="role-label">Account type:</p>
+          <div className="role-switcher">
+            <button type="button" className={selectedRole === "engineer" ? "selected" : ""} onClick={() => chooseRole("engineer")}><HardHat size={16} /> Engineer</button>
+            <button type="button" className={selectedRole === "customer" ? "selected" : ""} onClick={() => chooseRole("customer")}><Users size={16} /> Customer</button>
+          </div>
+          {loginError && <p className="login-error">{loginError}</p>}
+          <button disabled={busy} className="auth-submit">{busy ? "Signing in…" : <>Sign In <ArrowUp size={16} /></>}</button>
+          <div className="auth-divider"><span>or</span></div>
+          <p className="auth-version">Jenga Consultants Product Copilot v1.0</p>
         </form>
       </main>
     );
@@ -292,142 +407,95 @@ export default function App() {
 
   if (!role) {
     return (
-      <main className="grid min-h-screen place-items-center bg-[#f7f7f5] px-4 text-stone-900">
-        <section className="w-full max-w-lg rounded-2xl border border-stone-200 bg-white p-8 shadow-sm">
-          <h1 className="text-2xl font-semibold">Choose your workspace</h1>
-          <p className="mb-6 mt-2 text-stone-500">Select a role to continue.</p>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {(["engineer", "customer"] as Role[]).map((item) => (
-              <button
-                key={item}
-                onClick={() => setRole(item)}
-                className="rounded-xl border border-stone-200 p-5 text-left transition hover:border-stone-500 hover:bg-stone-50"
-              >
-                <span className="block font-medium capitalize">{item}</span>
-                <span className="mt-1 block text-sm text-stone-500">
-                  {item === "engineer"
-                    ? "Engineering workspace"
-                    : "Customer workspace"}
-                </span>
-              </button>
-            ))}
+      <main className="auth-page fallback-role">
+        <section className="auth-card">
+          <h2>Choose your workspace</h2>
+          <p>Select a role to continue.</p>
+          <div className="role-switcher">
+            <button onClick={() => { localStorage.setItem(ROLE_KEY, "engineer"); setRole("engineer"); }}><HardHat size={16} /> Engineer</button>
+            <button onClick={() => { localStorage.setItem(ROLE_KEY, "customer"); setRole("customer"); }}><Users size={16} /> Customer</button>
           </div>
-          <button onClick={logout} className="mt-6 text-sm text-stone-500 hover:text-stone-900">
-            Sign out
-          </button>
+          <button onClick={logout}>Sign out</button>
         </section>
       </main>
     );
   }
 
   return (
-    <main className="flex h-screen overflow-hidden bg-[#faf9f6] text-stone-900">
-      <aside className="hidden w-72 shrink-0 flex-col border-r border-stone-200 bg-[#f2f1ed] p-4 md:flex">
-        <div className="mb-8 flex items-center gap-2 px-2 font-semibold">
-          <span className="grid h-7 w-7 place-items-center rounded-full bg-stone-900 text-sm text-white">A</span>
-          Assistant
-        </div>
-        <button
-          onClick={newConversation}
-          className="mb-5 flex items-center gap-2 rounded-lg border border-stone-300 px-3 py-2 text-sm hover:bg-white"
-        >
-          <Plus size={16} /> New conversation
-        </button>
-        <p className="mb-2 px-2 text-xs font-medium uppercase tracking-wide text-stone-500">
-          Recent
-        </p>
-        <nav className="flex-1 space-y-1 overflow-y-auto">
-          {conversations.map((conversation) => (
-            <button
-              key={conversation.id}
-              onClick={() => openConversation(conversation.id)}
-              className={`w-full truncate rounded-lg px-3 py-2 text-left text-sm hover:bg-white ${
-                conversation.id === conversationId ? "bg-white" : ""
-              }`}
-            >
-              {conversation.title}
-            </button>
-          ))}
+    <main className="dashboard-shell">
+      <aside className="dashboard-sidebar">
+        <div className="sidebar-brand"><span className="brand-mark">⚙</span><span>Jenga Consultants<br /><b>Product Copilot</b></span></div>
+        <nav className="dashboard-nav">
+          <button className={activeNav === "Dashboard" ? "active" : ""} onClick={() => setActiveNav("Dashboard")}><LayoutDashboard size={16} /> Dashboard</button>
+          <button className={activeNav === "Chat Assistant" ? "active" : ""} onClick={() => { setActiveNav("Chat Assistant"); newConversation(); }}><Bot size={16} /> Chat Assistant</button>
+          <button className={activeNav === "Browse Products" ? "active" : ""} onClick={() => setActiveNav("Browse Products")}><Package size={16} /> Browse Products</button>
+          <button className={activeNav === "Documents" ? "active" : ""} onClick={() => setActiveNav("Documents")}><FileArchive size={16} /> Documents</button>
+          {role === "engineer" && <button className={activeNav === "Compare Solutions" ? "active" : ""} onClick={() => setActiveNav("Compare Solutions")}><Scale size={16} /> Compare Solutions</button>}
+          {role === "engineer" && <button className={activeNav === "Upload Media" ? "active" : ""} onClick={() => setActiveNav("Upload Media")}><Upload size={16} /> Upload Media</button>}
+          <button className={activeNav === "History" ? "active" : ""} onClick={() => setActiveNav("History")}><History size={16} /> History</button>
+          <button className={activeNav === "Settings" ? "active" : ""} onClick={() => setActiveNav("Settings")}><Settings size={16} /> Settings</button>
         </nav>
-        <div className="flex items-center justify-between border-t border-stone-300 pt-4 text-sm">
-          <span className="capitalize text-stone-600">{role} workspace</span>
-          <button onClick={logout} aria-label="Sign out" title="Sign out">
-            <LogOut size={17} />
-          </button>
-        </div>
+        <button className="sidebar-signout" onClick={logout}><LogOut size={16} /> Sign Out</button>
+        <div className="online-status"><span>●</span><b>Online</b><small>Secure Session</small></div>
       </aside>
-
-      <section className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 items-center justify-between border-b border-stone-200 px-5">
-          <span className="font-medium capitalize md:hidden">{role} workspace</span>
-          <span className="hidden text-sm text-stone-500 md:block">AI assistant</span>
-          <button onClick={logout} className="text-sm text-stone-500 hover:text-stone-900">
-            Sign out
-          </button>
+      <section className="dashboard-main">
+        <header className="dashboard-header">
+          <div className="dashboard-title"><LayoutDashboard size={18} /><div><b>{activeNav}</b><small>Your AI equipment assistant at work</small></div></div>
+          <div className="account-chip">
+            <span className="account-avatar">👷</span>
+            <div className="account-details">
+              <b>{username.split("@")[0]}</b>
+              <small>{role === "engineer" ? "Engineer" : "Customer"}</small>
+            </div>
+            <button className="topbar-logout" onClick={logout}><LogOut size={14} /> <span>Sign out</span></button>
+          </div>
         </header>
-
-        <div className="flex-1 overflow-y-auto px-4 py-8">
-          {messages.length === 0 ? (
-            <div className="mx-auto mt-[12vh] max-w-2xl text-center">
-              <h1 className="text-3xl font-medium tracking-tight sm:text-4xl">
-                What can I help you with?
-              </h1>
-              <p className="mt-3 text-stone-500">
-                Ask a question or attach a document, image, or audio recording.
-              </p>
-            </div>
-          ) : (
-            <div className="mx-auto max-w-3xl space-y-8">
-              {messages.map((message) => (
-                <article key={message.id} className="whitespace-pre-wrap">
-                  <p className="mb-2 text-sm font-semibold">
-                    {message.role === "user" ? "You" : "Assistant"}
-                  </p>
-                  <p className="leading-7 text-stone-800">{message.content}</p>
-                  {message.files?.length ? (
-                    <p className="mt-2 text-xs text-stone-500">
-                      Attached: {message.files.join(", ")}
-                    </p>
-                  ) : null}
-                  {!!message.citations?.length && (
-                    <details className="mt-4 rounded-xl border border-stone-200 bg-white p-4">
-                      <summary className="flex cursor-pointer items-center gap-2 text-sm font-medium">
-                        <FileText size={16} /> Sources ({message.citations.length})
-                      </summary>
-                      <div className="mt-3 space-y-3">
-                        {message.citations.map((citation, index) => (
-                          <div key={`${citation.url}-${index}`} className="text-sm">
-                            {citation.url ? (
-                              <a
-                                className="font-medium underline underline-offset-2"
-                                href={citation.url}
-                                target="_blank"
-                                rel="noreferrer"
-                              >
-                                {citation.title || citation.url}
-                              </a>
-                            ) : (
-                              <p className="font-medium">{citation.title || `Source ${index + 1}`}</p>
-                            )}
-                            {citation.snippet && (
-                              <p className="mt-1 text-stone-600">{citation.snippet}</p>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </details>
-                  )}
-                </article>
-              ))}
-              {busy && <p className="text-sm text-stone-500">Thinking…</p>}
-            </div>
+        <div className={`dashboard-content ${activeNav !== "Dashboard" ? "subpage-active" : ""}`}>
+          {!canAccessPage(activeNav) && <section className="page-panel"><div className="page-panel-heading"><div><p className="page-kicker">ACCESS RESTRICTED</p><h1>Engineer workspace required</h1><p>This resource is available to authenticated engineers only.</p></div><span className="page-panel-icon"><ShieldCheck size={24} /></span></div></section>}
+          {canAccessPage(activeNav) && activeNav !== "Dashboard" && (
+            <section className="page-panel">
+              <div className="page-panel-heading">
+                <div>
+                  <p className="page-kicker">JENGA WORKSPACE</p>
+                  <h1>{pageDetails[activeNav].title}</h1>
+                  <p>{pageDetails[activeNav].description}</p>
+                </div>
+                <span className="page-panel-icon"><Bot size={24} /></span>
+              </div>
+              {activeNav === "Chat Assistant" && (
+                <div className="page-chat-layout">
+                  <div className="dashboard-card chat-card">
+                    <h2><Bot size={16} /> Start a conversation</h2>
+                    <p className="panel-muted">Ask a question below and receive a sourced answer from the copilot.</p>
+                    <form onSubmit={sendMessage} className="dashboard-composer standalone-composer">
+                      <textarea value={prompt} onChange={(e) => setPrompt(e.target.value)} placeholder="What would you like to know?" rows={4} />
+                      <div className="composer-actions"><span>Answers include relevant sources where available.</span><button className="send-button" aria-label="Send message"><ArrowUp size={16} /></button></div>
+                    </form>
+                  </div>
+                  <div className="dashboard-card"><h2><ShieldCheck size={16} /> Copilot guidance</h2><ul className="feature-list"><li>Equipment recommendations</li><li>Technical specifications</li><li>Document and image analysis</li></ul></div>
+                </div>
+              )}
+              {activeNav === "Browse Products" && <><div className="catalog-grid">{products.slice(productPage * 4, productPage * 4 + 4).map((product) => <article className="catalog-card" key={product.name}><img className="product-image" src={product.image} alt="" /><div><small className="product-category">{product.category}</small><h2>{product.name}</h2><strong className="catalog-price">{product.price}</strong><p>{product.description}</p><button>View details <ChevronRight size={14} /></button></div></article>)}</div><div className="catalog-pagination"><button disabled={productPage === 0} onClick={() => setProductPage((page) => page - 1)}>Previous</button><span>Page {productPage + 1} of {Math.ceil(products.length / 4)}</span><button disabled={(productPage + 1) * 4 >= products.length} onClick={() => setProductPage((page) => page + 1)}>Next</button></div></>}
+              {activeNav === "Documents" && <div className="document-list">{["Equipment Safety Handbook.pdf", "JCB 3CX Technical Datasheet.pdf", "Site Operations Guide.pdf"].map((item) => <article key={item}><FileText size={22} /><div><b>{item}</b><small>Verified project documentation · PDF</small></div><button><ChevronRight size={15} /></button></article>)}</div>}
+              {activeNav === "Compare Solutions" && <div className="comparison-card dashboard-card"><div className="comparison-toolbar"><span>Selected solutions</span><button className="primary-small">Add product</button></div><div className="comparison-table"><b>Category</b><b>JCB 3CX</b><b>CAT 320</b><span>Equipment type</span><span>Backhoe loader</span><span>Excavator</span><span>Best for</span><span>General construction</span><span>Earthmoving</span></div></div>}
+              {activeNav === "Upload Media" && <div className="upload-panel dashboard-card"><Upload size={30} /><h2>Upload project media</h2><p>Drag files here or choose files from your device. Supported formats include PDF, images, audio, and documents.</p><button className="primary-small" onClick={() => fileInput.current?.click()}>Choose files</button></div>}
+              {activeNav === "History" && <div className="history-list dashboard-card"><h2><History size={16} /> Recent activity</h2><p className="panel-muted">Your recent assistant activity will appear here after your first question.</p></div>}
+              {activeNav === "Settings" && <div className="settings-list dashboard-card"><h2><Settings size={16} /> Workspace settings</h2><label><span>Workspace notifications</span><input type="checkbox" defaultChecked /></label><label><span>Show source citations</span><input type="checkbox" defaultChecked /></label><label><span>Active role <small>Locked for this session</small></span><strong className="locked-role">{role === "engineer" ? "Engineer" : "Customer"}</strong></label></div>}
+            </section>
           )}
-        </div>
-
-        <div className="px-4 pb-5">
+          <section className="welcome-banner">
+            <div><h1>Hi {username.split("@")[0]}! 👋</h1><p>Ask me about our industrial equipment,<br />get recommendations, or find technical specs.</p><button onClick={newConversation}>Start a new chat <ArrowUp size={14} /></button></div>
+            <div className="welcome-checks"><span>● Trusted Information</span><span>● Source Citations</span><span>● Role-Based Access</span></div>
+          </section>
+          <div className="dashboard-grid">
+            <section className="dashboard-card chat-card">
+              <h2><Bot size={16} /> Chat with Jenga Copilot</h2>
+              <div className="chat-preview"><span className="bot-avatar">🤖</span><p>Hello! I can help you find equipment information, compare products, or answer technical questions.<br /><b>What would you like to know?</b></p></div>
+              {messages.length > 0 && <div className="mini-messages">{messages.slice(-2).map((message) => <p key={message.id}><b>{message.role === "user" ? "You" : "Copilot"}:</b> {message.content}</p>)}</div>}
+              <div className="chat-composer">
           <form
             onSubmit={sendMessage}
-            className="mx-auto max-w-3xl rounded-2xl border border-stone-300 bg-white p-3 shadow-sm"
+            className="dashboard-composer"
           >
             {files.length > 0 && (
               <div className="mb-2 flex flex-wrap gap-2">
@@ -458,13 +526,13 @@ export default function App() {
                   void sendMessage();
                 }
               }}
-              placeholder="Message the assistant…"
+              placeholder="Type your question here..."
               rows={2}
               className="w-full resize-none bg-transparent px-2 py-2 outline-none"
             />
-            {error && <p className="px-2 pb-2 text-sm text-red-700">{error}</p>}
-            <div className="flex items-center justify-between border-t border-stone-100 pt-2">
-              <div className="flex items-center gap-1">
+            {error && <p className="composer-error">{error}</p>}
+            <div className="composer-actions">
+              <div>
                 <input
                   ref={fileInput}
                   type="file"
@@ -497,16 +565,19 @@ export default function App() {
               </div>
               <button
                 disabled={busy || (!prompt.trim() && files.length === 0)}
-                className="grid h-9 w-9 place-items-center rounded-xl bg-stone-900 text-white disabled:opacity-40"
+                className="send-button"
                 aria-label="Send message"
               >
                 <ArrowUp size={18} />
               </button>
             </div>
           </form>
-          <p className="mt-2 text-center text-xs text-stone-400">
-            Review important information before relying on it.
-          </p>
+              </div>
+            </section>
+            <section className="dashboard-card recommendations-card"><div className="recommendation-heading"><div><p className="recommendation-kicker">AI CURATED FOR YOUR WORKSPACE</p><h2>Product Recommendations</h2></div><a href="#products">View All <ChevronRight size={13} /></a></div><p className="recommendation-intro">Based on common construction workflows and equipment needs.</p><div className="recommendation-list">{featuredProducts.map((product) => <div className="recommendation" key={product.name}><img className="product-icon" src={product.image} alt="" /><span><b>{product.name}</b><small>{product.reason} · {product.price}</small></span><strong className="match-score">{product.match}</strong><ChevronRight size={15} /></div>)}</div></section>
+          </div>
+          <div className="metrics-row">{[["▣", "15+", "Equipment Products"], ["✓", "100%", "Trusted Sources"], ["▥", "60+", "Benchmark Items"], ["▥", "Real-Time", "AI Insights"]].map(([icon, value, label]) => <div className="metric-card" key={label}><span>{icon}</span><b>{value}</b><small>{label}</small></div>)}</div>
+          {messages.length > 0 && <div className="message-history">{messages.map((message) => <article key={message.id}><b>{message.role === "user" ? "You" : "Copilot"}</b><p>{message.content}</p></article>)}</div>}
         </div>
       </section>
     </main>

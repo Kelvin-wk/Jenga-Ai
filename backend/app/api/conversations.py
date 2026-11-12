@@ -45,6 +45,26 @@ def create_conversation(
     return {"id": conversation.id, "status": conversation.status, "title": conversation.title}
 
 
+@router.get("")
+def list_conversations(
+    current_user: Annotated[UserDB, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+) -> list[dict[str, object]]:
+    conversations = db.scalars(
+        select(ConversationDB)
+        .where(ConversationDB.user_id == current_user.id)
+        .order_by(ConversationDB.created_at.desc())
+    ).all()
+    return [
+        {
+            "id": conversation.id,
+            "title": conversation.title or "Untitled conversation",
+            "updatedAt": conversation.created_at.isoformat(),
+        }
+        for conversation in conversations
+    ]
+
+
 @router.get("/{conversation_id}")
 def get_conversation(
     conversation_id: str,
