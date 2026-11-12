@@ -3,13 +3,18 @@
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
 import os
+import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy import text
+from sqlalchemy.exc import SQLAlchemyError
 
 from app.api import auth, catalog, chat, conversations, media, reviews
-from app.db.database import init_db
+from app.db.database import engine, init_db
 from app.schemas.common import HealthResponse
+
+logger = logging.getLogger(__name__)
 
 
 @asynccontextmanager
@@ -53,6 +58,12 @@ def versioned_health() -> HealthResponse:
 
 @app.get("/ready", tags=["health"])
 def ready() -> dict[str, str]:
+    try:
+        with engine.connect() as connection:
+            connection.execute(text("SELECT 1"))
+    except SQLAlchemyError as error:
+        logger.exception("Database readiness check failed")
+        raise HTTPException(status_code=503, detail="Database unavailable") from error
     return {"status": "ready"}
 
 

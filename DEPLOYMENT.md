@@ -4,7 +4,7 @@ The production image contains both application surfaces in one container:
 
 - Nginx serves the Vite frontend.
 - FastAPI runs internally on `127.0.0.1:8000` through a non-privileged startup script.
-- Nginx proxies `/api/*` and `/health` to FastAPI.
+- Nginx proxies `/api/*`, `/health`, and `/ready` to FastAPI.
 - PrimeCloud MySQL is used through the `DATABASE_URL` environment variable.
 
 This avoids privileged process management and removes the need for a separate backend service hostname while keeping the
@@ -44,8 +44,17 @@ provided by the PrimeCloud MySQL service:
 DATABASE_URL=mysql+pymysql://<user>:<password>@<mysql-host>:3306/<database>
 CORS_ORIGINS=*
 JENGA_SECRET_KEY=<long-random-production-secret>
+OPENAI_API_KEY=<OpenAI-secret-api-key>
+OPENAI_MODEL=gpt-4.1-mini
 PORT=8080
 ```
+
+Alternatively, if PrimeCloud exposes separate MySQL variables, set
+`MYSQL_HOST` (or `MYSQLHOST`), `MYSQL_PORT` (or `MYSQLPORT`; optional and
+defaults to `3306`), `MYSQL_USER` (or `MYSQLUSER`), `MYSQL_PASSWORD` (or
+`MYSQLPASSWORD`), and `MYSQL_DATABASE` (or `MYSQLDATABASE`). `DATABASE_URL`
+takes precedence over `MYSQL_URL`, which takes precedence over separate
+variables.
 
 The frontend is built with `VITE_API_BASE_URL=/api/v1`, so browser requests
 remain on the same PrimeCloud domain. No backend URL or cross-application
@@ -58,6 +67,17 @@ The application also accepts a `mysql://...` URL and automatically uses the
 PyMySQL SQLAlchemy driver. The local Docker Compose setup continues to use
 SQLite for development unless `DATABASE_URL` is overridden.
 
-The database tables and seed users/products are created automatically when the
-application starts. For production, use the PrimeCloud database's private
-hostname and keep the database credentials in environment variables.
+The backend tests the MySQL connection before creating tables. The
+`/ready` endpoint and Docker health check also verify database connectivity.
+Production mode exits at startup with a clear error if no database settings
+are supplied, instead of silently creating a local SQLite database. The
+database tables and seed users/products are created automatically after
+connection succeeds.
+
+The backend uses OpenAI's Responses API for general product questions when
+`OPENAI_API_KEY` is configured. Add the key as a PrimeCloud secret; never put
+it in frontend variables, source files, or Git. `OPENAI_MODEL` is optional and
+defaults to `gpt-4.1-mini`. Price lookups remain database-backed, engineer
+safety queries keep their existing deterministic response, and customer
+access checks run before any AI request. If the key is absent, general chat
+uses the existing catalog-only fallback.

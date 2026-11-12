@@ -7,6 +7,7 @@ from typing import Literal
 
 from sqlalchemy.orm import Session
 
+from app.services.ai import generate_grounded_answer
 from app.tools.catalog import lookup_products
 from app.tools.safety import safety_notice
 
@@ -49,11 +50,21 @@ def route_query(query: str, role: str, db: Session) -> ChatResult:
     if role == "engineer" and any(word in lowered for word in ("fault", "troubleshoot", "safety", "alarm")):
         answer, citations, warnings, confidence = safety_notice()
         return answer, "safety_notice", citations, warnings, confidence
+    products = lookup_products(db)
+    answer = generate_grounded_answer(query, role, products)
+    if answer is not None:
+        return (
+            answer,
+            "openai_assistant",
+            ["Product catalog"],
+            ["AI-generated answer; verify important specifications with an authorised consultant."],
+            "medium",
+        )
     return (
         "I can answer grounded questions about Jenga products, specifications, and catalog pricing. "
         "Please include a product name or model number.",
         "product_catalog",
         ["Product catalog"],
-        ["The response is limited to verified catalog data."],
+        ["AI is not configured; this response is limited to verified catalog data."],
         "medium",
     )

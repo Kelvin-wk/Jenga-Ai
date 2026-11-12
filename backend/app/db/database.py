@@ -9,15 +9,74 @@ from datetime import datetime, timezone
 from typing import Generator
 
 from passlib.context import CryptContext
-from sqlalchemy import Boolean, ForeignKey, Integer, String, Text, create_engine, select
+from sqlalchemy import Boolean, ForeignKey, Integer, String, Text, create_engine, select, text
+from sqlalchemy.engine import URL, make_url
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./jenga_consultants.db")
-if DATABASE_URL.startswith("mysql://"):
-    DATABASE_URL = DATABASE_URL.replace("mysql://", "mysql+pymysql://", 1)
 
-connect_args = {"check_same_thread": False} if DATABASE_URL.startswith("sqlite") else {}
-engine = create_engine(DATABASE_URL, connect_args=connect_args, future=True)
+def _database_url() -> str | URL:
+    """Resolve the configured database URL or PrimeCloud MySQL variables."""
+
+    database_url = os.getenv("DATABASE_URL") or os.getenv("MYSQL_URL")
+    if database_url:
+        if database_url.startswith("mysql://"):
+            return database_url.replace("mysql://", "mysql+pymysql://", 1)
+        return database_url
+
+    mysql_host = os.getenv("MYSQL_HOST") or os.getenv("MYSQLHOST")
+    if mysql_host:
+        mysql_user = os.getenv("MYSQL_USER") or os.getenv("MYSQLUSER")
+        mysql_password = os.getenv("MYSQL_PASSWORD")
+        if mysql_password is None:
+            mysql_password = os.getenv("MYSQLPASSWORD")
+        mysql_database = os.getenv("MYSQL_DATABASE") or os.getenv("MYSQLDATABASE")
+        missing = [
+            name
+            for name, value in (
+                ("MYSQL_USER", mysql_user),
+                ("MYSQL_PASSWORD", mysql_password),
+                ("MYSQL_DATABASE", mysql_database),
+            )
+            if value is None
+        ]
+        if missing:
+            raise RuntimeError(
+                f"MySQL configuration is incomplete; missing: {', '.join(missing)}"
+            )
+        return URL.create(
+            "mysql+pymysql",
+            username=mysql_user,
+            password=mysql_password,
+            host=mysql_host,
+            port=int(os.getenv("MYSQL_PORT") or os.getenv("MYSQLPORT") or "3306"),
+            database=mysql_database,
+        )
+
+    if os.getenv("APP_ENV", "").lower() == "production":
+        raise RuntimeError(
+            "Database is not configured. Set DATABASE_URL or MYSQL_HOST, MYSQL_USER, "
+            "MYSQL_PASSWORD, and MYSQL_DATABASE."
+        )
+    return "sqlite:///./jenga_consultants.db"
+
+
+DATABASE_URL = _database_url()
+
+database_backend = (
+    DATABASE_URL.get_backend_name()
+    if isinstance(DATABASE_URL, URL)
+    else make_url(DATABASE_URL).get_backend_name()
+)
+connect_args = {"check_same_thread": False} if database_backend == "sqlite" else {}
+if database_backend == "mysql":
+    connect_args.update({"connect_timeout": 10})
+engine = create_engine(
+    DATABASE_URL,
+    connect_args=connect_args,
+    pool_pre_ping=True,
+    pool_recycle=1800,
+    future=True,
+)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False, expire_on_commit=False)
 # PBKDF2 avoids the known passlib/bcrypt backend incompatibility while retaining
 # passlib's constant-time verification and configurable work factor.
@@ -118,8 +177,10 @@ def get_db() -> Generator[Session, None, None]:
 
 
 def init_db() -> None:
-    """Create tables and insert idempotent development seed data."""
+    """Verify the database connection, create tables, and seed initial data."""
 
+    with engine.connect() as connection:
+        connection.execute(text("SELECT 1"))
     Base.metadata.create_all(bind=engine)
     with SessionLocal() as db:
         if db.scalar(select(UserDB).where(UserDB.username == "engineer@jenga.com")) is None:

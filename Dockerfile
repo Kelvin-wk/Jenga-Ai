@@ -11,8 +11,7 @@ RUN npm run build
 FROM python:3.12-alpine
 
 RUN apk add --no-cache nginx \
-    && mkdir -p /app/data /tmp/nginx/client_temp /tmp/nginx/proxy_temp \
-        /tmp/nginx/fastcgi_temp /tmp/nginx/uwsgi_temp /tmp/nginx/scgi_temp
+    && mkdir -p /app/data
 
 WORKDIR /app/backend
 COPY backend/requirements.txt .
@@ -24,7 +23,7 @@ COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/start.sh /usr/local/bin/start.sh
 
 ENV PORT=8080 \
-    DATABASE_URL=sqlite:////app/data/jenga_consultants.db \
+    APP_ENV=production \
     PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
@@ -33,6 +32,6 @@ RUN chmod +x /usr/local/bin/start.sh
 EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD wget -qO- http://127.0.0.1:8080/health >/dev/null || exit 1
+  CMD wget -qO- http://127.0.0.1:8080/ready >/dev/null || exit 1
 
 CMD ["/usr/local/bin/start.sh"]
