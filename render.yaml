@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: jenga-consultants-backend
+    runtime: python
+    plan: starter
+    rootDir: .
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: JENGA_SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:////var/data/jenga_consultants.db
+      - key: CORS_ORIGINS
+        sync: false
+    disk:
+      name: jenga-consultants-data
+      mountPath: /var/data
+      sizeGB: 1
