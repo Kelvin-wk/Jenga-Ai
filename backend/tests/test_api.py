@@ -12,6 +12,26 @@ def test_readiness_checks_database() -> None:
         assert response.json() == {"status": "ready"}
 
 
+def test_catalogue_api_returns_live_backend_products() -> None:
+    with TestClient(app) as client:
+        response = client.get("/api/v1/catalogue/products")
+
+    assert response.status_code == 200
+    products = response.json()
+    assert products
+    assert {product["model_number"] for product in products} == {
+        "JCG-1000",
+        "JCT-500",
+        "JCS-50",
+    }
+    assert all(product["name"] != "BMS C1" for product in products)
+    assert all(
+        {"id", "category", "name", "model_number", "specifications", "price_ksh"}
+        <= product.keys()
+        for product in products
+    )
+
+
 def test_login_and_price_query() -> None:
     with TestClient(app) as client:
         login = client.post(

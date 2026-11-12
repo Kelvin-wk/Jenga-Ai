@@ -39,6 +39,10 @@ def test_image_and_startup_preserve_non_root_proxy_and_readiness() -> None:
     for directory in ("client_body", "proxy", "fastcgi", "uwsgi", "scgi"):
         assert f"/tmp/nginx/{directory}" in dockerfile
     assert "USER appuser\n\nRUN nginx -t -e stderr -c /etc/nginx/nginx.conf" in dockerfile
+    assert "COPY ai ./ai" in dockerfile
+    assert "COPY data ./data" in dockerfile
+    assert "python -m ai.ingestion.manifest" in dockerfile
+    assert "python -m ai.ingestion.source_preview" in dockerfile
     assert "uvicorn app.main:app --host 127.0.0.1 --port 8000" in startup
     assert 'nginx -e stderr -c /etc/nginx/nginx.conf -g "daemon off;" &' in startup
     assert "http://127.0.0.1:8000/ready" in startup

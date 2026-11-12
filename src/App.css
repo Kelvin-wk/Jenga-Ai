@@ -703,13 +703,18 @@
   margin-bottom: 0;
 }
 
-.recommendation-heading a {
+.recommendation-heading a,
+.recommendation-heading button {
   display: flex;
   gap: 3px;
   align-items: center;
+  padding: 0;
+  border: 0;
   color: #1768ad;
+  background: transparent;
   font-size: 10px;
   font-weight: 700;
+  cursor: pointer;
 }
 
 .recommendation-kicker {

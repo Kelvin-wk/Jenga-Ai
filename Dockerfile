@@ -32,9 +32,18 @@ COPY backend/requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip \
     && pip install --no-cache-dir -r requirements.txt
 COPY backend/app ./app
+COPY ai ./ai
+COPY data ./data
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/start.sh /usr/local/bin/start.sh
+
+RUN python -m ai.ingestion.manifest --report /tmp/source-manifest-report.json \
+    && python -m ai.ingestion.source_preview \
+        --snapshot data/manifests/bms_c1_snapshot.json \
+        --asset-root . \
+        --output /tmp/bms-c1-review-preview.json \
+    && rm /tmp/source-manifest-report.json /tmp/bms-c1-review-preview.json
 
 ENV PORT=8080 \
     APP_ENV=production \

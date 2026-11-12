@@ -6,6 +6,9 @@ The production image contains both application surfaces in one container:
 - FastAPI runs internally on `127.0.0.1:8000` through a non-privileged startup script.
 - Nginx proxies `/api/*`, `/health`, and `/ready` to FastAPI.
 - Nginx runs as the non-root `appuser`, sends its startup/error logs to stderr before loading the config, writes access logs to stdout, stores its PID directly in `/tmp`, and uses sticky, world-writable subdirectories for temporary files so runtime UID remapping does not block writes.
+- The image includes the standard-library `ai/` ingestion validators and `data/` review assets; the build verifies the source manifest and BMS C1 snapshot before publishing the image.
+- Only products already in the backend database are exposed to the UI and chat. Proposed catalogue entries with pending evidence or approval are not automatically imported or priced.
+- The frontend product browser reads `/api/v1/catalogue/products`; it no longer displays a separate hard-coded product list. Chat requests use the backend `/api/v1/chat/query` contract.
 - PrimeCloud MySQL is used through the `DATABASE_URL` environment variable.
 
 This avoids privileged process management and removes the need for a separate backend service hostname while keeping the
