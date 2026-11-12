@@ -77,11 +77,12 @@ uses the hosted provider when configured; the local-model adapter and authorized
 retrieval flow are pending. Model revision, checksum and licence records also
 remain incomplete. See the [AI handoff](docs/AI_HANDOFF.md).
 
-## Deployment and team work
+## Deployment
 
 [DEPLOYMENT.md](DEPLOYMENT.md) describes the combined Docker deployment for
 PrimeCloud and local containers. Its hosted-model configuration describes the
 current implementation, not approval to send private or restricted data.
+
 ### Deploying the full application to PrimeCloud
 
 Deploy this repository as a **Docker application**, not as a Python-runtime
@@ -97,7 +98,18 @@ Configure PrimeCloud to expose port `8080`, mount persistent storage at
 [`DEPLOYMENT.md`](./DEPLOYMENT.md) for the full setup and required production
 environment variables.
 
+## Team
+
+Thanks to everyone contributing to this project:
+
+- [@De-pilot7127](https://github.com/De-pilot7127) — frontend
+- [@Hawamuriuki](https://github.com/Hawamuriuki) — frontend
+- [@JavaTheHutt-K](https://github.com/JavaTheHutt-K) — backend
+- [@kwisdomk](https://github.com/kwisdomk) — AI/ML
+
+## Contributing
+
 Read [AGENTS.md](AGENTS.md) before contributing. The
-[implementation plan](JENGA_CONSULTANTS_MASTER_PLAN.md) records requirements and
+[implementation plan](project-plan.md) records requirements and
 task IDs; section 19 records progress. Proposed paths and features in the plan
 may differ from the current source tree.
