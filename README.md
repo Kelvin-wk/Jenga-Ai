@@ -1,5 +1,5 @@
 
-This is KopilotProd, a construction-company AI assistant that customers and engineers can ask questions in text, audio, or images.
+This is copilotProd, a construction-company AI assistant that customers and engineers can ask questions in text, audio, or images.
 
 ## Backend
 
