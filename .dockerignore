@@ -1,0 +1,12 @@
+node_modules
+dist
+.git
+.gitignore
+.env
+.env.*
+*.log
+__pycache__
+.pytest_cache
+*.pyc
+backend/data
+jenga_consultants.db
