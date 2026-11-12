@@ -1219,6 +1219,18 @@ are pending. Next: B reviews schema and authorization; A verifies PDF provenance
   record model revision/checksum/licence. Details: `docs/AI_HANDOFF.md` §4.
 - No shared API, schema, ACL or retrieval code was changed by A in this check.
 
+### GitHub activity follow-up - 13 November 2026
+
+- `origin/main` advanced one commit to `41a45c6` (remove duplicate topbar
+  sign-out, keep sidebar sign-out; `src/App.tsx` and `src/App.css` only).
+- PR #1 was marked ready for review at `2026-11-12T21:41Z`; the requested
+  Copilot review failed because of insufficient quota and **no human review or
+  approval is recorded**. The PR is mergeable `clean` and unmerged.
+- Plan §13.2 still requires the PR note to carry task ID, changed files, test
+  commands and outputs, sources, evidence, limitations and contract impact.
+  §13.3 gates G2-G5 need named reviewer sign-off. Merge only after a human
+  reviews the data/rights evidence and the B/A contracts.
+
 ### Suggested coordination checklist per PR
 
 - [ ] I read `AGENTS.md`, master plan and latest relevant contracts.

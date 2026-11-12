@@ -105,13 +105,18 @@ catalogue facts. Document URLs, SHA-256 values and blockers are in
 
 ### 4.1 GitHub activity
 
-`origin/main` moved from `c6ed220` to `c359209` (8 commits) after this branch
-was cut. PR #1 is the only open PR, still draft, **mergeable `clean`**, and not
-merged. No GitHub Actions workflow runs are configured. The main additions are:
+`origin/main` moved from `c6ed220` to `41a45c6` (9 commits) after this branch
+was cut. PR #1 is the only open PR, **mergeable `clean`**, and not merged. No
+GitHub Actions workflow runs are configured. At `2026-11-12T21:41Z` the PR was
+marked ready for review (`draft: false`) and a review was requested; the
+Copilot reviewer could not run ("insufficient remaining quota"), so there is
+**no human approval or review yet**. Ready-for-review is not approval.
 
 - `acfcc72` role-aware product dashboard and conversation route;
 - `50bba37` to `c359209` PrimeCloud/Docker/MySQL deployment fixes;
-- `59bd655` OpenAI Responses API integration in backend chat.
+- `59bd655` OpenAI Responses API integration in backend chat;
+- `41a45c6` removes the duplicate topbar sign-out and keeps the sidebar control
+  (frontend only; no conflict with this branch).
 
 Git metadata lists `kibuikevin@zetech.ac.ke` on the main commits and
 `Hawa Muriuki` on the initial frontend commit. That is not proof of formal
