@@ -98,3 +98,70 @@ catalogue facts. Document URLs, SHA-256 values and blockers are in
 2. **Specification Schema:** Determine whether specifications will be stored in `ProductDB.specifications` (JSON string) or a normalized `spec_values` relational table. The manifest uses richer field names than the ingestion schema; mapping is unresolved.
 3. **Pre-Retrieval Authorization:** Expose a server-derived `AuthContext` to filter retrieval candidates before similarity scoring or full-text query execution.
 4. **Rights Review:** Review processing, quotation and redistribution separately. Public download access is not a reuse licence; commercial PDFs must stay outside Git until permission is recorded.
+
+---
+
+## 4. Cross-Role Integration Check - 13 November 2026
+
+### 4.1 GitHub activity
+
+`origin/main` moved from `c6ed220` to `c359209` (8 commits) after this branch
+was cut. PR #1 is the only open PR, still draft, **mergeable `clean`**, and not
+merged. No GitHub Actions workflow runs are configured. The main additions are:
+
+- `acfcc72` role-aware product dashboard and conversation route;
+- `50bba37` to `c359209` PrimeCloud/Docker/MySQL deployment fixes;
+- `59bd655` OpenAI Responses API integration in backend chat.
+
+Git metadata lists `kibuikevin@zetech.ac.ke` on the main commits and
+`Hawa Muriuki` on the initial frontend commit. That is not proof of formal
+role ownership. The team still needs to record its three delivery roles and
+lead explicitly.
+
+### 4.2 Local model server
+
+It is not too early to test. The local LM Studio endpoint was reachable at
+`http://127.0.0.1:1234/v1`:
+
+| Model | Type | Quantization | State | Context |
+|---|---|---|---|---|
+| `qwen3.5-4b-claude-4.6-opus-reasoning-distilled` | VLM | Q4_K_S | loaded | 111,104 loaded / 262,144 max |
+| `google/gemma-4-12b-qat` | VLM | Q4_0 | not loaded | 262,144 max |
+| `text-embedding-nomic-embed-text-v1.5` | embeddings | Q4_K_M | loaded | 2,048 max |
+
+The loaded Qwen variant advertises `tool_use`. A warm chat probe returned `OK`
+in **9,873 ms** with 144 completion tokens; it emitted `reasoning_content`
+before `content`, and low `max_tokens` values produced an empty answer with
+`finish_reason: length`. The embedding probe returned **768 dimensions** in
+**18,837 ms**. GPU memory was 5,209 MiB used / 793 MiB free of 6,144 MiB.
+
+This confirms connectivity and basic inference only. It is not a latency
+benchmark, does not identify the host as Athena, and does not approve the
+model. The loaded Qwen is a community reasoning-distilled variant, not the base
+Qwen3.5-4B checkpoint named in the plan. The current backend on main calls
+`https://api.openai.com/v1/responses` when `OPENAI_API_KEY` is set; it does not
+call this local endpoint.
+
+### 4.3 Status by delivery role
+
+The application has two authenticated roles (`engineer`, `customer`). The
+project has three delivery roles (`F`, `B`, `A`). This table covers delivery
+roles.
+
+| Role | Observed work | Assessment | Next action |
+|---|---|---|---|
+| **F - Frontend** | Role-aware dashboard, login screen and role switcher (`acfcc72`); seeded demo credentials and role stored in `localStorage`; comparison and recommendations still partly hardcoded. | Backend still treats the token/database role as authoritative, so the client role is not a server grant. But `localStorage` role, a role fallback without login, and credentials in source conflict with the documented frontend rules. | Read the role from `/auth/me`; remove the fallback role selector; keep demo credentials in seed/env configuration, not UI source; replace hardcoded comparison rows with API data. |
+| **B - Backend/Security** | JWT/session authentication, database role cross-check, owner-bound conversations, MySQL/Docker deployment, optional OpenAI chat. | Auth primitives are a good base. However catalogue endpoints have no `get_current_user` dependency or role predicate, `lookup_products` returns every row, and the OpenAI path sends catalogue text to an external provider. The integer `ProductDB.id` and JSON `specifications` choices are still unagreed with A. | Use an authorised local OpenAI-compatible endpoint (`LLM_BASE_URL`, `LLM_MODEL`), add pre-retrieval visibility predicates and auth dependencies to catalogue/search paths, and settle the ID/specification contract before A integration. |
+| **A - AI/Data/Evaluation** | 15 catalogue candidates, 19 pending source rows, 13 verified document URLs/hashes, 43 passing tests, DSD mass correction, local model server check. | Evidence is traceable and unapproved values remain pending. Actual local models differ from the plan (`nomic` 768-dim embedding instead of BGE-small; reasoning-distilled Qwen variant). No production specification file or retrieval adapter is approved. | Record model revision/checksum/licence, test the local adapter with authorised candidate filtering, map catalogue slots to B's integer IDs, and keep benchmark/metric claims unset until measured. |
+
+### 4.4 Recommended order
+
+1. **B** replaces the external OpenAI call with the local OpenAI-compatible
+   endpoint and adds role predicates before catalogue retrieval.
+2. **F** derives role from the server session, removes client-side role
+   authority and hardcoded demo passwords, and connects comparison/source
+   panels to real APIs.
+3. **A** records model provenance and adapts the catalogue mapping after B
+   confirms the ID and specification contracts.
+4. Merge PR #1 after review if it remains docs/data-only. It is behind `main`
+   but mergeable; do not rewrite its history just to reduce the commit gap.

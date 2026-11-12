@@ -1195,6 +1195,30 @@ are pending. Next: B reviews schema and authorization; A verifies PDF provenance
   Kipor/Cummins documents, complete rights and technical review, and agree the B
   ID/specification/authorization contracts.
 
+### Cross-role integration check - 13 November 2026
+
+- Owner: **AGENT-A = KWAIX**. Inspected `origin/main@c359209` (8 commits after
+  this branch's base) and draft PR #1. PR #1 remains open, draft and mergeable
+  `clean`; no GitHub Actions runs are configured. The branch is behind main but
+  touches A/data/docs only.
+- Local LM Studio was reachable at `http://127.0.0.1:1234/v1`. Observed loaded
+  `qwen3.5-4b-claude-4.6-opus-reasoning-distilled` (Q4_K_S, 111,104-token
+  context, tool use) and `text-embedding-nomic-embed-text-v1.5` (Q4_K_M,
+  768 dimensions, 2,048 context). Warm chat probe returned `OK` in 9,873 ms;
+  embedding probe took 18,837 ms. GPU memory was 5,209 MiB used / 793 MiB free.
+  This is connectivity evidence, not a benchmark or model approval.
+- Role correlation: **F** delivered the role-aware dashboard but still stores
+  role in `localStorage`, has a no-login role fallback and hardcoded demo
+  credentials; **B** delivered auth/deployment/MySQL and optional OpenAI chat,
+  but catalogue endpoints lack auth/role predicates and the OpenAI path sends
+  catalogue text externally; **A** holds the candidate evidence and local-model
+  check, but model provenance and B's integer-ID/JSON-spec contract remain
+  unresolved.
+- Advice: replace the external OpenAI call with the local endpoint, add
+  pre-retrieval role filtering, make F derive role from `/auth/me`, and have A
+  record model revision/checksum/licence. Details: `docs/AI_HANDOFF.md` §4.
+- No shared API, schema, ACL or retrieval code was changed by A in this check.
+
 ### Suggested coordination checklist per PR
 
 - [ ] I read `AGENTS.md`, master plan and latest relevant contracts.

@@ -23,10 +23,35 @@ result.
 Node's `os.totalmem()` and `os.freemem()`; these are system values, not model peak
 usage. Free RAM is a momentary reading and is too low to justify loading a model.
 
-`http://127.0.0.1:1234/v1/models` was inaccessible under socket permissions.
-`lms ls --json` failed to connect/find a valid running installation. This proves
-runtime access is unavailable in this session, not that the user has no models.
-No model/license/profile has been selected, and this session loaded no model.
+At the original 16:30 measurement, `http://127.0.0.1:1234/v1/models` was
+inaccessible under socket permissions and `lms ls --json` failed to connect.
+That proved runtime access was unavailable at that moment, not that the user
+had no models.
+
+### Follow-up: LM Studio reachable, 13 November 2026
+
+At about **00:20-00:23 Africa/Nairobi** (`2026-11-13T00:22:33+03:00`), the
+localhost endpoint was reachable. `/api/v0/models` reported:
+
+| Model | Type | Quantization | State | Context |
+|---|---|---|---|---|
+| `qwen3.5-4b-claude-4.6-opus-reasoning-distilled` | VLM | Q4_K_S | loaded | 111,104 loaded / 262,144 max |
+| `google/gemma-4-12b-qat` | VLM | Q4_0 | not loaded | 262,144 max |
+| `text-embedding-nomic-embed-text-v1.5` | embeddings | Q4_K_M | loaded | 2,048 max |
+
+The loaded Qwen variant advertises `tool_use`. A warm chat probe returned
+`OK` in **9,873 ms** with 144 completion tokens. The model emitted
+`reasoning_content` first; probes with `max_tokens` 8 and 128 returned an empty
+`content` field and `finish_reason: length`, so reasoning-token budget must be
+accounted for. The nomic embedding probe returned **768 dimensions** in
+**18,837 ms**.
+
+GPU memory during the check was **5,209 MiB used / 793 MiB free** of 6,144 MiB;
+OS free RAM was 393,814,016 bytes. This confirms connectivity and basic local
+inference only. It is not a latency benchmark, does not identify the host as
+Athena, and does not approve the model. The loaded Qwen is a community
+reasoning-distilled variant, not the base Qwen3.5-4B checkpoint named in the
+plan. Model revision, file checksum and licence still need recording.
 
 The default `python`, `python3` and `py` aliases were inaccessible. An existing
 `Q:\rag_env` points to a missing interpreter and was not modified. The working
