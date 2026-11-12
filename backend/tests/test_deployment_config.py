@@ -34,9 +34,9 @@ def test_image_and_startup_preserve_non_root_proxy_and_readiness() -> None:
 
     assert "USER appuser" in dockerfile
     assert "chown -R appuser:appuser /app/data /tmp/nginx" in dockerfile
-    assert "nginx -t -c /etc/nginx/nginx.conf" in dockerfile
+    assert "USER appuser\n\nRUN nginx -t -e stderr -c /etc/nginx/nginx.conf" in dockerfile
     assert "uvicorn app.main:app --host 127.0.0.1 --port 8000" in startup
-    assert 'nginx -c /etc/nginx/nginx.conf -g "daemon off;" &' in startup
+    assert 'nginx -e stderr -c /etc/nginx/nginx.conf -g "daemon off;" &' in startup
     assert "http://127.0.0.1:8000/ready" in startup
     assert "location /ready" in nginx
     assert "proxy_pass http://127.0.0.1:8000/ready;" in nginx

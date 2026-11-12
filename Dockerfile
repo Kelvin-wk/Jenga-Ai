@@ -30,8 +30,6 @@ COPY --from=build /app/dist /usr/share/nginx/html
 COPY deploy/nginx.conf /etc/nginx/nginx.conf
 COPY deploy/start.sh /usr/local/bin/start.sh
 
-RUN nginx -t -c /etc/nginx/nginx.conf
-
 ENV PORT=8080 \
     APP_ENV=production \
     PYTHONDONTWRITEBYTECODE=1 \
@@ -40,6 +38,8 @@ ENV PORT=8080 \
 RUN chmod +x /usr/local/bin/start.sh
 
 USER appuser
+
+RUN nginx -t -e stderr -c /etc/nginx/nginx.conf
 
 EXPOSE 8080
 

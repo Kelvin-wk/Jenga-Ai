@@ -35,7 +35,7 @@ if [ "$attempt" -ge 30 ]; then
   exit 1
 fi
 
-nginx -c /etc/nginx/nginx.conf -g "daemon off;" &
+nginx -e stderr -c /etc/nginx/nginx.conf -g "daemon off;" &
 nginx_pid=$!
 
 while kill -0 "$backend_pid" 2>/dev/null && kill -0 "$nginx_pid" 2>/dev/null; do
