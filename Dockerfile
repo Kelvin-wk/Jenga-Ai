@@ -19,7 +19,13 @@ RUN apk add --no-cache nginx \
         /tmp/nginx/fastcgi \
         /tmp/nginx/uwsgi \
         /tmp/nginx/scgi \
-    && chown -R appuser:appuser /app/data /tmp/nginx
+    && chmod 1777 \
+        /tmp/nginx/client_body \
+        /tmp/nginx/proxy \
+        /tmp/nginx/fastcgi \
+        /tmp/nginx/uwsgi \
+        /tmp/nginx/scgi \
+    && chown -R appuser:appuser /app/data
 
 WORKDIR /app/backend
 COPY backend/requirements.txt .
