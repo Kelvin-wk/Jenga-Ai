@@ -1021,9 +1021,10 @@ At minimum, run `pytest backend/tests ai/tests tests/integration -q` with dummy 
 ## 19. Execution ledger — live state, to update collaboratively
 
 **Current A-01/A-02 review (12 November 2026):** local branch
-`feature/ai-catalogue-sources@c6ed220` matches the checked remote main; backend and
-frontend are present, `.env` is ignored. Existing checkout/ignore changes were
-preserved. Python 3.14.7 `python -B -m unittest discover -s ai/tests -v` passed
+`feature/ai-catalogue-sources@c6ed220` matches the checked remote main; the
+branch is pushed and draft PR #1 is open at
+https://github.com/kwisdomk/kpp/pull/1. Backend and frontend are present, `.env`
+is ignored. Existing checkout/ignore changes were preserved. Python 3.14.7 `python -B -m unittest discover -s ai/tests -v` passed
 **43 tests in 3.641 s**. The manifest has **19 pending rows and 0 verified
 assets**; the catalogue has **15 candidate products and 0 approved products**.
 Thirteen slots have a verified official document URL and SHA-256; Kipor and
@@ -1187,6 +1188,9 @@ are pending. Next: B reviews schema and authorization; A verifies PDF provenance
 - Hardware correction: the planning artifact names an RTX 3050 6 GB; the earlier
   "planned RTX 4050" wording was stale. Host identity is still not independently
   confirmed as Athena. No model-capacity claim is made.
+- Evidence commits `2729d2e`, `f592559`, `07b2d64`, `d1f6833` and `ae662bb`
+  were pushed to `origin/feature/ai-catalogue-sources`. Draft PR #1:
+  https://github.com/kwisdomk/kpp/pull/1 (not merged; review pending).
 - No backend/frontend API, database, ACL or schema change. Next: verify
   Kipor/Cummins documents, complete rights and technical review, and agree the B
   ID/specification/authorization contracts.

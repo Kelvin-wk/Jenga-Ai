@@ -4,7 +4,7 @@ OWNER: AGENT-A / KWAIX
 
 TASK: A-01 (Catalogue Sourcing) & A-02 (Ingestion Preparation) [Section 9.7 Task IDs]
 
-BRANCH: `feature/ai-catalogue-sources` (branched from `origin/main@c6ed220`)
+BRANCH: `feature/ai-catalogue-sources` (draft PR #1: https://github.com/kwisdomk/kpp/pull/1)
 
 STATUS: A-01 evidence recorded; rights and human technical review pending; A-02 preparation in progress
 
@@ -15,7 +15,7 @@ STATUS: A-01 evidence recorded; rights and human technical review pending; A-02 
 ```text
 TASK: A-01 | A-02
 OWNER: AGENT-A (KWAIX)
-BRANCH + COMMIT: feature/ai-catalogue-sources (draft PR pending)
+BRANCH + COMMIT: feature/ai-catalogue-sources at ae662bb; draft PR #1 (not merged)
 CHANGED FILES:
   - .gitignore (added .env, .env.*, model-weight and data-index exclusions)
   - data/catalogue/products.csv (15 candidates; exact document URLs where verified; verified: false)
