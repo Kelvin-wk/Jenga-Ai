@@ -57,6 +57,9 @@ takes precedence over `MYSQL_URL`, which takes precedence over separate
 variables. If PrimeCloud provides `MYSQLPORT` as `3306/<database>`, the app
 uses the numeric portion as the port and the suffix as the database name
 unless `MYSQL_DATABASE`/`MYSQLDATABASE` is explicitly set.
+`MYSQL_HOST` must be a hostname or IP address only. If PrimeCloud gives a
+combined host such as `host:3306/database`, that form is also accepted; do not
+include credentials in the host variable.
 
 The frontend is built with `VITE_API_BASE_URL=/api/v1`, so browser requests
 remain on the same PrimeCloud domain. No backend URL or cross-application

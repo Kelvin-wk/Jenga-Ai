@@ -65,3 +65,41 @@ def test_invalid_mysql_port_reports_configuration_error(
 
     with pytest.raises(RuntimeError, match="Invalid MySQL port"):
         _database_url()
+
+
+@pytest.mark.parametrize(
+    "host_setting",
+    [
+        "mysql.internal:3307/default",
+        "mysql://mysql.internal:3307/default",
+    ],
+)
+def test_mysql_host_with_port_and_database_is_normalized(
+    monkeypatch: pytest.MonkeyPatch,
+    host_setting: str,
+) -> None:
+    _clear_mysql_environment(monkeypatch)
+    monkeypatch.setenv("MYSQLHOST", host_setting)
+    monkeypatch.setenv("MYSQLUSER", "app")
+    monkeypatch.setenv("MYSQLPASSWORD", "secret")
+
+    url = _database_url()
+
+    assert url.host == "mysql.internal"
+    assert url.port == 3307
+    assert url.database == "default"
+
+
+@pytest.mark.parametrize("host_setting", ["mysql.internal/path/too/much", "a" * 64])
+def test_invalid_mysql_host_fails_with_configuration_hint(
+    monkeypatch: pytest.MonkeyPatch,
+    host_setting: str,
+) -> None:
+    _clear_mysql_environment(monkeypatch)
+    monkeypatch.setenv("MYSQLHOST", host_setting)
+    monkeypatch.setenv("MYSQLUSER", "app")
+    monkeypatch.setenv("MYSQLPASSWORD", "secret")
+    monkeypatch.setenv("MYSQLDATABASE", "default")
+
+    with pytest.raises(RuntimeError, match="MYSQL_HOST"):
+        _database_url()

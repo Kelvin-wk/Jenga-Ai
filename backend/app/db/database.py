@@ -4,6 +4,8 @@ from __future__ import annotations
 
 import os
 import hashlib
+import ipaddress
+import re
 import secrets
 from datetime import datetime, timezone
 from typing import Generator
@@ -11,7 +13,46 @@ from typing import Generator
 from passlib.context import CryptContext
 from sqlalchemy import Boolean, ForeignKey, Integer, String, Text, create_engine, select, text
 from sqlalchemy.engine import URL, make_url
+from sqlalchemy.exc import ArgumentError
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, sessionmaker
+
+
+def _validate_mysql_host(host: str | None) -> str:
+    """Validate a host before passing it to DNS resolution."""
+
+    normalized_host = (host or "").strip().rstrip(".")
+    if not normalized_host:
+        raise RuntimeError(
+            "MySQL host is empty or invalid. Set MYSQL_HOST to the database hostname only."
+        )
+    try:
+        ipaddress.ip_address(normalized_host)
+        return normalized_host
+    except ValueError:
+        pass
+
+    try:
+        ascii_host = normalized_host.encode("idna").decode("ascii")
+    except UnicodeError as error:
+        raise RuntimeError(
+            "MySQL host is invalid. Set MYSQL_HOST to the database hostname only, "
+            "without a protocol, port, or database path."
+        ) from error
+    labels = ascii_host.split(".")
+    if (
+        len(ascii_host) > 253
+        or any(
+            not label
+            or len(label) > 63
+            or re.fullmatch(r"[A-Za-z0-9](?:[A-Za-z0-9-]*[A-Za-z0-9])?", label) is None
+            for label in labels
+        )
+    ):
+        raise RuntimeError(
+            "MySQL host is invalid. Set MYSQL_HOST to the database hostname only, "
+            "without a protocol, port, or database path."
+        )
+    return ascii_host
 
 
 def _database_url() -> str | URL:
@@ -23,8 +64,29 @@ def _database_url() -> str | URL:
             return database_url.replace("mysql://", "mysql+pymysql://", 1)
         return database_url
 
-    mysql_host = os.getenv("MYSQL_HOST") or os.getenv("MYSQLHOST")
-    if mysql_host:
+    mysql_host_setting = os.getenv("MYSQL_HOST") or os.getenv("MYSQLHOST")
+    if mysql_host_setting:
+        mysql_host_setting = mysql_host_setting.strip()
+        host_url: URL | None = None
+        try:
+            if "://" in mysql_host_setting:
+                host_url = make_url(mysql_host_setting)
+            elif "/" in mysql_host_setting or (
+                ":" in mysql_host_setting and not mysql_host_setting.startswith("[")
+            ):
+                host_url = make_url(f"mysql://{mysql_host_setting}")
+        except ArgumentError as error:
+            raise RuntimeError(
+                "MYSQL_HOST must be a hostname, or a valid host:port/database value."
+            ) from error
+        if host_url is not None and host_url.database and "/" in host_url.database:
+            raise RuntimeError(
+                "MYSQL_HOST must contain at most one database path segment; "
+                "set the database separately in MYSQL_DATABASE."
+            )
+        mysql_host = _validate_mysql_host(
+            host_url.host if host_url is not None else mysql_host_setting
+        )
         mysql_user = os.getenv("MYSQL_USER") or os.getenv("MYSQLUSER")
         mysql_password = os.getenv("MYSQL_PASSWORD")
         if mysql_password is None:
@@ -34,8 +96,14 @@ def _database_url() -> str | URL:
         port_text, separator, database_from_port = port_setting.partition("/")
         if not port_text.isdecimal() or not 1 <= int(port_text) <= 65535:
             raise RuntimeError(f"Invalid MySQL port: {port_text!r}")
-        if mysql_database is None and separator:
-            mysql_database = database_from_port or None
+        if host_url is not None and host_url.port is not None and not (
+            os.getenv("MYSQL_PORT") or os.getenv("MYSQLPORT")
+        ):
+            port_text = str(host_url.port)
+        if mysql_database is None:
+            mysql_database = database_from_port or (
+                host_url.database if host_url is not None else None
+            )
         missing = [
             name
             for name, value in (
