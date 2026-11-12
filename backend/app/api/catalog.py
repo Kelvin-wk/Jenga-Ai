@@ -12,6 +12,7 @@ from app.schemas.common import ProductResponse
 from app.tools.catalog import lookup_products
 
 router = APIRouter(prefix="/catalogue", tags=["catalogue"])
+legacy_router = APIRouter(prefix="/catalog", tags=["catalogue"])
 
 
 @router.get("/products", response_model=list[ProductResponse])
@@ -79,3 +80,17 @@ def compare_products(
         ],
         fields=fields,
     )
+
+
+legacy_router.add_api_route(
+    "/products",
+    list_products,
+    methods=["GET"],
+    response_model=list[ProductResponse],
+)
+legacy_router.add_api_route(
+    "/products/{product_id}",
+    get_product,
+    methods=["GET"],
+    response_model=ProductResponse,
+)

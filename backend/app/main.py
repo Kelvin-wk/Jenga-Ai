@@ -29,6 +29,7 @@ app.add_middleware(
 app.include_router(auth.router)
 app.include_router(chat.router)
 app.include_router(catalog.router)
+app.include_router(catalog.legacy_router)
 app.include_router(media.router)
 app.include_router(conversations.router)
 app.include_router(reviews.router)
