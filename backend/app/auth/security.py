@@ -6,18 +6,19 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, status
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from app.db.database import UserDB, get_db, pwd_context
+from app.core.sessions import get_session_user
 
 SECRET_KEY = os.getenv("JENGA_SECRET_KEY", "change-this-development-secret")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)
 
 
 def create_access_token(username: str, role: str) -> str:
@@ -33,9 +34,19 @@ def authenticate_user(db: Session, username: str, password: str) -> UserDB | Non
 
 
 def get_current_user(
-    token: Annotated[str, Depends(oauth2_scheme)],
+    request: Request,
+    token: Annotated[str | None, Depends(oauth2_scheme)],
     db: Annotated[Session, Depends(get_db)],
 ) -> UserDB:
+    session_user = get_session_user(request, db)
+    if session_user is not None:
+        return session_user[1]
+    if token is None:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Missing or expired authentication token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     credentials_error = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid or expired authentication token",

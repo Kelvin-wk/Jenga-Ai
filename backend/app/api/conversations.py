@@ -1,0 +1,67 @@
+"""Owner-bound conversation lifecycle routes."""
+
+import uuid
+from datetime import datetime, timezone
+from typing import Annotated
+
+from fastapi import APIRouter, Depends, HTTPException, Request
+from sqlalchemy import select
+from sqlalchemy.orm import Session
+
+from app.auth.security import get_current_user
+from app.core.sessions import require_session
+from app.db.database import ConversationDB, UserDB, get_db
+from app.schemas.catalogue import ConversationCreate
+
+router = APIRouter(prefix="/conversations", tags=["conversations"])
+
+
+def _owner_or_404(conversation_id: str, user: UserDB, db: Session) -> ConversationDB:
+    conversation = db.scalar(
+        select(ConversationDB).where(
+            ConversationDB.id == conversation_id,
+            ConversationDB.user_id == user.id,
+        )
+    )
+    if conversation is None:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    return conversation
+
+
+@router.post("")
+def create_conversation(
+    payload: ConversationCreate,
+    current_user: Annotated[UserDB, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+) -> dict[str, object]:
+    conversation = ConversationDB(
+        id=f"conv_{uuid.uuid4().hex}",
+        user_id=current_user.id,
+        title=payload.title,
+        created_at=datetime.now(timezone.utc),
+    )
+    db.add(conversation)
+    db.commit()
+    return {"id": conversation.id, "status": conversation.status, "title": conversation.title}
+
+
+@router.get("/{conversation_id}")
+def get_conversation(
+    conversation_id: str,
+    current_user: Annotated[UserDB, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+) -> dict[str, object]:
+    conversation = _owner_or_404(conversation_id, current_user, db)
+    return {"id": conversation.id, "status": conversation.status, "title": conversation.title}
+
+
+@router.post("/{conversation_id}/finish", status_code=204)
+def finish_conversation(
+    conversation_id: str,
+    current_user: Annotated[UserDB, Depends(get_current_user)],
+    db: Annotated[Session, Depends(get_db)],
+) -> None:
+    conversation = _owner_or_404(conversation_id, current_user, db)
+    conversation.status = "finished"
+    conversation.finished_at = datetime.now(timezone.utc)
+    db.commit()
