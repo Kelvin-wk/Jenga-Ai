@@ -108,9 +108,9 @@ Check the backend directly before changing frontend code:
 
 ## Limited offline assistant
 
-The sign-in screen offers a limited offline mode so users can try a few fixed,
-general equipment definitions without a backend. It is not an AI model and
-does not authenticate users or access catalogue data, prices, manuals, or
-attachments. In an authenticated chat, network and server errors receive a
-clearly labeled local fallback; safety-sensitive and product-specific answers
-remain unavailable until the grounded backend is reachable.
+The sign-in screen offers a limited offline mode for curated explanations and
+comparisons of common electrical concepts. It is not an AI model and does not
+authenticate users or access catalogue data, prices, manuals, or attachments.
+In an authenticated chat, network and server errors receive a clearly labeled
+local fallback; safety-sensitive and product-specific answers remain
+unavailable until the grounded backend is reachable.

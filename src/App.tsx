@@ -22,6 +22,7 @@ import {
   X,
 } from "lucide-react";
 import "./App.css";
+import { offlineReply } from "./offlineAssistant";
 
 const API_BASE = "/api/v1";
 const SESSION_KEY = "ai-interface-session";
@@ -149,53 +150,6 @@ async function api<T>(
   return response.json() as Promise<T>;
 }
 
-function offlineReply(query: string, hasAttachments = false): Message {
-  const normalized = query.trim().toLowerCase();
-  let content: string;
-
-  if (hasAttachments) {
-    content =
-      "I can’t inspect attachments in this local fallback or confirm whether they reached the service. Check the service before retrying; avoid resending sensitive files until you know whether they were received.";
-  } else if (/^(hi|hello|hey|good morning|good afternoon)[!. ]*$/.test(normalized)) {
-    content =
-      "Hello! I’m using a limited local fallback, not an AI model. I can answer a few general equipment definitions, but I can’t access Jenga’s live catalogue or verify product details.";
-  } else if (/\b(help|what can you do|how do you work)\b/.test(normalized)) {
-    content =
-      "This limited local fallback can explain a few general equipment terms and help you prepare questions. It cannot access accounts, manuals, attachments, current prices, availability, or product specifications. Connect to the grounded product assistant for those features.";
-  } else if (/\bwhat is (a |an )?transformer\b/.test(normalized)) {
-    content =
-      "In general, a transformer transfers electrical energy between circuits and can change AC voltage levels. This is general background, not a specification or operating instruction for a Jenga product.";
-  } else if (/\bwhat is (a |an )?generator\b/.test(normalized)) {
-    content =
-      "In general, a generator converts mechanical energy into electrical energy. This is general background, not a specification or operating instruction for a Jenga product.";
-  } else if (/\bwhat is (a |an )?inverter\b/.test(normalized)) {
-    content =
-      "In general, an inverter converts direct current (DC) into alternating current (AC). This is general background, not a specification or operating instruction for a Jenga product.";
-  } else if (/\b(fault|troubleshoot|alarm|repair|unsafe|safety|emergency)\b/.test(normalized)) {
-    content =
-      "I can’t assess faults or provide equipment-specific safety or repair guidance while offline. Follow the manufacturer’s manual and site procedures, and contact a qualified engineer. Check the manual and follow local regulations.";
-  } else if (
-    /\b(price|cost|quote|pricing|specification|specs|availability|in stock|model number|catalogue|catalog|jct-\d|jcg-\d|jcs-\d)\b/.test(
-      normalized,
-    )
-  ) {
-    content =
-      "I can’t access the live Jenga catalogue while offline, so I can’t verify prices, availability, models, or product specifications. Reconnect to the service for current, grounded information.";
-  } else {
-    content =
-      "I’m using a fixed local fallback instead of a connected language model, so I can’t reliably answer this or verify equipment facts. I can answer a few basic definitions (transformer, generator, or inverter); connect to the grounded product assistant for product questions.";
-  }
-
-  return {
-    id: crypto.randomUUID(),
-    role: "assistant",
-    content,
-    tool_executed: "offline_response",
-    confidence: "low",
-    warnings: ["Fixed local response; not AI-generated.", "No catalogue or manual sources were used."],
-  };
-}
-
 function readSession(): Session | null {
   try {
     const session = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
@@ -268,7 +222,7 @@ export default function App() {
       {
         ...offlineReply("help"),
         content:
-          "Offline mode is active. I can answer a few general equipment definitions, but I’m not an AI model and can’t access accounts, manuals, attachments, product details, or current prices.",
+          "Offline mode is active. I can explain and compare common electrical concepts using curated local guidance. I’m not an AI model and can’t access accounts, manuals, attachments, Jenga product details, or current prices.",
       },
     ]);
   }
@@ -639,8 +593,9 @@ export default function App() {
           <div className="offline-disclaimer" role="status">
             <strong>Limited offline assistant</strong>
             <span>
-              Uses fixed local responses, not an AI model. It has no access to accounts,
-              product data, manuals, attachments, or current prices.
+              Uses curated local guidance, not an AI model. Ask for general electrical
+              explanations or comparisons; it has no access to accounts, product data,
+              manuals, attachments, or current prices.
             </span>
           </div>
           <div className="offline-thread chat-thread" aria-live="polite">
@@ -649,7 +604,7 @@ export default function App() {
                 <b>{message.role === "user" ? "You" : "Offline assistant"}</b>
                 <p>{message.content}</p>
                 {message.tool_executed && (
-                  <small className="chat-message-meta">Fixed local response · not AI-generated</small>
+                  <small className="chat-message-meta">Curated offline guidance · not AI-generated</small>
                 )}
               </article>
             ))}
@@ -670,7 +625,7 @@ export default function App() {
           >
             <textarea
               aria-label="Message offline assistant"
-              placeholder="Ask for a general equipment definition…"
+              placeholder="Ask how a concept works or compare two terms…"
               rows={3}
               value={prompt}
               onChange={(event) => setPrompt(event.currentTarget.value)}
