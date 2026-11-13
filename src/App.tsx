@@ -49,6 +49,15 @@ type Message = {
   tool_executed?: string;
   attachments?: string[];
 };
+class ApiError extends Error {
+  readonly status: number;
+
+  constructor(message: string, status: number) {
+    super(message);
+    this.name = "ApiError";
+    this.status = status;
+  }
+}
 type Conversation = { id: string; title: string; status?: string; updatedAt?: string };
 type StoredMessage = Pick<Message, "id" | "role" | "content"> & {
   created_at: string;
@@ -123,12 +132,68 @@ async function api<T>(
   });
 
   if (!response.ok) {
+    if (
+      response.status >= 500 &&
+      !response.headers.get("content-type")?.includes("application/json")
+    ) {
+      throw new ApiError(
+        "The service is temporarily unavailable. Please try again shortly.",
+        response.status,
+      );
+    }
     const detail = await response.text().catch(() => "");
-    throw new Error(detail || `Request failed (${response.status})`);
+    throw new ApiError(detail || `Request failed (${response.status})`, response.status);
   }
 
   if (response.status === 204) return undefined as T;
   return response.json() as Promise<T>;
+}
+
+function offlineReply(query: string, hasAttachments = false): Message {
+  const normalized = query.trim().toLowerCase();
+  let content: string;
+
+  if (hasAttachments) {
+    content =
+      "I can’t inspect attachments in this local fallback or confirm whether they reached the service. Check the service before retrying; avoid resending sensitive files until you know whether they were received.";
+  } else if (/^(hi|hello|hey|good morning|good afternoon)[!. ]*$/.test(normalized)) {
+    content =
+      "Hello! I’m using a limited local fallback, not an AI model. I can answer a few general equipment definitions, but I can’t access Jenga’s live catalogue or verify product details.";
+  } else if (/\b(help|what can you do|how do you work)\b/.test(normalized)) {
+    content =
+      "This limited local fallback can explain a few general equipment terms and help you prepare questions. It cannot access accounts, manuals, attachments, current prices, availability, or product specifications. Connect to the grounded product assistant for those features.";
+  } else if (/\bwhat is (a |an )?transformer\b/.test(normalized)) {
+    content =
+      "In general, a transformer transfers electrical energy between circuits and can change AC voltage levels. This is general background, not a specification or operating instruction for a Jenga product.";
+  } else if (/\bwhat is (a |an )?generator\b/.test(normalized)) {
+    content =
+      "In general, a generator converts mechanical energy into electrical energy. This is general background, not a specification or operating instruction for a Jenga product.";
+  } else if (/\bwhat is (a |an )?inverter\b/.test(normalized)) {
+    content =
+      "In general, an inverter converts direct current (DC) into alternating current (AC). This is general background, not a specification or operating instruction for a Jenga product.";
+  } else if (/\b(fault|troubleshoot|alarm|repair|unsafe|safety|emergency)\b/.test(normalized)) {
+    content =
+      "I can’t assess faults or provide equipment-specific safety or repair guidance while offline. Follow the manufacturer’s manual and site procedures, and contact a qualified engineer. Check the manual and follow local regulations.";
+  } else if (
+    /\b(price|cost|quote|pricing|specification|specs|availability|in stock|model number|catalogue|catalog|jct-\d|jcg-\d|jcs-\d)\b/.test(
+      normalized,
+    )
+  ) {
+    content =
+      "I can’t access the live Jenga catalogue while offline, so I can’t verify prices, availability, models, or product specifications. Reconnect to the service for current, grounded information.";
+  } else {
+    content =
+      "I’m using a fixed local fallback instead of a connected language model, so I can’t reliably answer this or verify equipment facts. I can answer a few basic definitions (transformer, generator, or inverter); connect to the grounded product assistant for product questions.";
+  }
+
+  return {
+    id: crypto.randomUUID(),
+    role: "assistant",
+    content,
+    tool_executed: "offline_response",
+    confidence: "low",
+    warnings: ["Fixed local response; not AI-generated.", "No catalogue or manual sources were used."],
+  };
 }
 
 function readSession(): Session | null {
@@ -144,6 +209,7 @@ function readSession(): Session | null {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(readSession);
+  const [offlineMode, setOfflineMode] = useState(false);
   const [role, setRole] = useState<Role | null>(() => {
     const savedRole = localStorage.getItem(ROLE_KEY);
     return savedRole === "engineer" || savedRole === "customer" ? savedRole : null;
@@ -176,6 +242,7 @@ export default function App() {
   const audioChunks = useRef<Blob[]>([]);
 
   const logout = useCallback(() => {
+    setOfflineMode(false);
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem(ROLE_KEY);
     setSession(null);
@@ -190,6 +257,21 @@ export default function App() {
     setCatalogLoaded(false);
     setCatalogError("");
   }, []);
+
+  function enterOfflineMode() {
+    setOfflineMode(true);
+    setConversationId("");
+    setFiles([]);
+    setAllowExternalProcessing(false);
+    setError("");
+    setMessages([
+      {
+        ...offlineReply("help"),
+        content:
+          "Offline mode is active. I can answer a few general equipment definitions, but I’m not an AI model and can’t access accounts, manuals, attachments, product details, or current prices.",
+      },
+    ]);
+  }
 
   useEffect(() => () => {
     const activeRecorder = recorder.current;
@@ -511,9 +593,16 @@ export default function App() {
       ]);
 
     } catch (e) {
-      setMessages((current) => current.filter((message) => message.id !== userMessage.id));
-      setPrompt(text);
-      setError(e instanceof Error ? e.message : "Message could not be sent.");
+      const canUseOfflineFallback =
+        e instanceof TypeError || (e instanceof ApiError && e.status >= 500);
+      if (canUseOfflineFallback) {
+        setMessages((current) => [...current, offlineReply(text, files.length > 0)]);
+        setError("");
+      } else {
+        setMessages((current) => current.filter((message) => message.id !== userMessage.id));
+        setPrompt(text);
+        setError(e instanceof Error ? e.message : "Message could not be sent.");
+      }
     } finally {
       setBusy(false);
     }
@@ -534,6 +623,74 @@ export default function App() {
     .filter((product): product is Product => product !== undefined);
   const engineerOnlyPages = new Set(["Compare Solutions", "Upload Media"]);
   const canAccessPage = (page: string) => role === "engineer" || !engineerOnlyPages.has(page);
+
+  if (offlineMode) {
+    return (
+      <main className="offline-page">
+        <header className="offline-header">
+          <div className="sidebar-brand">
+            <span className="brand-mark">⚙</span>
+            <span>Jenga Consultants<br /><b>Product Copilot</b></span>
+          </div>
+          <span className="offline-status">Offline mode · backend not used</span>
+          <button type="button" onClick={() => setOfflineMode(false)}>Back to sign in</button>
+        </header>
+        <section className="offline-chat">
+          <div className="offline-disclaimer" role="status">
+            <strong>Limited offline assistant</strong>
+            <span>
+              Uses fixed local responses, not an AI model. It has no access to accounts,
+              product data, manuals, attachments, or current prices.
+            </span>
+          </div>
+          <div className="offline-thread chat-thread" aria-live="polite">
+            {messages.map((message) => (
+              <article className={`chat-message ${message.role}`} key={message.id}>
+                <b>{message.role === "user" ? "You" : "Offline assistant"}</b>
+                <p>{message.content}</p>
+                {message.tool_executed && (
+                  <small className="chat-message-meta">Fixed local response · not AI-generated</small>
+                )}
+              </article>
+            ))}
+          </div>
+          <form
+            className="dashboard-composer offline-composer"
+            onSubmit={(event) => {
+              event.preventDefault();
+              const text = prompt.trim();
+              if (!text || busy) return;
+              setMessages((current) => [
+                ...current,
+                { id: crypto.randomUUID(), role: "user", content: text },
+                offlineReply(text),
+              ]);
+              setPrompt("");
+            }}
+          >
+            <textarea
+              aria-label="Message offline assistant"
+              placeholder="Ask for a general equipment definition…"
+              rows={3}
+              value={prompt}
+              onChange={(event) => setPrompt(event.currentTarget.value)}
+            />
+            <div className="composer-actions">
+              <span>No backend or AI model is used in offline mode.</span>
+              <button
+                type="submit"
+                className="send-button"
+                aria-label="Send message"
+                disabled={!prompt.trim()}
+              >
+                <ArrowUp size={16} />
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+    );
+  }
 
   if (!session) {
     return (
@@ -589,6 +746,13 @@ export default function App() {
           {loginError && <p className="login-error">{loginError}</p>}
           <button disabled={busy} className="auth-submit">{busy ? "Signing in…" : <>Sign In <ArrowUp size={16} /></>}</button>
           <div className="auth-divider"><span>or</span></div>
+          <button
+            type="button"
+            className="offline-login-button"
+            onClick={enterOfflineMode}
+          >
+            Continue in limited offline mode
+          </button>
           <p className="auth-version">Jenga Consultants Product Copilot v1.0</p>
         </form>
       </main>
