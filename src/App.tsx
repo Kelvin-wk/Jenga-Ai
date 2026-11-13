@@ -152,6 +152,7 @@ export default function App() {
   const [activeNav, setActiveNav] = useState("Dashboard");
   const [productPage, setProductPage] = useState(0);
   const [products, setProducts] = useState<Product[]>([]);
+  const [comparisonIds, setComparisonIds] = useState<number[]>([]);
   const [catalogLoaded, setCatalogLoaded] = useState(false);
   const [catalogError, setCatalogError] = useState("");
   const [username, setUsername] = useState("engineer@jenga.com");
@@ -169,6 +170,7 @@ export default function App() {
   const [recording, setRecording] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
   const cameraInput = useRef<HTMLInputElement>(null);
+  const documentInput = useRef<HTMLInputElement>(null);
   const recorder = useRef<MediaRecorder | null>(null);
   const audioStream = useRef<MediaStream | null>(null);
   const audioChunks = useRef<Blob[]>([]);
@@ -184,6 +186,7 @@ export default function App() {
     setChatLoading(false);
     setFiles([]);
     setProducts([]);
+    setComparisonIds([]);
     setCatalogLoaded(false);
     setCatalogError("");
   }, []);
@@ -286,6 +289,7 @@ export default function App() {
       localStorage.setItem(SESSION_KEY, JSON.stringify(nextSession));
       localStorage.setItem(ROLE_KEY, selectedRole);
       setProducts([]);
+      setComparisonIds([]);
       setCatalogLoaded(false);
       setCatalogError("");
       setConversationId("");
@@ -304,6 +308,18 @@ export default function App() {
   function openChat() {
     setActiveNav("Chat Assistant");
     setError("");
+  }
+
+  function askAboutProduct(product: Product) {
+    setPrompt(`Tell me about ${product.name} (${product.model_number}) and its key specifications.`);
+    openChat();
+  }
+
+  function addComparisonProduct() {
+    const nextProduct = products.find((product) => !comparisonIds.includes(product.id));
+    if (nextProduct) {
+      setComparisonIds((current) => [...current, nextProduct.id]);
+    }
   }
 
   function chooseRole(nextRole: Role) {
@@ -507,12 +523,15 @@ export default function App() {
   const pageDetails: Record<string, { title: string; description: string }> = {
     "Chat Assistant": { title: "Chat Assistant", description: "Ask questions by text or voice, and analyze product photos and documents." },
     "Browse Products": { title: "Browse Products", description: "Explore equipment and find the right solution for your project." },
-    Documents: { title: "Documents", description: "Access manuals, datasheets, safety guides, and approved documentation." },
+    Documents: { title: "Documents", description: "Attach a document to your next account-scoped chat." },
     "Compare Solutions": { title: "Compare Solutions", description: "Compare equipment options side by side before making a decision." },
-    "Upload Media": { title: "Upload Media", description: "Add photos, documents, or voice notes directly to your account chat." },
+    "Upload Media": { title: "Upload Media", description: "Add photos, documents, or supported audio to your next account chat." },
     History: { title: "History", description: "Review your recent questions, comparisons, and saved recommendations." },
     Settings: { title: "Settings", description: "Manage your workspace preferences and assistant experience." },
   };
+  const comparisonProducts = comparisonIds
+    .map((id) => products.find((product) => product.id === id))
+    .filter((product): product is Product => product !== undefined);
   const engineerOnlyPages = new Set(["Compare Solutions", "Upload Media"]);
   const canAccessPage = (page: string) => role === "engineer" || !engineerOnlyPages.has(page);
 
@@ -594,6 +613,39 @@ export default function App() {
 
   return (
     <main className="dashboard-shell">
+      <input
+        ref={fileInput}
+        className="chat-file-input"
+        type="file"
+        multiple
+        accept="image/jpeg,image/png,image/webp,.pdf,.docx,.txt,.md,.csv,audio/wav,audio/mpeg,audio/webm,audio/mp4"
+        onChange={(event) => {
+          if (event.currentTarget.files) addFiles(event.currentTarget.files);
+          event.currentTarget.value = "";
+        }}
+      />
+      <input
+        ref={cameraInput}
+        className="chat-file-input"
+        type="file"
+        accept="image/*"
+        capture="environment"
+        onChange={(event) => {
+          if (event.currentTarget.files) addFiles(event.currentTarget.files);
+          event.currentTarget.value = "";
+        }}
+      />
+      <input
+        ref={documentInput}
+        className="chat-file-input"
+        type="file"
+        multiple
+        accept=".pdf,.docx,.txt,.md,.csv,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain,text/markdown,text/csv"
+        onChange={(event) => {
+          if (event.currentTarget.files) addFiles(event.currentTarget.files);
+          event.currentTarget.value = "";
+        }}
+      />
       <aside className="dashboard-sidebar">
         <div className="sidebar-brand"><span className="brand-mark">⚙</span><span>Jenga Consultants<br /><b>Product Copilot</b></span></div>
         <nav className="dashboard-nav">
@@ -683,28 +735,6 @@ export default function App() {
                     {busy && <p className="panel-muted chat-thinking">Copilot is preparing a response…</p>}
                   </div>
                   <form onSubmit={sendMessage} className="dashboard-composer account-chat-composer">
-                    <input
-                      ref={fileInput}
-                      className="chat-file-input"
-                      type="file"
-                      multiple
-                      accept="image/jpeg,image/png,image/webp,.pdf,.docx,.txt,.md,.csv,audio/wav,audio/mpeg,audio/webm,audio/mp4"
-                      onChange={(event) => {
-                        if (event.currentTarget.files) addFiles(event.currentTarget.files);
-                        event.currentTarget.value = "";
-                      }}
-                    />
-                    <input
-                      ref={cameraInput}
-                      className="chat-file-input"
-                      type="file"
-                      accept="image/*"
-                      capture="environment"
-                      onChange={(event) => {
-                        if (event.currentTarget.files) addFiles(event.currentTarget.files);
-                        event.currentTarget.value = "";
-                      }}
-                    />
                     {files.length > 0 && (
                       <div className="chat-attachment-list" aria-label="Attachments to send">
                         {files.map(({ key, file, kind, mediaId }) => (
@@ -802,6 +832,13 @@ export default function App() {
                               <strong className="catalog-price">{formatPrice(product.price_ksh)}</strong>
                               <p className="product-specifications">{product.specifications}</p>
                               <p className="product-image-note">Illustrative category image</p>
+                              <button
+                                type="button"
+                                className="catalog-ask-button"
+                                onClick={() => askAboutProduct(product)}
+                              >
+                                <Bot size={14} /> Ask Copilot about this
+                              </button>
                             </div>
                           </article>
                         ))}
@@ -817,9 +854,83 @@ export default function App() {
                   )}
                 </>
               )}
-              {activeNav === "Documents" && <div className="document-list">{["Equipment Safety Handbook.pdf", "JCB 3CX Technical Datasheet.pdf", "Site Operations Guide.pdf"].map((item) => <article key={item}><FileText size={22} /><div><b>{item}</b><small>Verified project documentation · PDF</small></div><button><ChevronRight size={15} /></button></article>)}</div>}
-              {activeNav === "Compare Solutions" && <div className="comparison-card dashboard-card"><div className="comparison-toolbar"><span>Selected solutions</span><button className="primary-small">Add product</button></div><div className="comparison-table"><b>Category</b><b>JCB 3CX</b><b>CAT 320</b><span>Equipment type</span><span>Backhoe loader</span><span>Excavator</span><span>Best for</span><span>General construction</span><span>Earthmoving</span></div></div>}
-              {activeNav === "Upload Media" && <div className="upload-panel dashboard-card"><Upload size={30} /><h2>Attach media in your chat</h2><p>Open the account chat to upload a product photo or document, take a photo with your camera, or record a voice note for transcription and analysis.</p><button className="primary-small" onClick={openChat}>Open account chat</button></div>}
+              {activeNav === "Documents" && (
+                <div className="document-library dashboard-card">
+                  <div className="document-library-heading">
+                    <span className="page-panel-icon"><FileArchive size={22} /></span>
+                    <div><h2>Your documents</h2><p>Attach a document to your next chat. Files are temporary and are removed after processing or expiry.</p></div>
+                  </div>
+                  {files.filter(({ kind }) => kind === "document").length > 0 ? (
+                    <div className="document-list">
+                      {files.filter(({ kind }) => kind === "document").map(({ key, file, kind, mediaId }) => (
+                        <article key={key}>
+                          <FileText size={22} />
+                          <div><b>{file.name}</b><small>{mediaId ? "Uploaded and ready to send" : "Ready to attach to chat"}</small></div>
+                          <button
+                            type="button"
+                            aria-label={`Remove ${file.name}`}
+                            onClick={() => void removeAttachment({ key, file, kind, mediaId })}
+                          ><X size={15} /></button>
+                        </article>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="document-empty">No documents added yet. Choose a PDF, DOCX, TXT, Markdown, or CSV file to attach it to your chat.</p>
+                  )}
+                  {error && <p className="composer-error" role="alert">{error}</p>}
+                  <div className="document-actions">
+                    <button className="primary-small" type="button" disabled={files.length >= MAX_CHAT_ATTACHMENTS} onClick={() => documentInput.current?.click()}>
+                      <Upload size={15} /> Add document
+                    </button>
+                    <button className="secondary-small" type="button" onClick={openChat}>Continue to chat</button>
+                    <small>Maximum two files per message · 8 MiB each · consent is required before sending</small>
+                  </div>
+                </div>
+              )}
+              {activeNav === "Compare Solutions" && (
+                <div className="comparison-card dashboard-card">
+                  <div className="comparison-toolbar">
+                    <span>Selected solutions</span>
+                    <button className="primary-small" type="button" onClick={addComparisonProduct} disabled={!products.some((product) => !comparisonIds.includes(product.id))}>
+                      Add product
+                    </button>
+                  </div>
+                  {comparisonIds.length === 0 ? (
+                    <p className="document-empty">Add products from the live catalogue to compare their recorded details.</p>
+                  ) : (
+                    <div className="comparison-table" style={{ "--comparison-count": comparisonIds.length } as React.CSSProperties}>
+                      <b>Details</b>
+                      {comparisonIds.map((id) => {
+                        const product = products.find((item) => item.id === id);
+                        return product ? (
+                          <div className="comparison-product-heading" key={id}>
+                            <b>{product.name}</b>
+                            <button type="button" aria-label={`Remove ${product.name}`} onClick={() => setComparisonIds((current) => current.filter((item) => item !== id))}><X size={14} /></button>
+                          </div>
+                        ) : null;
+                      })}
+                      <span>Category</span>{comparisonProducts.map((product) => <span key={product.id}>{product.category}</span>)}
+                      <span>Model</span>{comparisonProducts.map((product) => <span key={product.id}>{product.model_number}</span>)}
+                      <span>Specifications</span>{comparisonProducts.map((product) => <span key={product.id}>{product.specifications}</span>)}
+                      <span>Indicative price</span>{comparisonProducts.map((product) => <span key={product.id}>{formatPrice(product.price_ksh)}</span>)}
+                    </div>
+                  )}
+                  {catalogError && <p className="login-error" role="alert">{catalogError}</p>}
+                </div>
+              )}
+              {activeNav === "Upload Media" && (
+                <div className="upload-panel dashboard-card">
+                  <Upload size={30} />
+                  <h2>Attach media to your chat</h2>
+                  <p>Add product photos, documents, or supported audio to your next account-scoped chat message.</p>
+                  {files.length > 0 && <p className="document-empty">{files.length} attachment{files.length === 1 ? "" : "s"} ready to send.</p>}
+                  {error && <p className="composer-error" role="alert">{error}</p>}
+                  <div className="document-actions">
+                    <button className="primary-small" type="button" disabled={files.length >= MAX_CHAT_ATTACHMENTS} onClick={() => fileInput.current?.click()}><Paperclip size={15} /> Add media</button>
+                    <button className="secondary-small" type="button" onClick={openChat}>Continue to chat</button>
+                  </div>
+                </div>
+              )}
               {activeNav === "History" && <div className="history-list dashboard-card"><h2><History size={16} /> Recent activity</h2><p className="panel-muted">Your recent assistant activity will appear here after your first question.</p></div>}
               {activeNav === "Settings" && <div className="settings-list dashboard-card"><h2><Settings size={16} /> Workspace settings</h2><label><span>Workspace notifications</span><input type="checkbox" defaultChecked /></label><label><span>Show source citations</span><input type="checkbox" defaultChecked /></label><label><span>Active role <small>Locked for this session</small></span><strong className="locked-role">{role === "engineer" ? "Engineer" : "Customer"}</strong></label></div>}
             </section>

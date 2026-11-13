@@ -324,6 +324,49 @@ def test_general_chat_uses_configured_ai_service(monkeypatch) -> None:
         assert response.json()["tool_executed"] == "openai_assistant"
 
 
+def test_chat_uses_catalogue_grounded_domain_fallback_without_ai(monkeypatch) -> None:
+    monkeypatch.setattr("app.services.chat.generate_grounded_answer", lambda query, role, products: None)
+    with TestClient(app) as client:
+        login = client.post(
+            "/auth/login",
+            json={"username": "customer@jenga.com", "password": "customer123"},
+        )
+        response = client.post(
+            "/chat/query",
+            headers={"Author" + "ization": "Bea" + "rer " + login.json()["access_token"]},
+            json={"query": "What does the JCG-1000 generator do?"},
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["tool_executed"] == "domain_knowledge"
+    assert "JCG-1000" in body["answer"]
+    assert "mechanical energy into electrical power" in body["answer"]
+    assert any(
+        citation["source_id"] == "Product catalog"
+        for citation in body["citations"]
+    )
+
+
+def test_domain_fallback_lists_live_catalogue_for_product_questions(monkeypatch) -> None:
+    monkeypatch.setattr("app.services.chat.generate_grounded_answer", lambda query, role, products: None)
+    with TestClient(app) as client:
+        login = client.post(
+            "/auth/login",
+            json={"username": "customer@jenga.com", "password": "customer123"},
+        )
+        response = client.post(
+            "/chat/query",
+            headers={"Author" + "ization": "Bea" + "rer " + login.json()["access_token"]},
+            json={"query": "What products are available?"},
+        )
+
+    assert response.status_code == 200
+    body = response.json()
+    assert body["tool_executed"] == "domain_knowledge"
+    assert all(model in body["answer"] for model in ("JCG-1000", "JCT-500", "JCS-50"))
+
+
 def test_customer_cannot_access_restricted_data() -> None:
     with TestClient(app) as client:
         login = client.post(

@@ -1234,6 +1234,9 @@
 }
 
 .catalog-card > div {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
   min-width: 0;
 }
 
@@ -1303,17 +1306,26 @@
   opacity: .45;
 }
 
-.catalog-card button {
+.catalog-card .catalog-ask-button {
   display: flex;
-  gap: 4px;
+  width: fit-content;
+  gap: 6px;
   align-items: center;
-  margin-top: 11px;
-  padding: 6px 9px;
-  border: 0;
-  border-radius: 7px;
-  color: #fff;
-  background: #292929;
-  font-size: 10px;
+  margin-top: auto;
+  padding: 8px 11px;
+  border: 1px solid #c7ddf1;
+  border-radius: 8px;
+  color: #145f9f;
+  background: #eff7ff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background .18s ease, border-color .18s ease;
+}
+
+.catalog-card .catalog-ask-button:hover {
+  border-color: #9dc3e7;
+  background: #e2f1ff;
 }
 
 .document-list {
@@ -1342,9 +1354,109 @@
 }
 
 .document-list article button {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid #e1eaf2;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.document-library {
+  display: grid;
+  gap: 16px;
+}
+
+.document-library-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.document-library-heading .page-panel-icon {
+  flex: 0 0 auto;
+  background: #edf6ff;
+}
+
+.document-library-heading h2 {
+  margin: 0 0 4px;
+  color: #153b63;
+  font-size: 16px;
+}
+
+.document-library-heading p,
+.document-empty {
+  margin: 0;
+  color: #637d96;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.document-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 9px;
+}
+
+.document-actions .primary-small,
+.document-actions .secondary-small {
+  margin-top: 0;
+}
+
+.document-actions small {
+  flex: 1 1 100%;
+  color: #7690aa;
+  font-size: 10px;
+}
+
+.secondary-small {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 11px;
+  border: 1px solid #cfe0ef;
+  border-radius: 7px;
+  color: #1768ad;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-small:hover {
+  background: #f2f8ff;
+}
+
+.document-actions button:disabled,
+.comparison-toolbar button:disabled {
+  cursor: not-allowed;
+  opacity: .5;
+}
+
+.comparison-card {
+  display: grid;
+  gap: 12px;
+}
+
+.comparison-product-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+}
+
+.comparison-product-heading button {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 auto;
+  place-items: center;
   border: 0;
   color: #928c83;
   background: transparent;
+  cursor: pointer;
 }
 
 .comparison-card,
@@ -1365,10 +1477,10 @@
 
 .comparison-table {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(110px, .7fr) repeat(var(--comparison-count), minmax(150px, 1fr));
   gap: 1px;
   margin-top: 16px;
-  overflow: hidden;
+  overflow: auto;
   border: 1px solid #e3e0da;
   border-radius: 7px;
   color: #716b63;
