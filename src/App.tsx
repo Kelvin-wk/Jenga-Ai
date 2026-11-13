@@ -750,7 +750,17 @@ export default function App() {
         accept="image/*"
         capture="environment"
         onChange={(event) => {
-          if (event.currentTarget.files) addFiles(event.currentTarget.files);
+          if (event.currentTarget.files) {
+            const capturedImage = Array.from(event.currentTarget.files).some(
+              (file) => attachmentKind(file) === "image",
+            );
+            addFiles(event.currentTarget.files);
+            if (capturedImage && !prompt.trim()) {
+              setPrompt(
+                "Please analyze this image. Describe the visible equipment and any readable labels, and clearly note anything uncertain.",
+              );
+            }
+          }
           event.currentTarget.value = "";
         }}
       />
@@ -882,7 +892,7 @@ export default function App() {
                           void sendMessage();
                         }
                       }}
-                      placeholder="Ask about equipment, specifications, or pricing…"
+                      placeholder="Ask about equipment or what to inspect in your photo…"
                       rows={3}
                       aria-label="Message Jenga Product Copilot"
                     />
@@ -892,13 +902,13 @@ export default function App() {
                         <Paperclip size={15} /> Attach file
                       </button>
                       <button type="button" disabled={busy || files.length >= MAX_CHAT_ATTACHMENTS} onClick={() => cameraInput.current?.click()}>
-                        <Camera size={15} /> Take photo
+                        <Camera size={15} /> Capture for AI
                       </button>
                       <button type="button" disabled={busy || (files.length >= MAX_CHAT_ATTACHMENTS && !recording)} onClick={() => void toggleRecording()} className={recording ? "recording" : ""}>
                         {recording ? <Square size={14} /> : <Mic size={15} />}
                         {recording ? "Stop recording" : "Voice note"}
                       </button>
-                      <small>Images, PDF, DOCX, TXT, MD, CSV, or voice · 8 MiB each · up to 2 files</small>
+                      <small>Capture or attach a photo, then ask a question or use the suggested image analysis. Confirm consent before sending to the AI service · 8 MiB each · up to 2 files</small>
                     </div>
                     {files.length > 0 && (
                       <label className="attachment-consent">
