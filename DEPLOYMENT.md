@@ -48,7 +48,7 @@ APP_ENV=production
 DATABASE_URL=mysql+pymysql://<user>:<password>@<mysql-host>:3306/<database>
 CORS_ORIGINS=https://<your-vercel-project>.vercel.app
 JENGA_SECRET_KEY=<long-random-production-secret>
-OPENAI_API_KEY=<optional-provider-secret>
+OPENAI_API_KEY=<required-for-model-powered-chat-and-image-analysis>
 OPENAI_MODEL=gpt-4.1-mini
 OPENAI_TRANSCRIPTION_MODEL=gpt-4o-mini-transcribe
 ```
@@ -65,7 +65,18 @@ Alternatively, the backend supports the documented `MYSQL_HOST`, `MYSQL_PORT`,
 `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` variables. Keep database
 credentials, `JENGA_SECRET_KEY`, and `OPENAI_API_KEY` only in PrimeCloud's
 secret manager. `OPENAI_API_KEY` is optional for text fallback and required
-for configured hosted AI and attachment/transcription features.
+for model-powered chat, attachment analysis, and voice transcription. To use
+the hosted AI model, add a valid OpenAI API key as a private PrimeCloud backend
+secret, then redeploy/restart the backend. The frontend calls the backend; the
+key must never be placed in a `VITE_*` variable or committed to Git. Without a
+key, text questions use the built-in catalogue/domain fallback and attachment
+analysis is unavailable. A configured key does not prevent errors when the
+backend or OpenAI service itself is unreachable.
+
+To confirm that model-powered chat is active, send a chat request and check its
+response metadata for `tool_executed: "openai_assistant"`. A
+`tool_executed: "domain_knowledge"` response means the built-in fallback was
+used instead of the model.
 
 ## Deploy order and existing PrimeCloud services
 

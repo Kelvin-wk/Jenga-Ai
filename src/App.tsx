@@ -89,11 +89,16 @@ function formatPrice(priceKsh: number): string {
   }).format(priceKsh);
 }
 
-function productImage(category: string): string {
-  const normalized = category.toLowerCase();
-  if (normalized.includes("generator")) return "/products/generator.svg";
+function productImage(product: Pick<Product, "category" | "name">): string {
+  const normalized = `${product.category} ${product.name}`.toLowerCase();
+  if (normalized.includes("generator") || normalized.includes("genset")) {
+    return "/products/generator.svg";
+  }
   if (normalized.includes("transformer")) return "/products/transformer.svg";
-  return "/products/inverter.svg";
+  if (normalized.includes("solar") || normalized.includes("inverter")) {
+    return "/products/inverter.svg";
+  }
+  return "/products/equipment.svg";
 }
 
 function attachmentKind(file: File): AttachmentKind | null {
@@ -948,11 +953,15 @@ export default function App() {
                       <div className="catalog-grid">
                         {products.slice(productPage * 4, productPage * 4 + 4).map((product) => (
                           <article className="catalog-card" key={product.id}>
-                            <img
-                              className="product-image"
-                              src={productImage(product.category)}
-                              alt={`${product.category} equipment illustration`}
-                            />
+                            <div className="product-visual">
+                              <img
+                                className="product-image"
+                                src={productImage(product)}
+                                alt={`Illustration of ${product.name}`}
+                                loading="lazy"
+                              />
+                              <span className="product-visual-tag">Illustrative image</span>
+                            </div>
                             <div>
                               <small className="product-category">{product.category}</small>
                               <h2>{product.name}</h2>
@@ -960,7 +969,6 @@ export default function App() {
                               <p className="panel-muted">Model: {product.model_number}</p>
                               <strong className="catalog-price">{formatPrice(product.price_ksh)}</strong>
                               <p className="product-specifications">{product.specifications}</p>
-                              <p className="product-image-note">Illustrative category image</p>
                               <button
                                 type="button"
                                 className="catalog-ask-button"
@@ -1078,7 +1086,15 @@ export default function App() {
               <div className="recommendation-list dashboard-products-grid">
                 {products.slice(0, 3).map((product) => (
                   <div className="recommendation" key={product.id}>
-                    <img className="dashboard-product-image" src={productImage(product.category)} alt={`${product.category} equipment illustration`} />
+                    <div className="dashboard-product-visual">
+                      <img
+                        className="dashboard-product-image"
+                        src={productImage(product)}
+                        alt={`Illustration of ${product.name}`}
+                        loading="lazy"
+                      />
+                      <span className="product-visual-tag">Illustrative</span>
+                    </div>
                     <div className="dashboard-product-details">
                       <small className="product-category">{product.category}</small>
                       <b>{product.name}</b>
