@@ -20,6 +20,7 @@ RUN apk add --no-cache nginx \
         /tmp/nginx/uwsgi \
         /tmp/nginx/scgi \
     && chmod 1777 \
+        /tmp/nginx \
         /tmp/nginx/client_body \
         /tmp/nginx/proxy \
         /tmp/nginx/fastcgi \

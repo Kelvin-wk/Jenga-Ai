@@ -13,7 +13,7 @@ def test_nginx_logs_and_runtime_files_use_container_safe_paths() -> None:
     assert re.search(r"(?m)^\s*error_log\s+/dev/stderr(?:\s+\w+)?;", config)
     assert re.search(r"(?m)^\s*access_log\s+/dev/stdout\s*;", config)
     assert "/var/lib/nginx/logs" not in config
-    assert re.search(r"(?m)^\s*pid\s+/tmp/nginx\.pid\s*;", config)
+    assert re.search(r"(?m)^\s*pid\s+/tmp/nginx/nginx\.pid\s*;", config)
     temp_paths = {
         "client_body_temp_path": "client_body",
         "proxy_temp_path": "proxy",
@@ -36,6 +36,7 @@ def test_image_and_startup_preserve_non_root_proxy_and_readiness() -> None:
     assert "USER appuser" in dockerfile
     assert "chown -R appuser:appuser /app/data" in dockerfile
     assert "chmod 1777" in dockerfile
+    assert "/tmp/nginx \\" in dockerfile
     for directory in ("client_body", "proxy", "fastcgi", "uwsgi", "scgi"):
         assert f"/tmp/nginx/{directory}" in dockerfile
     assert "USER appuser\n\nRUN nginx -t -e stderr -c /etc/nginx/nginx.conf" in dockerfile
