@@ -37,8 +37,11 @@ npm ci
 npm run dev
 ```
 
-Open the URL printed by Vite. The API address above matches the backend command;
-the frontend's current fallback address uses port 8080.
+Open the URL printed by Vite. By default, local `/api` requests are proxied to
+the production PrimeCloud backend at `https://kpp.primecloud.cloud`. To use a
+local backend instead, set `VITE_API_PROXY_TARGET=http://127.0.0.1:8000` in the
+root `.env` file before starting Vite. Local requests use the production
+service unless this override is set.
 
 ## Backend
 
