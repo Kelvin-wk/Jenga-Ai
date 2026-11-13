@@ -29,9 +29,10 @@ Create a **Python web application** from this repository and configure:
 
 - Runtime: Python, using `.python-version` (`3.11.9`)
 - Root/build directory: repository root
-- Install requirements: `pip install -r requirements.txt`
+- Install requirements from the repository root:
+  `python -m pip install -r requirements.txt`
 - Start command: use the root `Procfile`:
-  `web: cd backend && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}`
+  `web: cd backend && python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}`
 - Health/readiness path: `/ready`
 
 PrimeCloud must provide `PORT`; Uvicorn binds to `0.0.0.0` and uses that

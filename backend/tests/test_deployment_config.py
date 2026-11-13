@@ -85,7 +85,10 @@ def test_vercel_build_and_spa_fallback_are_configured() -> None:
 def test_backend_procfile_uses_platform_assigned_port() -> None:
     procfile = (PROJECT_ROOT / "Procfile").read_text()
 
-    assert "uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}" in procfile
+    assert (
+        "python -m uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}"
+        in procfile
+    )
 
 
 def test_cors_preflight_allows_attachment_removal() -> None:
