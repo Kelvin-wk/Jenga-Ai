@@ -1,16 +1,45 @@
 """Deployment configuration checks for Vercel, PrimeCloud, and Docker."""
 
 import json
+import os
 from pathlib import Path
 import re
 
 import pytest
 from fastapi.testclient import TestClient
 
-from app.main import _cors_origins, app
+from app.main import BACKEND_ENV_FILE, _cors_origins, app, load_dotenv
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+
+
+def test_backend_env_file_is_loaded_without_overriding_platform_settings(
+    monkeypatch, tmp_path
+) -> None:
+    env_file = tmp_path / ".env"
+    env_file.write_text(
+        "TEST_BACKEND_ENV_FILE_VALUE=from-file\n"
+        "TEST_PLATFORM_ENV_VALUE=from-file\n"
+    )
+    monkeypatch.delenv("TEST_BACKEND_ENV_FILE_VALUE", raising=False)
+    monkeypatch.setenv("TEST_PLATFORM_ENV_VALUE", "from-platform")
+
+    assert load_dotenv(env_file, override=False)
+    assert os.getenv("TEST_BACKEND_ENV_FILE_VALUE") == "from-file"
+    assert os.getenv("TEST_PLATFORM_ENV_VALUE") == "from-platform"
+    assert BACKEND_ENV_FILE == PROJECT_ROOT / "backend" / ".env"
+
+
+def test_env_templates_are_available_but_real_env_files_are_ignored() -> None:
+    gitignore = (PROJECT_ROOT / ".gitignore").read_text()
+
+    assert (PROJECT_ROOT / ".env.example").is_file()
+    assert (PROJECT_ROOT / "backend" / ".env.example").is_file()
+    assert (PROJECT_ROOT / "backend" / ".env.production.example").is_file()
+    assert ".env.*" in gitignore
+    assert "!.env.example" in gitignore
+    assert "!.env.*.example" in gitignore
 
 
 def test_production_cors_requires_explicit_frontend_origins(monkeypatch) -> None:

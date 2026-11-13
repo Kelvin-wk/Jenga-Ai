@@ -24,6 +24,8 @@ From the repository root, create the Python environment and start the backend:
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r backend/requirements.txt
+Copy-Item backend/.env.example backend/.env
+Copy-Item .env.example .env
 $env:PYTHONPATH = "backend"
 python -m uvicorn app.main:app --reload --port 8000
 ```
@@ -32,7 +34,6 @@ In a second terminal, install the frontend dependencies and set the API address:
 
 ```powershell
 npm ci
-$env:VITE_API_BASE_URL = "http://localhost:8000/api/v1"
 npm run dev
 ```
 
@@ -61,6 +62,11 @@ Health endpoints:
 The backend seeds demo accounts and products. Use them only for development and
 demonstrations. Deployment requires a separate `JENGA_SECRET_KEY`; demo passwords
 are not suitable for a public production service.
+
+The ignored `.env` files are local-only and must never be committed. Use
+`backend/.env.production.example` as a checklist for PrimeCloud production
+settings. Vercel and PrimeCloud do not receive ignored local files from Git;
+configure production values in each provider's environment/secrets settings.
 
 ## Checks
 

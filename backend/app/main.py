@@ -2,9 +2,11 @@
 
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
-import os
 import logging
+import os
+from pathlib import Path
 
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import text
@@ -15,6 +17,9 @@ from app.db.database import engine, init_db
 from app.schemas.common import HealthResponse
 
 logger = logging.getLogger(__name__)
+
+BACKEND_ENV_FILE = Path(__file__).resolve().parents[1] / ".env"
+load_dotenv(BACKEND_ENV_FILE, override=False)
 
 
 def _cors_origins() -> list[str]:

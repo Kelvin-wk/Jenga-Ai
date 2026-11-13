@@ -24,6 +24,9 @@ each Vercel environment and redeploy after changing it. Never put database or
 AI-provider secrets in `VITE_*` variables because they are embedded in browser
 assets.
 
+For local frontend development, copy the root `.env.example` to `.env` and set
+`VITE_API_BASE_URL` to the local backend or deployed API as needed.
+
 ## PrimeCloud backend
 
 Create a Python web application from the same GitHub repository:
@@ -40,7 +43,11 @@ provides `PORT`; Uvicorn must bind to `0.0.0.0` and that assigned port.
 `/health` checks process liveness, while `/ready` also checks the configured
 database and should be used for the platform health check.
 
-Configure these PrimeCloud variables/secrets:
+Configure these PrimeCloud variables/secrets. A placeholder template is
+available at `backend/.env.production.example`; copy it to `backend/.env` for
+local testing only, then replace every placeholder. PrimeCloud must receive
+the production values through its environment/secrets configuration unless
+your service explicitly provides a private `.env` file mechanism.
 
 ```text
 APP_ENV=production
@@ -67,6 +74,11 @@ Alternatively, the backend supports the documented `MYSQL_HOST`, `MYSQL_PORT`,
 credentials, `JENGA_SECRET_KEY`, and `OPENAI_API_KEY` only in PrimeCloud's secret
 manager. `OPENAI_API_KEY` is optional for text fallback but required for the
 configured hosted AI and attachment/transcription features.
+
+For local backend development, copy `backend/.env.example` to
+`backend/.env`. The backend loads that file when present and does not override
+environment variables provided by the shell or hosting platform. Real `.env`
+files are excluded by `.gitignore`; commit only the `.env.example` templates.
 
 Deployment order:
 
