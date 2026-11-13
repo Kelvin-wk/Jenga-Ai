@@ -17,6 +17,29 @@ from app.schemas.common import HealthResponse
 logger = logging.getLogger(__name__)
 
 
+def _cors_origins() -> list[str]:
+    configured_origins = os.getenv("CORS_ORIGINS")
+    if configured_origins is None:
+        if os.getenv("APP_ENV", "").lower() == "production":
+            raise RuntimeError(
+                "CORS_ORIGINS must list the deployed frontend origins in production."
+            )
+        return ["http://localhost:5173", "http://127.0.0.1:5173"]
+
+    origins = [
+        origin.strip().rstrip("/")
+        for origin in configured_origins.split(",")
+        if origin.strip()
+    ]
+    if not origins:
+        raise RuntimeError("CORS_ORIGINS must contain at least one frontend origin.")
+    if os.getenv("APP_ENV", "").lower() == "production" and "*" in origins:
+        raise RuntimeError(
+            "CORS_ORIGINS cannot use '*' in production; list the exact frontend origins."
+        )
+    return origins
+
+
 @asynccontextmanager
 async def lifespan(_: FastAPI):
     init_db()
@@ -26,9 +49,9 @@ async def lifespan(_: FastAPI):
 app = FastAPI(title="Jenga Consultants Product Copilot", version="1.0.0", lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=os.getenv("CORS_ORIGINS", "*").split(","),
+    allow_origins=_cors_origins(),
     allow_credentials=False,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["Authorization", "Content-Type"],
 )
 app.include_router(auth.router)

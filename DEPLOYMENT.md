@@ -1,6 +1,87 @@
-# PrimeCloud Docker deployment
+# Deployment
 
-The production image contains both application surfaces in one container:
+The recommended low-friction deployment serves the Vite frontend from Vercel
+and runs the FastAPI backend as a Python web service on PrimeCloud. Both targets
+use this repository root; the root `requirements.txt` delegates to
+`backend/requirements.txt`, and the root `Procfile` starts the API from
+`backend/`.
+
+## Vercel frontend
+
+Create a Vercel project connected to this GitHub repository and configure:
+
+- Root directory: repository root (leave "Include files outside the root directory" enabled if shown)
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+- Production and Preview environment variable:
+  `VITE_API_BASE_URL=https://<your-primecloud-backend-domain>/api/v1`
+
+`vercel.json` contains the Vite build/output settings and SPA fallback for
+client-side routes. The API URL must be the full HTTPS PrimeCloud backend URL
+including `/api/v1`; do not include a trailing slash. Set this variable for
+each Vercel environment and redeploy after changing it. Never put database or
+AI-provider secrets in `VITE_*` variables because they are embedded in browser
+assets.
+
+## PrimeCloud backend
+
+Create a Python web application from the same GitHub repository:
+
+- Runtime: Python, using the repository's `.python-version` (`3.11.9`)
+- Root/build directory: repository root
+- Install requirements: `pip install -r requirements.txt` (or let PrimeCloud
+  install the root requirements file)
+- Start command: `web: cd backend && uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8080}` from the root `Procfile`
+- Health/readiness path: `/ready`
+
+Do not use the combined Docker image for this split deployment. PrimeCloud
+provides `PORT`; Uvicorn must bind to `0.0.0.0` and that assigned port.
+`/health` checks process liveness, while `/ready` also checks the configured
+database and should be used for the platform health check.
+
+Configure these PrimeCloud variables/secrets:
+
+```text
+APP_ENV=production
+DATABASE_URL=mysql+pymysql://<user>:<password>@<mysql-host>:3306/<database>
+CORS_ORIGINS=https://<your-vercel-project>.vercel.app
+JENGA_SECRET_KEY=<long-random-production-secret>
+OPENAI_API_KEY=<optional-provider-secret>
+OPENAI_MODEL=gpt-4.1-mini
+OPENAI_TRANSCRIPTION_MODEL=gpt-4o-mini-transcribe
+```
+
+Add your Vercel custom domain as another comma-separated exact origin in
+`CORS_ORIGINS`, for example
+`https://<your-vercel-project>.vercel.app,https://copilot.example.com`.
+Do not use `*` in production. Add a Vercel Preview origin only if you need that
+specific preview deployment to call the production backend. The backend accepts
+the bearer authorization header and permits the API's GET, POST, and DELETE
+methods across the configured origins.
+
+`DATABASE_URL` must use the private PrimeCloud MySQL hostname and database
+credentials. URL-encode special characters in the username or password.
+Alternatively, the backend supports the documented `MYSQL_HOST`, `MYSQL_PORT`,
+`MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` variables. Keep database
+credentials, `JENGA_SECRET_KEY`, and `OPENAI_API_KEY` only in PrimeCloud's secret
+manager. `OPENAI_API_KEY` is optional for text fallback but required for the
+configured hosted AI and attachment/transcription features.
+
+Deployment order:
+
+1. Deploy the backend and database on PrimeCloud, then verify
+   `https://<backend-domain>/ready` returns `{"status":"ready"}`.
+2. Set `VITE_API_BASE_URL` in Vercel to
+   `https://<backend-domain>/api/v1`.
+3. Set the exact Vercel production origin in PrimeCloud's `CORS_ORIGINS`.
+4. Deploy/redeploy the Vercel frontend and test login, catalogue loading, chat,
+   and attachment removal.
+
+## Combined Docker deployment (alternative)
+
+The production Docker image can still serve both application surfaces in one
+container:
 
 - Nginx serves the Vite frontend.
 - FastAPI runs internally on `127.0.0.1:8000` through a non-privileged startup script.
@@ -36,7 +117,7 @@ docker compose down
 The named `app-data` volume preserves the SQLite database across restarts. Use
 `docker compose down -v` only when intentionally deleting local data.
 
-## PrimeCloud deployment
+### PrimeCloud Docker configuration
 
 Create one **Docker** application from the GitHub repository with:
 
@@ -57,7 +138,7 @@ provided by the PrimeCloud MySQL service:
 
 ```text
 DATABASE_URL=mysql+pymysql://<user>:<password>@<mysql-host>:3306/<database>
-CORS_ORIGINS=*
+CORS_ORIGINS=https://<your-primecloud-domain>
 JENGA_SECRET_KEY=<long-random-production-secret>
 OPENAI_API_KEY=<OpenAI-secret-api-key>
 OPENAI_MODEL=gpt-4.1-mini

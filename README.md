@@ -93,24 +93,19 @@ remain incomplete. See the [AI handoff](docs/AI_HANDOFF.md).
 
 ## Deployment
 
-[DEPLOYMENT.md](DEPLOYMENT.md) describes the combined Docker deployment for
-PrimeCloud and local containers. Its hosted-model configuration describes the
-current implementation, not approval to send private or restricted data.
+[DEPLOYMENT.md](DEPLOYMENT.md) describes the recommended Vercel frontend and
+PrimeCloud backend deployment, plus a combined Docker alternative. Its
+hosted-model configuration describes the current implementation, not approval
+to send private or restricted data.
 
-### Deploying the full application to PrimeCloud
+### Deploying frontend to Vercel and backend to PrimeCloud
 
-Deploy this repository as a **Docker application**, not as a Python-runtime
-application. The root [`Dockerfile`](./Dockerfile) builds the frontend and
-backend together and includes the Nginx configuration and startup script.
-Selecting Python-runtime deployment runs the [`Procfile`](./Procfile) directly
-and bypasses the repository's Nginx configuration, so the bundled Nginx
-permission fix will not apply.
-
-Use the repository root as the build context and `Dockerfile` as the Dockerfile.
-Configure PrimeCloud to expose port `8080`, mount persistent storage at
-`/app/data`, and use `/ready` as the health-check path. See
-[`DEPLOYMENT.md`](./DEPLOYMENT.md) for the full setup and required production
-environment variables.
+Deploy the Vite frontend to Vercel and the FastAPI backend to PrimeCloud as a
+Python web application. Configure `VITE_API_BASE_URL` in Vercel and the exact
+Vercel origin in PrimeCloud's `CORS_ORIGINS`. See
+[`DEPLOYMENT.md`](./DEPLOYMENT.md) for runtime settings, database requirements,
+health checks, and deploy order. A combined Docker deployment remains
+available as an alternative.
 
 ## Team
 
