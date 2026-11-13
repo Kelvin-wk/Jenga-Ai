@@ -79,6 +79,11 @@ def health() -> HealthResponse:
     return HealthResponse(status="ok", timestamp=datetime.now(timezone.utc))
 
 
+@app.get("/", response_model=HealthResponse, include_in_schema=False)
+def root_health() -> HealthResponse:
+    return health()
+
+
 @app.get("/api/v1/health", response_model=HealthResponse, tags=["health"])
 def versioned_health() -> HealthResponse:
     return health()

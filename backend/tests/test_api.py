@@ -12,6 +12,14 @@ def test_readiness_checks_database() -> None:
         assert response.json() == {"status": "ready"}
 
 
+def test_root_health_supports_default_platform_probe() -> None:
+    with TestClient(app) as client:
+        response = client.get("/")
+
+    assert response.status_code == 200
+    assert response.json()["status"] == "ok"
+
+
 def test_catalogue_api_returns_live_backend_products() -> None:
     with TestClient(app) as client:
         response = client.get("/api/v1/catalogue/products")
