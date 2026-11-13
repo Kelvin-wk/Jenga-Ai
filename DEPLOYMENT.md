@@ -13,13 +13,11 @@ Create a Vercel project connected to this GitHub repository and configure:
 - Framework preset: Vite
 - Build command: `npm run build`
 - Output directory: `dist`
-- Production and Preview environment variable:
-  `VITE_API_BASE_URL=https://<your-primecloud-backend-domain>/api/v1`
 
-`vercel.json` contains the Vite build/output settings and SPA fallback for
-client-side routes. The API URL must be the full HTTPS PrimeCloud backend URL
-including `/api/v1`; do not include a trailing slash. Set this variable for
-each Vercel environment and redeploy after changing it. Never put database or
+`vercel.json` proxies `/api/v1/*` requests to the PrimeCloud backend and then
+applies the SPA fallback for client-side routes. The frontend calls the
+same-origin `/api/v1` path, avoiding browser CORS preflights between Vercel and
+PrimeCloud. No `VITE_API_BASE_URL` variable is needed. Never put database or
 AI-provider secrets in `VITE_*` variables because they are embedded in browser
 assets.
 
@@ -72,9 +70,9 @@ for configured hosted AI and attachment/transcription features.
 
 1. Deploy the backend and database on PrimeCloud. Verify
    `https://<backend-domain>/ready` returns `{"status":"ready"}`.
-2. Set `VITE_API_BASE_URL` in Vercel to
-   `https://<backend-domain>/api/v1`.
-3. Set the exact Vercel production origin in PrimeCloud's `CORS_ORIGINS`.
+2. Verify the Vercel rewrite targets the active PrimeCloud backend domain.
+3. Keep the exact Vercel production origin in PrimeCloud's `CORS_ORIGINS` as
+   required by the production configuration.
 4. Deploy/redeploy the Vercel frontend and test login, catalogue loading, chat,
    and attachment removal.
 5. Once the Python service is healthy, disable or delete the previous Docker

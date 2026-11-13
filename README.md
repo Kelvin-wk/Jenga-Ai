@@ -106,8 +106,8 @@ current implementation, not approval to send private or restricted data.
 ### Deploying frontend to Vercel and backend to PrimeCloud
 
 Deploy the Vite frontend to Vercel and the FastAPI backend to PrimeCloud as a
-Python web application. Configure `VITE_API_BASE_URL` in Vercel and the exact
-Vercel origin in PrimeCloud's `CORS_ORIGINS`. See
+Python web application. Vercel proxies API requests to PrimeCloud; configure
+the exact Vercel origin in PrimeCloud's `CORS_ORIGINS`. See
 [`DEPLOYMENT.md`](./DEPLOYMENT.md) for runtime settings, database requirements,
 health checks, and deploy order. The repository is configured for this
 split deployment; no Docker/Nginx service configuration is included.
