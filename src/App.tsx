@@ -168,7 +168,6 @@ function readSession(): Session | null {
 
 export default function App() {
   const [session, setSession] = useState<Session | null>(readSession);
-  const [offlineMode, setOfflineMode] = useState(false);
   const [role, setRole] = useState<Role | null>(() => {
     const savedRole = localStorage.getItem(ROLE_KEY);
     return savedRole === "engineer" || savedRole === "customer" ? savedRole : null;
@@ -201,7 +200,6 @@ export default function App() {
   const audioChunks = useRef<Blob[]>([]);
 
   const logout = useCallback(() => {
-    setOfflineMode(false);
     localStorage.removeItem(SESSION_KEY);
     localStorage.removeItem(ROLE_KEY);
     setSession(null);
@@ -216,21 +214,6 @@ export default function App() {
     setCatalogLoaded(false);
     setCatalogError("");
   }, []);
-
-  function enterOfflineMode() {
-    setOfflineMode(true);
-    setConversationId("");
-    setFiles([]);
-    setAllowExternalProcessing(false);
-    setError("");
-    setMessages([
-      {
-        ...offlineReply("help"),
-        content:
-          "Offline mode is active. I can explain and compare common electrical concepts using curated local guidance. I’m not an AI model and can’t access accounts, manuals, attachments, Jenga product details, or current prices.",
-      },
-    ]);
-  }
 
   useEffect(() => () => {
     const activeRecorder = recorder.current;
@@ -583,75 +566,6 @@ export default function App() {
   const engineerOnlyPages = new Set(["Compare Solutions", "Upload Media"]);
   const canAccessPage = (page: string) => role === "engineer" || !engineerOnlyPages.has(page);
 
-  if (offlineMode) {
-    return (
-      <main className="offline-page">
-        <header className="offline-header">
-          <div className="sidebar-brand">
-            <span className="brand-mark">⚙</span>
-            <span>Jenga Consultants<br /><b>Product Copilot</b></span>
-          </div>
-          <span className="offline-status">Offline mode · backend not used</span>
-          <button type="button" onClick={() => setOfflineMode(false)}>Back to sign in</button>
-        </header>
-        <section className="offline-chat">
-          <div className="offline-disclaimer" role="status">
-            <strong>Limited offline assistant</strong>
-            <span>
-              Uses curated local guidance, not an AI model. Ask for general electrical
-              explanations or comparisons; it has no access to accounts, product data,
-              manuals, attachments, or current prices.
-            </span>
-          </div>
-          <div className="offline-thread chat-thread" aria-live="polite">
-            {messages.map((message) => (
-              <article className={`chat-message ${message.role}`} key={message.id}>
-                <b>{message.role === "user" ? "You" : "Offline assistant"}</b>
-                <p>{message.content}</p>
-                {message.tool_executed && (
-                  <small className="chat-message-meta">Curated offline guidance · not AI-generated</small>
-                )}
-              </article>
-            ))}
-          </div>
-          <form
-            className="dashboard-composer offline-composer"
-            onSubmit={(event) => {
-              event.preventDefault();
-              const text = prompt.trim();
-              if (!text || busy) return;
-              setMessages((current) => [
-                ...current,
-                { id: crypto.randomUUID(), role: "user", content: text },
-                offlineReply(text),
-              ]);
-              setPrompt("");
-            }}
-          >
-            <textarea
-              aria-label="Message offline assistant"
-              placeholder="Ask how a concept works or compare two terms…"
-              rows={3}
-              value={prompt}
-              onChange={(event) => setPrompt(event.currentTarget.value)}
-            />
-            <div className="composer-actions">
-              <span>No backend or AI model is used in offline mode.</span>
-              <button
-                type="submit"
-                className="send-button"
-                aria-label="Send message"
-                disabled={!prompt.trim()}
-              >
-                <ArrowUp size={16} />
-              </button>
-            </div>
-          </form>
-        </section>
-      </main>
-    );
-  }
-
   if (!session) {
     return (
       <main className="auth-page">
@@ -705,14 +619,6 @@ export default function App() {
           </div>
           {loginError && <p className="login-error">{loginError}</p>}
           <button disabled={busy} className="auth-submit">{busy ? "Signing in…" : <>Sign In <ArrowUp size={16} /></>}</button>
-          <div className="auth-divider"><span>or</span></div>
-          <button
-            type="button"
-            className="offline-login-button"
-            onClick={enterOfflineMode}
-          >
-            Continue in limited offline mode
-          </button>
           <p className="auth-version">Jenga Consultants Product Copilot v1.0</p>
         </form>
       </main>

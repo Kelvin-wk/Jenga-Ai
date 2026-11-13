@@ -64,8 +64,8 @@ credentials. URL-encode special characters in the username or password.
 Alternatively, the backend supports the documented `MYSQL_HOST`, `MYSQL_PORT`,
 `MYSQL_USER`, `MYSQL_PASSWORD`, and `MYSQL_DATABASE` variables. Keep database
 credentials, `JENGA_SECRET_KEY`, and `OPENAI_API_KEY` only in PrimeCloud's
-secret manager. `OPENAI_API_KEY` is optional for text fallback and required
-for model-powered chat, attachment analysis, and voice transcription. To use
+secret manager. `OPENAI_API_KEY` is required for model-powered chat, attachment
+analysis, and voice transcription. To use
 the hosted AI model, add a valid OpenAI API key as a private PrimeCloud backend
 secret, then redeploy/restart the backend. The frontend calls the backend; the
 key must never be placed in a `VITE_*` variable or committed to Git. Without a
@@ -117,11 +117,7 @@ Check the backend directly before changing frontend code:
   returns the frontend HTML, redeploy Vercel from a branch containing the API
   rewrite in `vercel.json`.
 
-## Limited offline assistant
-
-The sign-in screen offers a limited offline mode for curated explanations and
-comparisons of common electrical concepts. It is not an AI model and does not
-authenticate users or access catalogue data, prices, manuals, or attachments.
-In an authenticated chat, network and server errors receive a clearly labeled
-local fallback; safety-sensitive and product-specific answers remain
-unavailable until the grounded backend is reachable.
+The sign-in screen requires an account and does not offer a standalone offline
+assistant. If an authenticated chat request cannot reach the backend, it may
+show a clearly labeled, limited local fallback; that response is not generated
+by the AI model and cannot analyze attachments or access current product data.
