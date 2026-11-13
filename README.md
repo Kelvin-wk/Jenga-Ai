@@ -39,6 +39,20 @@ npm run dev
 Open the URL printed by Vite. The API address above matches the backend command;
 the frontend's current fallback address uses port 8080.
 
+## Backend
+
+The FastAPI backend is in [`backend/`](./backend). It supports the modular `/api/v1`
+routes described in the project plan, including authentication, sessions, catalogue
+tools, conversations, media validation, chat, and human-review requests.
+The account chat accepts up to two images, PDFs, DOCX, TXT, Markdown, CSV, or voice
+notes per message (8 MiB each). Image/PDF analysis and voice transcription use the
+configured OpenAI API; document text is extracted for NLP analysis. Configure
+`OPENAI_API_KEY` to enable those attachment and voice features. Users must confirm
+they are authorized to send attachments to the configured AI service; do not send
+private or restricted information unless its use with that service is approved.
+Uploaded bytes are deleted after successful processing or removal, and pending
+uploads expire after 24 hours (64 MiB/20 files maximum per account).
+
 Health endpoints:
 
 - `GET http://localhost:8000/api/v1/health` checks that the API is running.

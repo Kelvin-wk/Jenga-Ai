@@ -5,9 +5,11 @@ from __future__ import annotations
 import re
 from typing import Literal
 
+from fastapi import HTTPException
 from sqlalchemy.orm import Session
 
 from app.services.ai import generate_grounded_answer
+from app.services.media import ChatAttachment
 from app.tools.catalog import lookup_products
 from app.tools.safety import safety_notice
 
@@ -25,8 +27,14 @@ def _is_restricted_query(query: str) -> bool:
     )
 
 
-def route_query(query: str, role: str, db: Session) -> ChatResult:
+def route_query(
+    query: str,
+    role: str,
+    db: Session,
+    attachments: list[ChatAttachment] | None = None,
+) -> ChatResult:
     lowered = query.lower()
+    attachments = attachments or []
     if _is_restricted_query(query) and role == "customer":
         return (
             "I cannot provide internal margins or restricted service manuals.",
@@ -34,6 +42,29 @@ def route_query(query: str, role: str, db: Session) -> ChatResult:
             [],
             ["This request is restricted to authorised Jenga engineers."],
             "high",
+        )
+    if attachments:
+        products = lookup_products(db)
+        answer = generate_grounded_answer(
+            query,
+            role,
+            products,
+            attachments=attachments,
+        )
+        if answer is None:
+            raise HTTPException(
+                status_code=503,
+                detail="Attachment analysis requires OPENAI_API_KEY to be configured.",
+            )
+        return (
+            answer,
+            "openai_assistant",
+            ["Product catalog", *(f"User attachment: {item.filename}" for item in attachments)],
+            [
+                "AI-generated answer; verify important specifications with an authorised consultant.",
+                "Uploaded materials are user-provided and are not independently verified.",
+            ],
+            "medium",
         )
     if any(word in lowered for word in ("price", "cost", "quote", "pricing")):
         products = lookup_products(db)

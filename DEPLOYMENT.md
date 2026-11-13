@@ -9,6 +9,10 @@ The production image contains both application surfaces in one container:
 - The image includes the standard-library `ai/` ingestion validators and `data/` review assets; the build verifies the source manifest and BMS C1 snapshot before publishing the image.
 - Only products already in the backend database are exposed to the UI and chat. Proposed catalogue entries with pending evidence or approval are not automatically imported or priced.
 - The frontend product browser reads `/api/v1/catalogue/products`; it no longer displays a separate hard-coded product list. Chat requests use the backend `/api/v1/chat/query` contract.
+- Each authenticated account reuses one active Product Copilot conversation. Messages and answer citations/warnings are stored in the configured database and are only readable by the owning account.
+- Product cards use original local category illustrations and show catalogue identifiers, model numbers, specifications, and prices. These illustrations are representative, not manufacturer product photographs.
+- The chat accepts up to two image, PDF, DOCX, TXT, Markdown, CSV, or supported audio attachments per message, capped at 8 MiB each. Images and PDFs are analyzed with the configured multimodal AI provider; text documents are extracted for analysis; microphone voice notes are transcribed before answering. Analysis/transcription requires `OPENAI_API_KEY`. Before sending attachments, users must confirm that they are authorized to send them to the configured AI service; do not send private or restricted information unless its use with that service has been approved.
+- Uploaded bytes are stored in the configured database only while pending analysis. They are deleted after successful processing or when the user removes them; pending uploads expire after 24 hours. Pending storage is capped at 64 MiB and 20 files per account.
 - PrimeCloud MySQL is used through the `DATABASE_URL` environment variable.
 
 This avoids privileged process management and removes the need for a separate backend service hostname while keeping the
@@ -57,6 +61,7 @@ CORS_ORIGINS=*
 JENGA_SECRET_KEY=<long-random-production-secret>
 OPENAI_API_KEY=<OpenAI-secret-api-key>
 OPENAI_MODEL=gpt-4.1-mini
+OPENAI_TRANSCRIPTION_MODEL=gpt-4o-mini-transcribe
 PORT=8080
 ```
 
