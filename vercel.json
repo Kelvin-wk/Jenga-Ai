@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/v1/:path*",
-      "destination": "https://backend.primecloud.cloud/api/v1/:path*"
+      "destination": "https://kpp.primecloud.cloud/api/v1/:path*"
     },
     {
       "source": "/(.*)",

@@ -14,13 +14,13 @@ Create a Vercel project connected to this GitHub repository and configure:
 - Build command: `npm run build`
 - Output directory: `dist`
 
-`vercel.json` proxies `/api/v1/*` requests to the PrimeCloud backend and then
-applies the SPA fallback for client-side routes. The frontend calls the
-same-origin `/api/v1` path, avoiding browser CORS preflights between Vercel and
-PrimeCloud. Update the rewrite destination in `vercel.json` if the backend's
-PrimeCloud domain changes. No `VITE_API_BASE_URL` variable is needed. Never put
-database or AI-provider secrets in `VITE_*` variables because they are embedded
-in browser assets.
+`vercel.json` proxies `/api/v1/*` requests to
+`https://kpp.primecloud.cloud` and then applies the SPA fallback for client-side
+routes. The frontend calls the same-origin `/api/v1` path, avoiding browser
+CORS preflights between Vercel and PrimeCloud. Update the rewrite destination
+if the final backend domain changes. No `VITE_API_BASE_URL` variable is needed.
+Never put database or AI-provider secrets in `VITE_*` variables because they
+are embedded in browser assets.
 
 ## PrimeCloud backend
 
